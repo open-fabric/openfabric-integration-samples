@@ -1,16 +1,16 @@
 # OpenFabric Merchant SDK - React Sample
 
-Run
+1. Install dependencies
 
 ```
 yarn install
 ```
 
-to install dependencies and
+2. Run Sample App
 
 ```
 yarn start
 ```
 
-to start the example. Open `[http://localhost:3000/](http://localhost:3000/).`
+3. Open `[http://localhost:3000/](http://localhost:3000/).`
 
