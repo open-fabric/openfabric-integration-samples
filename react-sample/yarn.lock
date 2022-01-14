@@ -1586,10 +1586,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@openfabric/merchant-sdk@^0.0.60":
-  version "0.0.60"
-  resolved "https://registry.yarnpkg.com/@openfabric/merchant-sdk/-/merchant-sdk-0.0.60.tgz#f78e204a83c1131571dade9cf3d1cd50f3cdbd6c"
-  integrity sha512-QAWeeUvWSuQ9554Ou+NnVtPLR099WVI45mGoK0zOzPzE34DDkOmMu750Pn9UZyL3u9+VjEHRQHA99dQA9GjBNQ==
+"@openfabric/merchant-sdk@^0.0.62":
+  version "0.0.62"
+  resolved "https://registry.yarnpkg.com/@openfabric/merchant-sdk/-/merchant-sdk-0.0.62.tgz#353a55455593edfc2ea391290fbd5f54bd671f1f"
+  integrity sha512-7FSFUgYYVgVVyTutkIIAuhkzzIndlsnGmrlztHuZMpq6CuDAUi5GwO4MFnAEO1mT9MzwG7lUMk69b4LdxLjegg==
 
 "@pmmmwh/react-refresh-webpack-plugin@0.4.2":
   version "0.4.2"
