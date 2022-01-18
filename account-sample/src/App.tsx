@@ -1,67 +1,120 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import queryStringParser from 'query-string';
+import qs from 'qs';
+import axios from "axios";
 
 import {
     AccountsService,
 } from './AccountsService';
-
 import {CircularProgress} from './CircularProgress';
 import {Button} from './Button';
-import {TransactionDetailsResponse} from "@open-fabric/merchant-api-ts/dist/models/TransactionDetailsResponse";
 
-const accountsService = new AccountsService();
+const client_id = "<client_id>"
+const client_secret = "<client_secret>";
+
+const authEndpoint = 'https://auth.dev.openfabric.co/oauth2/token';
+
+const getAccountToken = async () => {
+    const basic = new Buffer(client_id + ':' + client_secret).toString('base64');
+    const data = qs.stringify({
+        grant_type: 'client_credentials',
+    });
+
+    try {
+        const result = await axios
+            .post(authEndpoint, data, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    Authorization: `Basic ${basic}`,
+                },
+            });
+        return result.data.access_token;
+    } catch (e) {
+        alert('Cannot get access token for client credential flow');
+    }
+    return null;
+};
+
+enum Stage {
+    Init,
+    Failed,
+    Approved,
+}
+
+const getStatus = (stage: Stage) => {
+    switch (+stage) {
+        case Stage.Failed:
+            return 'Failed';
+        case Stage.Approved:
+            return 'Approved';
+        default:
+            return null;
+    }
+}
+
+const showAlert = (error: any) =>
+    alert(
+        `${error.message} ${
+            !error.response && error.response
+                ? ''
+                : `${JSON.stringify(error.response)}`
+        }`
+    );
 
 export const App = () => {
-    const paramRef = useRef<string | undefined>();
-
-    const [transInfo, setTransInfo] = useState<TransactionDetailsResponse | undefined>();
-    const [process, setProcess] = useState<string>('');
+    const [id, setId] = React.useState<string | null>(null);
+    const [accountsService, setAccountsService] = React.useState<AccountsService | undefined>(undefined);
+    const [transInfo, setTransInfo] = useState<object | undefined>();
+    const [stage, setStage] = useState<Stage>(Stage.Init);
 
     useEffect(() => {
         const queryString = window.location.search;
         const parsed = queryStringParser.parse(queryString);
-        paramRef.current = parsed.id as string;
+
+        if (parsed.id) {
+            setId(parsed.id.toString());
+        }
+
+        getAccountToken().then((accountToken) => {
+            if (accountToken) {
+                setAccountsService(new AccountsService(accountToken));
+            } else {
+                alert("Can't retrieve account token!")
+            }
+        });
     }, []);
 
     useEffect(() => {
-        const id = paramRef && paramRef.current && paramRef.current;
-        if (id) {
+        if (id && accountsService) {
             accountsService.getTransById(id)
                 .then((response) => {
-                    if (response.status === 'Approved') {
-                        setTransInfo(response);
+                    if (response.status === 200) {
+                        setTransInfo(response.data);
                     }
                 })
-                .catch((error) => {
-                    alert(
-                        `${error.message} ${
-                            !error.response && error.response
-                                ? ''
-                                : `${JSON.stringify(error.response)}`
-                        }`
-                    );
-                });
+                .catch(showAlert);
         }
-    }, [paramRef]);
+    }, [id, accountsService]);
 
-    const CancelTransaction = async (transInfo: any) => {
-        setProcess('Cancelled');
+    const updateTransaction = React.useCallback((transInfo: any, stage: Stage, reason?: string) => () => {
+        setStage(stage);
+        if (!accountsService) {
+            return;
+        }
 
-        await accountsService.cancelTransaction(transInfo.account_reference_id).finally(() => {
-            setProcess('');
+        const status = getStatus(stage);
+        if (status === null) {
+            alert("Stage should be either Approved or Failed!");
+            return;
+        }
+
+        accountsService.updateTransaction(transInfo.account_reference_id, status, reason).then(() => {
+            window.location.href = transInfo.gateway_success_url;
+        }).catch(showAlert).finally(() => {
+            setStage(Stage.Init);
         });
+    }, [accountsService]);
 
-        window.location.href = transInfo.gateway_fail_url;
-    };
-
-    const ApproveTransaction = async (transInfo: any) => {
-        setProcess('Approved');
-        await accountsService.approveTransaction(transInfo.account_reference_id).finally(() => {
-            setProcess('');
-        });
-
-        window.location.href = transInfo.gateway_success_url;
-    };
 
     return (
         <div
@@ -75,7 +128,7 @@ export const App = () => {
             }}
         >
             <h2 style={{textAlign: 'center'}}>OpenFabric - Account Integration Sample</h2>
-            {transInfo ? (
+            {transInfo && accountsService ? (
                 <div
                     style={{
                         flex: 1,
@@ -87,20 +140,20 @@ export const App = () => {
                     }}
                 >
                     <Button
-                        onClick={() => ApproveTransaction(transInfo)}
+                        onClick={updateTransaction(transInfo, Stage.Failed, "User trigger failed")}
                         isRed={false}
-                        isDisabled={process !== ''}
+                        isDisabled={stage !== Stage.Init}
                     >
                         Approve Transaction
-                        {process === 'Approved' && <CircularProgress/>}
+                        {stage === Stage.Failed && <CircularProgress/>}
                     </Button>
                     <Button
-                        onClick={() => CancelTransaction(transInfo)}
-                        isDisabled={process !== ''}
+                        onClick={updateTransaction(transInfo, Stage.Approved)}
+                        isDisabled={stage !== Stage.Init}
                         isRed={true}
                     >
                         Cancel Transaction
-                        {process === 'Cancelled' && <CircularProgress/>}
+                        {stage === Stage.Approved && <CircularProgress/>}
                     </Button>
                 </div>
             ) : (<div style={{marginTop: '48px'}}><CircularProgress/></div>)}
