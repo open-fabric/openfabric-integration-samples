@@ -4,8 +4,8 @@ const request = require("request");
 const app = express();
 const port = 8081;
 
-const clientId = "<your client id here>";
-const clientSecret = "<your client secret here>";
+const clientId = "1c8ii7hge3v03ps35tesui0q79";
+const clientSecret = "1gds8vlaftl6j2fvs1unqr5fcf2m8dv094p87c8mkmfia3gm8gf6";
 const auth = Buffer.from(`${clientId}:${clientSecret}`).toString("base64")
 
 const options = {
