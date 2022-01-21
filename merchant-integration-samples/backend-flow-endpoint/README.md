@@ -23,7 +23,7 @@ cd ../react-sample
 4. Install dependencies
 
 ```
-yarn install
+yarn install && (cd server && yarn install)
 ```
 
 5. Run React Sample
