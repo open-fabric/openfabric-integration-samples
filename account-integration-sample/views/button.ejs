@@ -1,0 +1,11 @@
+<form action="<%= path %>" method="post">
+    <input type="hidden" id="account_reference_id" name="account_reference_id" value="<%= account_reference_id %>"/>
+    <input type="hidden" id="id" name="id" value="<%= id %>"/>
+    <% if (typeof reason != "undefined"){ %>
+        <input type="hidden" id="reason" name="reason" value="<%= reason %>"/>
+    <% } %>
+    <input type="hidden" id="status" name="status" value="<%= status %>"/>
+    <button class="button" type="submit" style="background-color:<%= color %>">
+        <%= title %>
+    </button>
+</form>

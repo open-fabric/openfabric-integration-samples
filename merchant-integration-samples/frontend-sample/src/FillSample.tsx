@@ -107,8 +107,8 @@ export const FillSample = () => {
 
             fetch(authHost)
                 .then(response => response.json())
-                .then(({access_token}) =>
-                    openFabric
+                .then(({access_token}) => 
+                     openFabric
                         .setDebug(true)
                         .setEnvironment(Environment.dev)
                         .setCustomerInfo(customerInfo)
@@ -124,10 +124,7 @@ export const FillSample = () => {
                         .setEnvironment(Environment.dev)
                         .setPrefill(true)
                         .initialize());
-
-        },
-        []
-    );
+    }, []);
 
     useEffect(() => {
         initOpenFabric(window.location.search);
