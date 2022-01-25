@@ -77,7 +77,7 @@
 <script type="module" src="https://unpkg.com/@openfabric/merchant-sdk/dist/index.umd.min.js"></script>
 
 <script type="module">
-    const authHost = "https://sample-merchant-server.dev.openfabric.co/Prod/authenticate";
+    const authHost = "http://localhost:3000/of-auth";
     const { FillConfig, OpenFabric, Environment } = OpenFabricMerchantSDK;
     const faker = window.faker;
     const initOpenFabric = (queryString) => {

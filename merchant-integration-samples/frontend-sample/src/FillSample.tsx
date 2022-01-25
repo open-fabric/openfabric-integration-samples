@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from "react";
+import {useCallback, useEffect} from "react";
 import {Theme, createStyles, makeStyles} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -6,8 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 // @ts-ignore
-import {OpenFabric, Environment} from "@openfabric/merchant-sdk";
-
+import {OpenFabric, FillConfig, Environment} from "@openfabric/merchant-sdk";
 import * as faker from "faker";
 import {FailedHook} from "./HandleFailedHook";
 
@@ -32,50 +31,31 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-const authHost = "https://sample-merchant-server.dev.openfabric.co/Prod/authenticate";
+const authHost = "/of-auth";
 
-export const BackendSample = () => {
+export const FillSample = () => {
     const classes = useStyles();
     FailedHook();
-    const [accessToken, setAccessToken] = React.useState<string | null>(null);
-
-    React.useEffect(() => {
-        fetch(authHost)
-            .then((response) => response.json())
-            .then(({access_token}) => setAccessToken(access_token));
-    }, []);
-
-    const cardHandler = React.useCallback(
-        (card_fetch_token: string) => {
-            fetch(`http://localhost:8080/fetch-card-details`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`,
-                },
-                body: JSON.stringify({card_fetch_token}), // body data type must match "Content-Type" header
-            })
-                .then((response) => response.json())
-                .then((result) => {
-                    const message =
-                        "Card details from backend: " + JSON.stringify(result);
-                    console.log(message);
-                    alert(message);
-                })
-                .catch((error) => {
-                    console.log("Failed to fetch card details from the backend:", error);
-                });
-        },
-        [accessToken]
-    );
+    const removeEmptyClass = (input: Element) => {
+        input.classList.add("focused");
+        input.classList.remove("empty");
+    };
 
     const initOpenFabric = useCallback(
         (queryString: string) => {
-            if (!accessToken) {
-                return;
-            }
+            const fillConfig = new FillConfig()
+                .cardNumber()
+                .id("cardnumber")
+                .afterFill(removeEmptyClass)
+                .cardExpiryMonthYear()
+                .id("exp-date")
+                .afterFill(removeEmptyClass)
+                .cardCVV()
+                .id("cvc")
+                .afterFill(removeEmptyClass);
+
             const customerInfo = {
-                mobile_number: faker.phone.phoneNumber("!##-!##-####"),
+                mobile_number: faker.phone.phoneNumber('!##-!##-####'),
                 first_name: faker.name.firstName(),
                 email: faker.internet.email(),
             };
@@ -93,7 +73,7 @@ export const BackendSample = () => {
             };
 
             const address_line_1 = faker.address.streetAddress();
-            const post_code = faker.address.zipCode("###");
+            const post_code = faker.address.zipCode('###');
             const shippingAddress = {
                 country_code: "sg",
                 address_line_1,
@@ -107,7 +87,7 @@ export const BackendSample = () => {
                 post_code,
             };
 
-            const merchant_reference_id = `MT${Date.now()}`;
+            const merchant_reference_id = `MT${Date.now()}`
             const purchaseContext = {
                 currency: "SGD",
                 amount: 120,
@@ -119,35 +99,43 @@ export const BackendSample = () => {
                 voucher_code: "voucher_code",
             };
 
-            OpenFabric()
-                .setDebug(true)
-                .setEnvironment(Environment.dev)
-                .setCardHandler(cardHandler)
-                .setCustomerInfo(customerInfo)
-                .setShippingAddress(shippingAddress)
-                .setBillingAddress(billingAddress)
-                .setPaymentMethods(["of-test-1"])
-                .setAccessToken(accessToken)
-                .setButtonDivId("bnpl-button")
-                .setItems([item])
-                .setQueryString(queryString)
-                .setPurchaseContext(purchaseContext)
-                .setSubmitButtonId("submit-button")
-                .initialize();
+            const openFabric = OpenFabric(
+                fillConfig,
+                "http://localhost:3000/PaymentSuccess", // optional callback url for a successful transaction
+                "http://localhost:3000/PaymentFailed", // optional callback url for a cancelled transaction
+            );
+
+            fetch(authHost)
+                .then(response => response.json())
+                .then(({access_token}) =>
+                    openFabric
+                        .setDebug(true)
+                        .setEnvironment(Environment.dev)
+                        .setCustomerInfo(customerInfo)
+                        .setShippingAddress(shippingAddress)
+                        .setBillingAddress(billingAddress)
+                        .setPaymentMethods(["of-test-1"])
+                        .setAccessToken(access_token)
+                        .setButtonDivId("bnpl-button")
+                        .setItems([item])
+                        .setQueryString(queryString)
+                        .setPurchaseContext(purchaseContext)
+                        .setSubmitButtonId("submit-button")
+                        .setEnvironment(Environment.dev)
+                        .setPrefill(true)
+                        .initialize());
+
         },
-        [accessToken, cardHandler]
+        []
     );
 
     useEffect(() => {
-        if (accessToken) {
-            initOpenFabric(window.location.search);
-        }
-    }, [initOpenFabric, accessToken]);
+        initOpenFabric(window.location.search);
+    }, [initOpenFabric]);
 
     return (
         <div
             style={{
-                marginTop: "50px",
                 alignItems: "center",
                 justifyContent: "center",
                 display: "flex",
@@ -157,7 +145,7 @@ export const BackendSample = () => {
             <div className={classes.root}>
                 <Paper elevation={3} className={classes.paper}>
                     <Typography variant="h5" gutterBottom>
-                        Backend Experience
+                        Prefill Experience
                     </Typography>
                     <div>
                         <div className={classes.form}>
@@ -267,4 +255,3 @@ export const BackendSample = () => {
         </div>
     );
 };
-
