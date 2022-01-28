@@ -107,10 +107,10 @@ export const FillSample = () => {
 
             fetch(authHost)
                 .then(response => response.json())
-                .then(({access_token}) => 
+                .then(({access_token}) =>
                      openFabric
                         .setDebug(true)
-                        .setEnvironment(Environment.dev)
+                        .setEnvironment(Environment.sandbox)
                         .setCustomerInfo(customerInfo)
                         .setShippingAddress(shippingAddress)
                         .setBillingAddress(billingAddress)
@@ -121,7 +121,7 @@ export const FillSample = () => {
                         .setQueryString(queryString)
                         .setPurchaseContext(purchaseContext)
                         .setSubmitButtonId("submit-button")
-                        .setEnvironment(Environment.dev)
+                        .setEnvironment(Environment.sandbox)
                         .setPrefill(true)
                         .initialize());
     }, []);

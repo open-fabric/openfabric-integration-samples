@@ -24,7 +24,7 @@ const authOptions = {
 };
 
 app.get("/of-auth", (req, res) =>
-    request("https://auth.dev.openfabric.co/oauth2/token", authOptions, (error, response, body) => {
+    request("https://auth.sandbox.openfabric.co/oauth2/token", authOptions, (error, response, body) => {
         if (!error) {
             const bodyJS = JSON.parse(body);
             res.json(bodyJS);
