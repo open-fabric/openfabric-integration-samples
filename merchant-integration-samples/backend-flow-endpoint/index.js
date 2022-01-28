@@ -19,7 +19,7 @@ const options = (request) =>
     });
 
 app.post("/fetch-card-details", (req, res) =>
-    request("https://issuer.dev.openfabric.co/i/fetchCard", options(req), (error, response, body) => {
+    request("https://issuer.sandbox.openfabric.co/i/fetchCard", options(req), (error, response, body) => {
         if (!error) {
             res.json(body);
         }

@@ -80,7 +80,7 @@ export const BackendSample = () => {
             if (!accessToken) {
                 return;
             }
-            
+
             const customerInfo = {
                 mobile_number: faker.phone.phoneNumber("!##-!##-####"),
                 first_name: faker.name.firstName(),
@@ -128,7 +128,7 @@ export const BackendSample = () => {
 
             OpenFabric()
                 .setDebug(true)
-                .setEnvironment(Environment.dev)
+                .setEnvironment(Environment.sandbox)
                 .setCardHandler(cardHandler)
                 .setCustomerInfo(customerInfo)
                 .setShippingAddress(shippingAddress)
