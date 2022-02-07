@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const authHost = "/of-auth";
-
+const paymentMethods = process.env.REACT_APP_PAYMENT_METHODS || ''
 export const FillSample = () => {
     const classes = useStyles();
     FailedHook();
@@ -110,18 +110,17 @@ export const FillSample = () => {
                 .then(({access_token}) =>
                      openFabric
                         .setDebug(true)
-                        .setEnvironment(Environment.sandbox)
                         .setCustomerInfo(customerInfo)
                         .setShippingAddress(shippingAddress)
                         .setBillingAddress(billingAddress)
-                        .setPaymentMethods(["of-test-1"])
+                        .setPaymentMethods([paymentMethods])
                         .setAccessToken(access_token)
                         .setButtonDivId("bnpl-button")
                         .setItems([item])
                         .setQueryString(queryString)
                         .setPurchaseContext(purchaseContext)
                         .setSubmitButtonId("submit-button")
-                        .setEnvironment(Environment.sandbox)
+                        .setEnvironment(Environment.dev)
                         .setPrefill(true)
                         .initialize());
     }, []);

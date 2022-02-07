@@ -1,0 +1,5 @@
+MERCHANT_CLIENT_ID=17c01k7ueh6lc2jfgisbuhsn5d
+MERCHANT_CLIENT_SECRET=189r8pdoegtlmjfum2dm46m0cbt53m99ggvkt6dr6l8jjlrqapg1
+MERCHANT_AUTH_ENDPOINT=https://auth.dev.openfabric.co/oauth2/token
+
+REACT_APP_PAYMENT_METHODS=of-test-1

@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  account-integration-sample:
+    build: ./account-integration-sample
+    environment:
+      - ACCOUNT_CLIENT_ID=s1ecob239rdpoa9bjmcj6tvej
+      - ACCOUNT_CLIENT_SECRECT=1ung5oeeurolb87tvgfnvv75tboolaokk1snpu75bhsq1co66te5
+      - OF_API_URL=https://api.dev.openfabric.co
+      - OF_AUTH_URL=https://auth.dev.openfabric.co/oauth2/token
+    ports:
+      - "3001:3001"
+    container_name: account-integration-sample
+    restart: always
+
+  ngrok:
+    image: wernight/ngrok
+    ports:
+      - "4040:4040"
+    environment:
+      NGROK_PROTOCOL: https
+      NGROK_PORT: account-integration-sample:3001
+      # NGROK_AUTH: 1QUmEI5PjMJt9RsEuCS7gMjGqKQ_3g7ohQqwuUPFKxXSyREQy
+    container_name: ngrok-account-server
+    depends_on:
+      - account-integration-sample
+
+  merchant-integration-samples:
+    build:
+      context: ./merchant-integration-samples/frontend-sample
+      args:
+        - PAYMENT_METHODS=of-test-1
+    environment:
+      - OPEN_FABRIC_OAUTH_ENDPOINT=https://auth.dev.openfabric.co/oauth2/token
+      - OPEN_FABRIC_API_ENDPOINT=https://api.dev.openfabric.co
+      - MERCHANT_CLIENT_ID=17c01k7ueh6lc2jfgisbuhsn5d
+      - MERCHANT_CLIENT_SECRECT=189r8pdoegtlmjfum2dm46m0cbt53m99ggvkt6dr6l8jjlrqapg1
+    ports:
+      - "3000:3000"
+    container_name: merchant-server
+    restart: always

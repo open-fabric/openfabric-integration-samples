@@ -12,9 +12,9 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set CLIENT_ID, CLIENT_SECRET, GATEWAY_URL, AUTH_END_POINT in the .env file
-const auth = Buffer.from(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`).toString('base64')
-const basePath = process.env.GATEWAY_URL;
-const authEndPoint = process.env.AUTH_URL;
+const auth = Buffer.from(`${process.env.ACCOUNT_CLIENT_ID}:${process.env.ACCOUNT_CLIENT_SECRECT}`).toString('base64')
+const basePath = process.env.OF_API_URL;
+const authEndPoint = process.env.OF_AUTH_URL;
 
 const asyncRequest = (url, options) => new Promise((resolve, reject) =>
     request(url, options, (error, res, body) => {
