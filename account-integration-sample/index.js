@@ -20,7 +20,7 @@ app.set("view engine", "ejs");
 
 // Set CLIENT_ID, CLIENT_SECRET, GATEWAY_URL, AUTH_END_POINT in the .env file
 const auth = Buffer.from(
-  `${process.env.ACCOUNT_CLIENT_ID}:${process.env.ACCOUNT_CLIENT_SECRECT}`
+  `${process.env.ACCOUNT_CLIENT_ID}:${process.env.ACCOUNT_CLIENT_SECRET}`
 ).toString("base64");
 const basePath = process.env.OF_API_URL;
 const authEndPoint = process.env.OF_AUTH_URL;
@@ -31,7 +31,7 @@ const asyncRequest = (url, options) =>
       if (!error && res.statusCode > 199 && res.statusCode < 300) {
         resolve(body ? JSON.parse(body) : true);
       } else {
-        reject(error ?? `HTTP error: ${res.statusCode}`);
+        reject(error ?? `HTTP error: ${res.statusCode} ${JSON.stringify(res.body)}`);
       }
     })
   );
@@ -104,13 +104,13 @@ app.post("/approve", async (req, res) => {
       `${basePath}/t/transactions/${id}`,
       config(access_token, "GET")
     );
-    await asyncRequest(
+   const response = await asyncRequest(
       `${basePath}/t/transactions`,
       config(access_token, "PUT", req.body)
-    );
+    )
     res.redirect(transInfo.gateway_success_url);
   } catch (error) {
-    console.error("Approve error: ", error);
+    console.error("Approve error: ", JSON.stringify(error));
   }
 });
 

@@ -33,8 +33,9 @@ function setupEnviroment() {
 }
 
 function proxyAccountServer() {
-    URL=$(curl $(docker port ngrok-account-server 4040)/api/tunnels/command_line | jq '.public_url')
-    echo $URL
+    URL=$(curl $(docker port ngrok-account-server 4040)/api/tunnels/command_line | jq -r '.public_url')
+    URL+="/account-create-transaction"
+    echo "$URL"
     echo $API_URL
 }
 
