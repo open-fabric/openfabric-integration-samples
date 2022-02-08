@@ -1,5 +1,4 @@
 version: "3"
-
 services:
   account-integration-sample:
     build: ./account-integration-sample
@@ -32,6 +31,7 @@ services:
       context: ./merchant-integration-samples/frontend-sample
       args:
         - PAYMENT_METHODS=dynamic-sample-at
+        - ENV=dev
     environment:
       - OF_OAUTH_ENDPOINT=https://auth.dev.openfabric.co/oauth2/token
       - OF_API_ENDPOINT=https://api.dev.openfabric.co

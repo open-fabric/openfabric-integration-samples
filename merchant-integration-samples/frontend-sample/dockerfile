@@ -18,6 +18,8 @@ COPY src ./src
 COPY yarn.lock ./
 COPY public ./public
 RUN yarn install
+ARG ENV
+ENV REACT_APP_ENV=$ENV
 ARG PAYMENT_METHODS
 ENV REACT_APP_PAYMENT_METHODS=$PAYMENT_METHODS
 RUN yarn build
