@@ -7,5 +7,9 @@ Create .env file according to your input Account/Merchant credential - you can c
 ```
 sh start.sh
 ``` 
-Open http://localhost:3000 on your browser 
+
+
+Open http://localhost:3000 on your browser
+
+
 Experience is ready to use
