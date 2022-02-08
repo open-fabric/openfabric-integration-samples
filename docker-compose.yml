@@ -3,10 +3,10 @@ services:
   account-integration-sample:
     build: ./account-integration-sample
     environment:
-      - ACCOUNT_CLIENT_ID=6cjlneo78ekj36l9hce1lkhb68
-      - ACCOUNT_CLIENT_SECRET=hvsd42o94vg0tq5n5cvqrpdko2j4ll5ma7dgtlr7cdhgvlojlmk
-      - OF_API_URL=https://api.dev.openfabric.co
-      - OF_AUTH_URL=https://auth.dev.openfabric.co/oauth2/token
+      - ACCOUNT_CLIENT_ID=${ACCOUNT_CLIENT_ID}
+      - ACCOUNT_CLIENT_SECRET=${ACCOUNT_CLIENT_SECRET}
+      - OF_API_URL=${OF_API_URL}
+      - OF_AUTH_URL=${OF_AUTH_URL}
     ports:
       - "3001:3001"
     container_name: account-integration-sample
@@ -30,13 +30,13 @@ services:
     build:
       context: ./merchant-integration-samples/frontend-sample
       args:
-        - PAYMENT_METHODS=dynamic-sample-at
-        - ENV=dev
+        - PAYMENT_METHODS=${PAYMENT_METHODS}
+        - ENV=${ENV}
     environment:
-      - OF_OAUTH_ENDPOINT=https://auth.dev.openfabric.co/oauth2/token
-      - OF_API_ENDPOINT=https://api.dev.openfabric.co
-      - MERCHANT_CLIENT_ID=ipk0t3mvk80ttvh4ucdbvcr33
-      - MERCHANT_CLIENT_SECRET=1f9uvh9ljkavak702ffnlsnc0hr4f0h4n0d2bebdugbaoeot1fpd
+      - OF_AUTH_URL=${OF_AUTH_URL}
+      - OF_API_URL=${OF_API_URL}
+      - MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID}
+      - MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET}
     ports:
       - "3000:3000"
     container_name: merchant-server
