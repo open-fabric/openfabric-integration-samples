@@ -12,14 +12,17 @@ WORKDIR /usr/src/merchant-integration-samples/frontend-sample
 # Copy package json and install dependencies
 COPY package*.json ./
 COPY *.js ./ 
+COPY *.json ./ 
 COPY server ./server
 COPY src ./src
 COPY yarn.lock ./
+COPY public ./public
 RUN yarn install
-# Copy our app
-COPY . .
 ARG PAYMENT_METHODS
 ENV REACT_APP_PAYMENT_METHODS=$PAYMENT_METHODS
+RUN yarn build
+# Copy our app
+COPY . .
 
 # Expose port to access server
 EXPOSE 3000

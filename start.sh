@@ -61,6 +61,8 @@ function networkUp() {
     echo "Build your first sample done"
     proxyAccountServer
     # call update API
+
+    echo "Open http://localhost:3000 on your browser"
 }
 
 networkUp
