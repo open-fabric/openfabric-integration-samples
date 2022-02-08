@@ -9,7 +9,7 @@ const port = 3000;
 
 // Set CLIENT_ID & CLIENT_SECRET in the .env file
 const auth = Buffer.from(`${process.env.MERCHANT_CLIENT_ID}:${process.env.MERCHANT_CLIENT_SECRET}`).toString("base64")
-const authEndpoint = process.env.MERCHANT_AUTH_ENDPOINT
+const authEndpoint = process.env.OF_OAUTH_ENDPOINT
 const authOptions = {
     method: "POST",
     headers: {

@@ -1,10 +1,17 @@
 
+MODE=dev
+API_DEV=https://api.dev.openfabric.co
+API_SANDBOX=https://api.sandbox.openfabric.co
+
 function networkDown() {
     docker-compose down
 }
 
 function networkUp() {
     networkDown
+    echo "Input Mode"
+    read MODE
+    echo "Mode input: " $MODE
     docker-compose up --force-recreate -d 2>&1
     if [ $? -ne 0 ]; then
         echo "ERROR !!!! Unable to start network"
@@ -23,7 +30,5 @@ function networkUp() {
     echo $URL
     # call update API
 }
-
-
 
 networkUp

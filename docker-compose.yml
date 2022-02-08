@@ -12,6 +12,8 @@ services:
       - "3001:3001"
     container_name: account-integration-sample
     restart: always
+    links:
+      - ngrok-account-server
 
   ngrok:
     image: wernight/ngrok
@@ -20,7 +22,7 @@ services:
     environment:
       NGROK_PROTOCOL: https
       NGROK_PORT: account-integration-sample:3001
-      # NGROK_AUTH: 1QUmEI5PjMJt9RsEuCS7gMjGqKQ_3g7ohQqwuUPFKxXSyREQy
+      NGROK_AUTH: 1QUmEI5PjMJt9RsEuCS7gMjGqKQ_3g7ohQqwuUPFKxXSyREQy
     container_name: ngrok-account-server
     depends_on:
       - account-integration-sample
@@ -31,8 +33,8 @@ services:
       args:
         - PAYMENT_METHODS=of-test-1
     environment:
-      - OPEN_FABRIC_OAUTH_ENDPOINT=https://auth.dev.openfabric.co/oauth2/token
-      - OPEN_FABRIC_API_ENDPOINT=https://api.dev.openfabric.co
+      - OF_OAUTH_ENDPOINT=https://auth.dev.openfabric.co/oauth2/token
+      - OF_API_ENDPOINT=https://api.dev.openfabric.co
       - MERCHANT_CLIENT_ID=17c01k7ueh6lc2jfgisbuhsn5d
       - MERCHANT_CLIENT_SECRECT=189r8pdoegtlmjfum2dm46m0cbt53m99ggvkt6dr6l8jjlrqapg1
     ports:
