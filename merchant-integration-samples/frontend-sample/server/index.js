@@ -8,8 +8,8 @@ const app = express();
 const port = 3000;
 
 // Set CLIENT_ID & CLIENT_SECRET in the .env file
-const auth = Buffer.from(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`).toString("base64")
-
+const auth = Buffer.from(`${process.env.MERCHANT_CLIENT_ID}:${process.env.MERCHANT_CLIENT_SECRET}`).toString("base64")
+const authEndpoint = process.env.OF_AUTH_URL
 const authOptions = {
     method: "POST",
     headers: {
@@ -24,7 +24,7 @@ const authOptions = {
 };
 
 app.get("/of-auth", (req, res) =>
-    request("https://auth.sandbox.openfabric.co/oauth2/token", authOptions, (error, response, body) => {
+    request( authEndpoint, authOptions, (error, response, body) => {
         if (!error) {
             const bodyJS = JSON.parse(body);
             res.json(bodyJS);

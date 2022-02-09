@@ -143,11 +143,11 @@
             .then(response => response.json())
             .then(({ access_token }) => openFabric
                 .setDebug(true)
-                .setEnvironment(Environment.sandbox)
+                .setEnvironment(Environment.{ENV})
                 .setCustomerInfo(customerInfo)
                 .setShippingAddress(shippingAddress)
                 .setBillingAddress(billingAddress)
-                .setPaymentMethods(["of-test-1"])
+                .setPaymentMethods(["{PAYMENT_METHODS}"])
                 .setAccessToken(access_token)
                 .setButtonDivId("bnpl-button")
                 .setItems([item])

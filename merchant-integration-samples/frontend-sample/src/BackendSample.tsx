@@ -33,7 +33,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const authHost = "/of-auth";
-
+const paymentMethods = process.env.REACT_APP_PAYMENT_METHODS || "";
+const env = process.env.REACT_APP_ENV || "dev";
+const currentEnv: Environment =
+  env === Environment.dev
+    ? Environment.dev
+    : env === Environment.sandbox
+    ? Environment.sandbox
+    : Environment.production;
 export const BackendSample = () => {
     const classes = useStyles();
     FailedHook();
@@ -128,12 +135,12 @@ export const BackendSample = () => {
 
             OpenFabric()
                 .setDebug(true)
-                .setEnvironment(Environment.sandbox)
+                .setEnvironment(currentEnv)
                 .setCardHandler(cardHandler)
                 .setCustomerInfo(customerInfo)
                 .setShippingAddress(shippingAddress)
                 .setBillingAddress(billingAddress)
-                .setPaymentMethods(["of-test-1"])
+                .setPaymentMethods([paymentMethods])
                 .setAccessToken(accessToken)
                 .setButtonDivId("bnpl-button")
                 .setItems([item])
