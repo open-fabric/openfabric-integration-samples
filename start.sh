@@ -48,8 +48,7 @@ function proxyAccountServer() {
 
 function networkUp() {
     networkDown
-    docker-compose build --no-cache
-    docker-compose up --force-recreate -d 2>&1
+    docker-compose up --build -d 2>&1
     if [ $? -ne 0 ]; then
         echo "ERROR !!!! Unable to start network"
         exit 1
