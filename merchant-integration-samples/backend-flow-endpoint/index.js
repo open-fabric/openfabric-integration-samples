@@ -1,12 +1,29 @@
 const express = require("express");
 const request = require("request");
 const bodyParser = require('body-parser');
-
+const cors = require('cors')
 const app = express();
 const port = 8080;
 
 app.use(bodyParser.json());
-
+app.set("trust proxy", true);
+const corsOptions = {
+  origin: "*",
+  methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "X-Requested-With",
+    "Access-Control-Allow-Origin",
+    "Origin",
+    "Accept",
+    "Accept-Language",
+    "User-Agent",
+    "Host",
+    "X-Forwarded-For",
+  ],
+};
+app.use(cors(corsOptions));
 const options = (request) =>
     ({
         method: "POST",
@@ -19,7 +36,7 @@ const options = (request) =>
     });
 
 app.post("/fetch-card-details", (req, res) =>
-    request("https://issuer.sandbox.openfabric.co/i/fetchCard", options(req), (error, response, body) => {
+    request(`https://issuer.${process.env.ENV}.openfabric.co/i/fetchCard`, options(req), (error, response, body) => {
         if (!error) {
             res.json(body);
         }

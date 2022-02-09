@@ -41,3 +41,16 @@ services:
       - "3000:3000"
     container_name: merchant-server
     restart: always
+    depends_on:
+      - merchant-backend-flow-endpoint
+
+
+  merchant-backend-flow-endpoint:
+    build:
+      context: ./merchant-integration-samples/backend-flow-endpoint
+    environment:
+      - ENV=${ENV}
+    ports:
+      - "8080:8080"
+    container_name: merchant-backend-flow-endpoint
+    restart: always
