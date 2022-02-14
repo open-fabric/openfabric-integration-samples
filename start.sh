@@ -7,7 +7,7 @@ function networkDown() {
 
 function proxyAccountServer() {
     URL=$(curl -s $(docker port ngrok-account-server 4040)/api/tunnels/command_line | jq -r '.public_url')
-    URL+="/account-create-transaction"
+    URL+="/transactions"
     
     apiURL=$(grep 'OF_API_URL' .env)
     OF_API_URL=${apiURL#*=}
