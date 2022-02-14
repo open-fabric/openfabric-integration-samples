@@ -5,14 +5,14 @@ FROM node:16.0.0
 RUN mkdir -p /usr/src/merchant-integration-samples
 RUN mkdir -p /usr/src/merchant-integration-samples/frontend-sample
 
-# Set working directory so that all 
+# Set working directory so that all
 # subsequent command runs in this folder
 WORKDIR /usr/src/merchant-integration-samples/frontend-sample
 
 # Copy package json and install dependencies
 COPY package*.json ./
-COPY *.js ./ 
-COPY *.json ./ 
+COPY *.js ./
+COPY *.json ./
 COPY src ./src
 COPY yarn.lock ./
 COPY public ./public
@@ -21,8 +21,11 @@ ARG ENV
 ENV REACT_APP_ENV=$ENV
 ARG PAYMENT_METHODS
 ENV REACT_APP_PAYMENT_METHODS=$PAYMENT_METHODS
+ARG PAYMENT_GATEWAY_NAME
+ENV REACT_APP_PAYMENT_GATEWAY_NAME=$PAYMENT_GATEWAY_NAME
+ARG PAYMENT_GATEWAY_PUBLISH_KEY
+ENV REACT_APP_PAYMENT_GATEWAY_PUBLISH_KEY=$PAYMENT_GATEWAY_PUBLISH_KEY
 RUN yarn install
-RUN echo "$PAYMENT_METHODS"
 RUN yarn build
 # Copy our app
 COPY . .
