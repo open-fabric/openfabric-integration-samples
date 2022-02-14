@@ -5,6 +5,7 @@ import request from "request";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 
+const TRUSTED_API_KEY = "sample-api-key";
 const port = 3001;
 const app = express();
 
@@ -31,7 +32,9 @@ const asyncRequest = (url, options) =>
       if (!error && res.statusCode > 199 && res.statusCode < 300) {
         resolve(body ? JSON.parse(body) : true);
       } else {
-        reject(error ?? `HTTP error: ${res.statusCode} ${JSON.stringify(res.body)}`);
+        reject(
+          error ?? `HTTP error: ${res.statusCode} ${JSON.stringify(res.body)}`
+        );
       }
     })
   );
@@ -81,18 +84,21 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.post("/account-create-transaction", async (req, res) => {
+// Sample implementation of Create Transaction API that will be called by OF.
+app.post("/transactions", async (req, res) => {
   const body = req.body;
   const response = {
     account_reference_id: uuid(),
     // url for customer redirect to account system
-    payment_redirect_web_url: `http://localhost:${port}?id=${body.fabric_reference_id ||
-      body.id}`,
+    payment_redirect_web_url: `http://localhost:${port}?id=${
+      body.fabric_reference_id || body.id
+    }`,
   };
   return res.status(200).send(response);
 });
 
-app.post("/approve", async (req, res) => {
+// Sample implementation of Approve Transaction workflow.
+app.post("/transactions/approve", async (req, res) => {
   const id = req.body.id;
   if (!id) {
     console.error("Missing `id` in body");
@@ -104,17 +110,18 @@ app.post("/approve", async (req, res) => {
       `${basePath}/t/transactions/${id}`,
       config(access_token, "GET")
     );
-   const response = await asyncRequest(
+    const response = await asyncRequest(
       `${basePath}/t/transactions`,
       config(access_token, "PUT", req.body)
-    )
+    );
     res.redirect(transInfo.gateway_success_url);
   } catch (error) {
     console.error("Approve error: ", JSON.stringify(error));
   }
 });
 
-app.post("/cancel", async (req, res) => {
+// Sample implementation of Cancel Transaction workflow.
+app.post("/transactions/cancel", async (req, res) => {
   const id = req.body.id;
   if (!id) {
     console.error("Missing `id` in body");
@@ -133,6 +140,33 @@ app.post("/cancel", async (req, res) => {
     res.redirect(transInfo.gateway_fail_url);
   } catch (error) {
     console.error("Cancel error: ", error);
+  }
+});
+
+// Sample implementation for webhook to receive OF notifications .
+app.post("/transactions/callback", async (req, res) => {
+  try {
+    if (req.header("X-Api-Key") === TRUSTED_API_KEY) {
+      console.log(
+        "Received OF notifications: ",
+        JSON.stringify(req.body, null, 2)
+      );
+      req.body.forEach((notification) => {
+        console.log(
+          `Transaction charged: id=${notification.account_reference_id}, status=${notification.status}, charged_at=${notification.charged_at}`
+        );
+      });
+      return res.status(200).send({ status: "Success" });
+    } else {
+      return res
+        .status(401)
+        .send({ status: "Failed", reason: "Unauthenticated" });
+    }
+  } catch (error) {
+    console.error("Callback error: ", error);
+    return res
+      .status(500)
+      .send({ status: "Failed", reason: error.message });
   }
 });
 

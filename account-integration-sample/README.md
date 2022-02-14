@@ -1,5 +1,7 @@
 # OpenFabric - Account Integration Sample
 
+## Setup
+
 1. Provide valid `clientId` and `clientSecret` in index.js
 
 
