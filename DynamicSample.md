@@ -1,9 +1,10 @@
-How to run Dynamic Sample
+# End-to-end account & merchant sample
 
-# Step 1: Update env file
+## How to run
+### Step 1: Update env file
 Create .env file according to your input Account/Merchant credential - you can check the .sample.env file for more details
 
-# Step 2: Run your sample
+### Step 2: Run your sample
 ```
 sh start.sh
 ``` 
@@ -12,4 +13,4 @@ sh start.sh
 Open http://localhost:3000 on your browser
 
 
-Experience is ready to use
+Experience is ready to use.
