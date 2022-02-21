@@ -73,8 +73,8 @@ const billingAddress = {
 
 const merchant_reference_id = `MT${Date.now()}`;
 const purchaseContext = {
-  currency: "SGD",
-  amount: 120,
+  currency: "PHP",
+  amount: 2300,
   merchant_reference_id: merchant_reference_id,
   tax_amount_percent: 10,
   refundable_amount: 0,
