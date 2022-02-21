@@ -12,5 +12,9 @@ yarn install && (cd server && yarn install)
 yarn start
 ```
 
-3. Open `[http://localhost:3000/](http://localhost:3000/)` for the React sample application or `[http://localhost:3000/vanilla](http://localhost:3000/vanilla)` for the vanilla JS application.
+3. Open 
+- [http://localhost:3000/](http://localhost:3000/) for the React sample application
+- [http://localhost:3000/vanilla](http://localhost:3000/vanilla) for the vanilla JS application
+- [http://localhost:3000/pg](http://localhost:3000/pg) for the Payment Gateway sample application
+- [http://localhost:3000/pg](http://localhost:3000/backend) for the Backend flow application
 
