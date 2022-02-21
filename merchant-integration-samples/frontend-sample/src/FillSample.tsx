@@ -1,14 +1,14 @@
-import { useCallback, useEffect } from "react";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import {useCallback, useEffect, useState} from "react";
+import {Theme, createStyles, makeStyles} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 // @ts-ignore
-import { OpenFabric, FillConfig, Environment } from "@openfabric/merchant-sdk";
+import {OpenFabric, FillConfig, Environment} from "@openfabric/merchant-sdk";
 import * as faker from "faker";
-import { FailedHook } from "./HandleFailedHook";
+import {FailedHook} from "./HandleFailedHook";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,87 +33,91 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const authHost = "/of-auth";
 const paymentMethods = process.env.REACT_APP_PAYMENT_METHODS || "";
-const env = process.env.REACT_APP_ENV || "dev";
+const envString = process.env.REACT_APP_ENV || "dev";
+
 const currentEnv: Environment =
-  env === Environment.dev
-    ? Environment.dev
-    : env === Environment.sandbox
-    ? Environment.sandbox
-    : Environment.production;
+  Environment[envString as keyof typeof Environment] || Environment.dev;
+
+
+const customerInfo = {
+  mobile_number: faker.phone.phoneNumber("!##-!##-####"),
+  first_name: faker.name.firstName(),
+  email: faker.internet.email(),
+};
+
+const item = {
+  item_id: "P100-1222",
+  name: "iPhone",
+  variation_name: "Black, 128GB",
+  description: "string",
+  quantity: 1,
+  amount: 1,
+  price: 2300,
+  original_price: 2000,
+  tax_amount_percent: 3,
+  categories: ["phone"],
+};
+
+const address_line_1 = faker.address.streetAddress();
+const post_code = faker.address.zipCode("###");
+const shippingAddress = {
+  country_code: "sg",
+  address_line_1,
+  post_code,
+  self_pickup: true,
+};
+
+const billingAddress = {
+  country_code: "sg",
+  address_line_1,
+  post_code,
+};
+
+const merchant_reference_id = `MT${Date.now()}`;
+const purchaseContext = {
+  currency: "SGD",
+  amount: 120,
+  merchant_reference_id: merchant_reference_id,
+  tax_amount_percent: 10,
+  refundable_amount: 0,
+  shipping_amount: 10,
+  original_amount: 130,
+  voucher_code: "voucher_code",
+};
+
 export const FillSample = () => {
   const classes = useStyles();
   FailedHook();
+
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+
   const removeEmptyClass = (input: Element) => {
     input.classList.add("focused");
     input.classList.remove("empty");
+    setIsSubmitEnabled(true);
   };
 
+  const fillConfig = new FillConfig()
+    .cardNumber()
+    .id("cardnumber")
+    .afterFill(removeEmptyClass)
+    .cardExpiryMonthYear()
+    .id("exp-date")
+    .afterFill(removeEmptyClass)
+    .cardCVV()
+    .id("cvc")
+    .afterFill(removeEmptyClass);
+
+  const openFabric = OpenFabric(
+    fillConfig,
+    "http://localhost:3000", // optional callback url for a successful transaction
+    "http://localhost:3000/PaymentFailed" // optional callback url for a cancelled transaction
+  );
+
   const initOpenFabric = useCallback((queryString: string) => {
-    const fillConfig = new FillConfig()
-      .cardNumber()
-      .id("cardnumber")
-      .afterFill(removeEmptyClass)
-      .cardExpiryMonthYear()
-      .id("exp-date")
-      .afterFill(removeEmptyClass)
-      .cardCVV()
-      .id("cvc")
-      .afterFill(removeEmptyClass);
-
-    const customerInfo = {
-      mobile_number: faker.phone.phoneNumber("!##-!##-####"),
-      first_name: faker.name.firstName(),
-      email: faker.internet.email(),
-    };
-    const item = {
-      item_id: "P100-1222",
-      name: "iPhone",
-      variation_name: "Black, 128GB",
-      description: "string",
-      quantity: 1,
-      amount: 1,
-      price: 2300,
-      original_price: 2000,
-      tax_amount_percent: 3,
-      categories: ["phone"],
-    };
-
-    const address_line_1 = faker.address.streetAddress();
-    const post_code = faker.address.zipCode("###");
-    const shippingAddress = {
-      country_code: "sg",
-      address_line_1,
-      post_code,
-      self_pickup: true,
-    };
-
-    const billingAddress = {
-      country_code: "sg",
-      address_line_1,
-      post_code,
-    };
-
-    const merchant_reference_id = `MT${Date.now()}`;
-    const purchaseContext = {
-      currency: "SGD",
-      amount: 120,
-      merchant_reference_id: merchant_reference_id,
-      tax_amount_percent: 10,
-      refundable_amount: 0,
-      shipping_amount: 10,
-      original_amount: 130,
-      voucher_code: "voucher_code",
-    };
-
-    const openFabric = OpenFabric(
-      fillConfig,
-      "http://localhost:3000", // optional callback url for a successful transaction
-      "http://localhost:3000/PaymentFailed" // optional callback url for a cancelled transaction
-    );
-
     fetch(authHost)
       .then((response) => response.json())
-      .then(({ access_token }) =>
+      .then(({access_token}) =>
         openFabric
           .setDebug(true)
           .setCustomerInfo(customerInfo)
@@ -135,6 +139,7 @@ export const FillSample = () => {
   useEffect(() => {
     initOpenFabric(window.location.search);
   }, [initOpenFabric]);
+
 
   return (
     <div
@@ -234,14 +239,15 @@ export const FillSample = () => {
               >
                 <div
                   id="bnpl-button"
-                  style={{ width: "160px", height: "36px" }}
+                  style={{width: "160px", height: "36px"}}
                 />
-                <div style={{ width: "10px" }} />
+                <div style={{width: "10px"}}/>
                 <Button
                   id="submit-button"
                   type="submit"
                   variant="contained"
                   color="primary"
+                  disabled={!isSubmitEnabled}
                   onClick={() => {
                     setTimeout(() => {
                       window.location.href = `${window.location.origin}/PaymentSuccess`;

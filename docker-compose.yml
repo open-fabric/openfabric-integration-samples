@@ -30,6 +30,8 @@ services:
     build:
       context: ./merchant-integration-samples/frontend-sample
       args:
+        - PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY}
+        - PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}
         - PAYMENT_METHODS=${PAYMENT_METHODS}
         - ENV=${ENV}
     environment:

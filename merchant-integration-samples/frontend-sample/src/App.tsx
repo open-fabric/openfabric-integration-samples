@@ -3,6 +3,7 @@ import {PaymentSuccess} from "./PaymentSuccess";
 import {PaymentFailed} from "./PaymentFailed";
 import {BackendSample} from "./BackendSample";
 import {FillSample} from "./FillSample";
+import {PGSample} from "./PGSample";
 
 export const App = () =>
     (
@@ -12,6 +13,7 @@ export const App = () =>
                     <Routes>
                         <Route path="/" element={<FillSample/>}/>
                         <Route path="/backend" element={<BackendSample/>}/>
+                        <Route path="/pg" element={<PGSample/>}/>
                         <Route path="PaymentSuccess" element={<PaymentSuccess/>}/>
                         <Route path="PaymentFailed" element={<PaymentFailed/>}/>
                     </Routes>

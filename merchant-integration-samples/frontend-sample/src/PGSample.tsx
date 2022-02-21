@@ -6,8 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 // @ts-ignore
-import {OpenFabric, Environment} from "@openfabric/merchant-sdk";
-
+import {OpenFabric, Environment, PGConfig} from "@openfabric/merchant-sdk";
 import * as faker from "faker";
 import {FailedHook} from "./HandleFailedHook";
 
@@ -32,8 +31,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+
+const tokenHandler = (token: string) => {
+  alert(`Payment Gateway token: ${token}`);
+  console.log('Payment Gateway token: ', token);
+};
+
+const pgConfig = {
+  publishable_key: process.env.REACT_APP_PAYMENT_GATEWAY_PUBLISH_KEY,
+  name: process.env.REACT_APP_PAYMENT_GATEWAY_NAME,
+  tokenHandler
+} as PGConfig
+
 const authHost = "/of-auth";
-const paymentMethods = process.env.REACT_APP_PAYMENT_METHODS || "";
 const envString = process.env.REACT_APP_ENV || "dev";
 const currentEnv: Environment =
   Environment[envString as keyof typeof Environment] || Environment.dev;
@@ -75,7 +85,7 @@ const merchant_reference_id = `MT${Date.now()}`;
 const purchaseContext = {
   currency: "SGD",
   amount: 120,
-  merchant_reference_id: merchant_reference_id,
+  merchant_reference_id,
   tax_amount_percent: 10,
   refundable_amount: 0,
   shipping_amount: 10,
@@ -83,7 +93,7 @@ const purchaseContext = {
   voucher_code: "voucher_code",
 };
 
-export const BackendSample = () => {
+export const PGSample = () => {
   const classes = useStyles();
   FailedHook();
   const [accessToken, setAccessToken] = React.useState<string | null>(null);
@@ -91,38 +101,9 @@ export const BackendSample = () => {
   React.useEffect(() => {
     fetch(authHost)
       .then((response) => response.json())
-      .then(({access_token}) => {
-        if (!access_token) {
-          console.error("Failed to fetch accessToken");
-          return;
-        }
-        setAccessToken(access_token);
-      })
+      .then(({access_token}) => setAccessToken(access_token));
   }, []);
 
-  const cardHandler = React.useCallback(
-    (card_fetch_token: string) => {
-      fetch(`http://localhost:8080/fetch-card-details`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({card_fetch_token}), // body data type must match "Content-Type" header
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          const message =
-            "Card details from backend: " + JSON.stringify(result);
-          console.log(message);
-          alert(message);
-        })
-        .catch((error) => {
-          console.log("Failed to fetch card details from the backend:", error);
-        });
-    },
-    [accessToken]
-  );
 
   const initOpenFabric = useCallback(
     (queryString: string) => {
@@ -133,11 +114,11 @@ export const BackendSample = () => {
       OpenFabric()
         .setDebug(true)
         .setEnvironment(currentEnv)
-        .setCardHandler(cardHandler)
+        .setPGConfig(pgConfig)
         .setCustomerInfo(customerInfo)
         .setShippingAddress(shippingAddress)
         .setBillingAddress(billingAddress)
-        .setPaymentMethods([paymentMethods])
+        .setPaymentMethods(["of-test-1"])
         .setAccessToken(accessToken)
         .setButtonDivId("bnpl-button")
         .setItems([item])
@@ -146,7 +127,7 @@ export const BackendSample = () => {
         .setSubmitButtonId("submit-button")
         .initialize();
     },
-    [accessToken, cardHandler]
+    [accessToken, currentEnv]
   );
 
   useEffect(() => {
@@ -168,7 +149,7 @@ export const BackendSample = () => {
       <div className={classes.root}>
         <Paper elevation={3} className={classes.paper}>
           <Typography variant="h5" gutterBottom>
-            Backend Experience
+            Payment Gateway Experience
           </Typography>
           <div>
             <div className={classes.form}>
