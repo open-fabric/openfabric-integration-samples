@@ -1,19 +1,31 @@
 
 
+OF_API_URL=https://api.sandbox.openfabric.co
+OF_AUTH_URL=https://auth.sandbox.openfabric.co/oauth2/token
+ENV=sandbox
+SKIP_PROXY=0
 function networkDown() {
     docker-compose down --rmi local
     # docker-compose down
 }
 
+function variablesUpdate() {
+    currentEnv=$(grep 'ENV' .env |  tr '\n' '\0')
+    CURRENT_ENV=${currentEnv#*=}
+
+    if [ "$CURRENT_ENV" == "dev" ]; then 
+        OF_API_URL=https://api.dev.openfabric.co
+        OF_AUTH_URL=https://auth.dev.openfabric.co/oauth2/token
+        ENV=$CURRENT_ENV
+    fi
+    export OF_API_URL=$OF_API_URL
+    export OF_AUTH_URL=$OF_AUTH_URL
+    export ENV=$ENV
+}
+
 function proxyAccountServer() {
     URL=$(curl -s $(docker port ngrok-account-server 4040)/api/tunnels/command_line | jq -r '.public_url')
     URL+="/transactions"
-    
-    apiURL=$(grep 'OF_API_URL' .env)
-    OF_API_URL=${apiURL#*=}
-    
-    ofAuthUrl=$(grep 'OF_AUTH_URL' .env)
-    OF_AUTH_URL=${ofAuthUrl#*=}
     
     accountClientId=$(grep 'ACCOUNT_CLIENT_ID' .env |  tr '\n' '\0')
     ACCOUNT_CLIENT_ID=${accountClientId#*=}
@@ -21,9 +33,7 @@ function proxyAccountServer() {
     accountClientSecret=$(grep 'ACCOUNT_CLIENT_SECRET' .env |  tr '\n' '\0')
     ACCOUNT_CLIENT_SECRET=${accountClientSecret#*=}
     
-    
     BASE_64=$(printf $ACCOUNT_CLIENT_ID:$ACCOUNT_CLIENT_SECRET | base64)
-    
     #get account access token
     ACCESSTOKEN=$(curl -s --location --request POST $OF_AUTH_URL \
         --header 'Content-Type: application/x-www-form-urlencoded' \
@@ -41,12 +51,22 @@ function proxyAccountServer() {
     "account_transaction_url": "'$URL'",
     "auth_config": {"method": "X-API-KEY", "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"}
     }' | jq -r '.account_transaction_url')
+
     echo
     echo "Sample account endpoint: "$UPDATE_RESULT
     echo
 }
 
+printHelp() {
+
+  echo "Usage: start.sh --s"
+  echo
+  echo "--s :skip proxy local sample account server"
+  echo
+}
+
 function networkUp() {
+    variablesUpdate
     networkDown
     docker-compose up --force-recreate -d 2>&1
     if [ $? -ne 0 ]; then
@@ -64,12 +84,26 @@ function networkUp() {
     echo " ___) |   | |    / ___ \  |  _ <    | |  "
     echo "|____/    |_|   /_/   \_\ |_| \_\   |_|  "
     echo
-    proxyAccountServer
+    if [ $SKIP_PROXY == 0 ] ; then
+        proxyAccountServer
+    fi
     echo
     echo "============================================= ALL GOOD ============================================="
     echo
     echo "Open http://localhost:3000 on your browser"
     echo
 }
+
+while getopts "s?" opt; do
+  case $opt in
+    s|\?)
+      SKIP_PROXY=1
+      echo $SKIP_PROXY
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      ;;
+  esac
+done
 
 networkUp
