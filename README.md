@@ -18,6 +18,17 @@ yarn add @openfabric/merchant-sdk
 
 [Check out our detailed integration guide.](https://developer.openfabric.co/ZG9jOjIzNjI1Mzcz-merchant-integration-guide)
 
+# Local samples
+
+1. Copy `.sample.env` to `.env` and set the correct values
+2. Run `sh start.sh`
+3. Check the desired scenario:
+- [http://localhost:3000/](http://localhost:3000/) for the React sample application
+- [http://localhost:3000/vanilla](http://localhost:3000/vanilla) for the vanilla JS application
+- [http://localhost:3000/pg](http://localhost:3000/pg) for the Payment Gateway sample application
+- [http://localhost:3000/pg](http://localhost:3000/backend) for the Backend flow application
+
+
 # Live samples
 
 [React sample](https://sample-merchant-flow.sandbox.openfabric.co/)
