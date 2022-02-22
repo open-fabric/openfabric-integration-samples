@@ -72,6 +72,7 @@ For more details, this is our scenario:
 * [x] Account-integration-sample
   * [Demonstrate how Account server integrate with OF system](account-integration-sample/index.js)
     * Authenticate with OF by using Account Client Credential
+    * Receive request create Transaction from OF system
     * Approve Transaction: Notify OF system
     * Cancel Transaction: Notify OF system
     * Webhook to receive notification from OF system
