@@ -1,12 +1,12 @@
 # End-to-end account & merchant sample
 
-A sample to demonstrate end to end integration between ****Merchants****& ****Accounts****
+A sample to demonstrate end to end integration between ****Merchants**** & ****Accounts****
 
 ## Prerequisites and setup
 
 * [Docker](https://www.docker.com/products/overview)
 * [Docker Compose](https://docs.docker.com/compose/overview/) - v2.2.3 or higher
-* **Node.js** v16.0.0 or higher
+* [Node.js](https://nodejs.org/en/) v16.0.0 or higher
 
 ## Running the sample program
 
@@ -23,6 +23,7 @@ PAYMENT_METHODS=<your account slug>
 ```
 
 **Note:**
+
 * Merchant credential could be found in your Open Fabric Portal
 
 *Some additional config value if you want to try ***PGToken Flow****
