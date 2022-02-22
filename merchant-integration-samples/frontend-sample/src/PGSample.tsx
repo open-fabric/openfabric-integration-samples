@@ -92,7 +92,7 @@ const purchaseContext = {
   original_amount: 130,
   voucher_code: "voucher_code",
 };
-
+const paymentMethods = process.env.REACT_APP_PAYMENT_METHODS || "";
 export const PGSample = () => {
   const classes = useStyles();
   FailedHook();
@@ -118,7 +118,7 @@ export const PGSample = () => {
         .setCustomerInfo(customerInfo)
         .setShippingAddress(shippingAddress)
         .setBillingAddress(billingAddress)
-        .setPaymentMethods(["of-test-1"])
+        .setPaymentMethods([paymentMethods])
         .setAccessToken(accessToken)
         .setButtonDivId("bnpl-button")
         .setItems([item])
