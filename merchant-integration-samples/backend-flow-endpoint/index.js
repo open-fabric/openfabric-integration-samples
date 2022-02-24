@@ -91,7 +91,7 @@ app.post("/fetch-card-details", async (req, res) => {
       fetchCardAuthOptions
     );
     const result = await asyncRequest(
-      `https://issuer.${process.env.ENV}.openfabric.co/i/fetchCard`,
+      `https://issuer.${env}.openfabric.co/i/fetchCard`,
       fetchCardOptions({ card_fetch_token, access_token })
     );
     return res.json(result);
