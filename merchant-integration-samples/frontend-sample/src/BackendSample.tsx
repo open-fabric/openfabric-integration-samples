@@ -38,7 +38,7 @@ const envString = process.env.REACT_APP_ENV || "dev";
 const currentEnv: Environment =
   Environment[envString as keyof typeof Environment] || Environment.dev;
 
-const customerInfo = {
+const customer_info = {
   mobile_number: faker.phone.phoneNumber("!##-!##-####"),
   first_name: faker.name.firstName(),
   email: faker.internet.email(),
@@ -58,30 +58,20 @@ const item = {
 
 const address_line_1 = faker.address.streetAddress();
 const post_code = faker.address.zipCode("###");
-const shippingAddress = {
+const shipping_address = {
   country_code: "sg",
   address_line_1,
   post_code,
   self_pickup: true,
 };
 
-const billingAddress = {
+const billing_address = {
   country_code: "sg",
   address_line_1,
   post_code,
 };
 
 const merchant_reference_id = `MT${Date.now()}`;
-const purchaseContext = {
-  currency: "PHP",
-  amount: 2300,
-  merchant_reference_id: merchant_reference_id,
-  tax_amount_percent: 10,
-  refundable_amount: 0,
-  shipping_amount: 10,
-  original_amount: 130,
-  voucher_code: "voucher_code",
-};
 
 export const BackendSample = () => {
   const classes = useStyles();
@@ -130,21 +120,32 @@ export const BackendSample = () => {
         return;
       }
 
-      OpenFabric()
+      const openFabric = OpenFabric()
         .setDebug(true)
         .setEnvironment(currentEnv)
         .setCardHandler(cardHandler)
-        .setCustomerInfo(customerInfo)
-        .setShippingAddress(shippingAddress)
-        .setBillingAddress(billingAddress)
         .setPaymentMethods([paymentMethods])
         .setAccessToken(accessToken)
-        .setButtonDivId("bnpl-button")
-        .setItems([item])
-        .setQueryString(queryString)
-        .setPurchaseContext(purchaseContext)
-        .setSubmitButtonId("submit-button")
-        .initialize();
+        .setQueryString(queryString);
+
+      openFabric.createOrder(
+        {
+          customer_info,
+          amount: 2300,
+          currency: "SGD",
+          merchant_reference_id,
+          transaction_details: {
+            shipping_address,
+            billing_address,
+            items: [item],
+            tax_amount_percent: 10,
+            shipping_amount: 10,
+            original_amount: 130
+          },
+        }
+      )
+      openFabric.renderButton("bnpl-button");
+      openFabric.initialize();
     },
     [accessToken, cardHandler]
   );
