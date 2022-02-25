@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const authHost = "/of-auth";
+const authHost = "/fill-flow/of-auth";
 const paymentMethods = process.env.REACT_APP_PAYMENT_METHODS || "";
 const envString = process.env.REACT_APP_ENV || "dev";
 

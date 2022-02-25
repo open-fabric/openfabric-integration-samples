@@ -25,6 +25,7 @@ const auth = Buffer.from(
 ).toString("base64");
 const basePath = process.env.OF_API_URL;
 const authEndPoint = process.env.OF_AUTH_URL;
+const env = process.env.ENV || 'sandbox'
 
 const asyncRequest = (url, options) =>
   new Promise((resolve, reject) =>
@@ -49,7 +50,11 @@ const authOptions = {
      */
     Authorization: `Basic ${auth}`,
   },
-  form: { grant_type: "client_credentials" },
+  form: { 
+    grant_type: "client_credentials",
+    scope:
+    `${env}-resources/transactions.read ${env}-resources/transactions.write`
+ },
 };
 
 const config = (token, method, body) => ({

@@ -106,7 +106,7 @@ export const BackendSample = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
+          "Authorization": `Bearer merchanttokensystem`,
         },
         body: JSON.stringify({card_fetch_token}), // body data type must match "Content-Type" header
       })

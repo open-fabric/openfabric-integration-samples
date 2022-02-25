@@ -7,6 +7,7 @@ services:
       - ACCOUNT_CLIENT_SECRET=${ACCOUNT_CLIENT_SECRET}
       - OF_API_URL=${OF_API_URL}
       - OF_AUTH_URL=${OF_AUTH_URL}
+      - ENV=${ENV}
     ports:
       - "3001:3001"
     container_name: account-integration-sample
@@ -52,6 +53,9 @@ services:
       context: ./merchant-integration-samples/backend-flow-endpoint
     environment:
       - ENV=${ENV}
+      - OF_AUTH_URL=${OF_AUTH_URL}
+      - MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID}
+      - MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET}
     ports:
       - "8080:8080"
     container_name: merchant-backend-flow-endpoint
