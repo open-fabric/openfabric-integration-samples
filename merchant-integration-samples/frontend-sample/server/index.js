@@ -11,9 +11,9 @@ const port = 3000;
 const auth = Buffer.from(
   `${process.env.MERCHANT_CLIENT_ID}:${process.env.MERCHANT_CLIENT_SECRET}`
 ).toString("base64");
-const env = process.env.REACT_APP_ENV || 'sandbox'
+const env = process.env.REACT_APP_ENV || "sandbox";
 const authEndpoint = process.env.OF_AUTH_URL;
-const authOptions = {
+const authOptions = ({scope}) => ({
   method: "POST",
   headers: {
     "Content-Type": "application/x-www-form-urlencoded",
@@ -25,13 +25,23 @@ const authOptions = {
   },
   form: {
     grant_type: "client_credentials",
-    scope:
-      `${env}-resources/transactions.read ${env}-resources/transactions.write`,
+    scope: scope,
   },
-};
+});
 
 app.get("/of-auth", (req, res) =>
-  request(authEndpoint, authOptions, (error, response, body) => {
+  request(authEndpoint, authOptions({scope:`${env}-resources/transactions.read ${env}-resources/transactions.write`}), (error, response, body) => {
+    if (!error) {
+      const bodyJS = JSON.parse(body);
+      res.json(bodyJS);
+    } else {
+      console.error(error);
+    }
+  })
+);
+
+app.get("/fill-flow/of-auth", (req, res) =>
+  request(authEndpoint, authOptions({scope:`${env}-resources/transactions.read ${env}-resources/transactions.write ${env}-resources/cards.read`}), (error, response, body) => {
     if (!error) {
       const bodyJS = JSON.parse(body);
       res.json(bodyJS);
