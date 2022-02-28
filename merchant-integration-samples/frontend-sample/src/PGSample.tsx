@@ -95,7 +95,6 @@ export const PGSample = () => {
       .then(({access_token}) => setAccessToken(access_token));
   }, []);
 
-
   const initOpenFabric = useCallback(
     (queryString: string) => {
       if (!accessToken) {
@@ -106,6 +105,7 @@ export const PGSample = () => {
         .setDebug(true)
         .setEnvironment(currentEnv)
         .setQueryString(queryString)
+        .setAccessToken(accessToken)
         .setPGConfig(pgConfig);
 
       openFabric.setPaymentMethods([paymentMethods]);
@@ -128,7 +128,7 @@ export const PGSample = () => {
       openFabric.renderButton("bnpl-button");
       openFabric.initialize();
     },
-    [accessToken, currentEnv]
+    [accessToken]
   );
 
   useEffect(() => {

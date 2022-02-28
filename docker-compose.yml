@@ -47,13 +47,14 @@ services:
     depends_on:
       - merchant-backend-flow-endpoint
 
-
   merchant-backend-flow-endpoint:
     build:
       context: ./merchant-integration-samples/backend-flow-endpoint
     environment:
       - ENV=${ENV}
       - OF_AUTH_URL=${OF_AUTH_URL}
+      - ACCOUNT_CLIENT_ID=${ACCOUNT_CLIENT_ID}
+      - ACCOUNT_CLIENT_SECRET=${ACCOUNT_CLIENT_SECRET}
       - MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID}
       - MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET}
     ports:

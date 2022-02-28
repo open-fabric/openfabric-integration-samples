@@ -111,7 +111,7 @@ export const BackendSample = () => {
           console.log("Failed to fetch card details from the backend:", error);
         });
     },
-    [accessToken]
+    []
   );
 
   const initOpenFabric = useCallback(
