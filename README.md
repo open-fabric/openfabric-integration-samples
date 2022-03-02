@@ -7,6 +7,7 @@ A sample to demonstrate end to end integration between ****Merchants**** & ****A
 * [Docker](https://www.docker.com/products/overview)
 * [Docker Compose](https://docs.docker.com/compose/overview/) - v2.2.3 or higher
 * [Node.js](https://nodejs.org/en/) v16.0.0 or higher
+* [jq](https://stedolan.github.io/jq/) 1.6 or higher
 
 ## Running the sample program
 
