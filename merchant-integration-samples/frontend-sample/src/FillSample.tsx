@@ -113,8 +113,7 @@ export const FillSample = () => {
           openFabric
             .setQueryString(queryString)
             .setAccessToken(access_token)
-            .setPrefill(true)
-            .initialize();
+            .setPrefill(true);
           openFabric.setPaymentMethods([paymentMethods])
           openFabric.createOrder(
             {
@@ -136,7 +135,7 @@ export const FillSample = () => {
           openFabric.initialize();
         }
       );
-  }, []);
+  }, [openFabric]);
 
   useEffect(() => {
     initOpenFabric(window.location.search);

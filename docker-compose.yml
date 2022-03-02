@@ -47,7 +47,6 @@ services:
     depends_on:
       - merchant-backend-flow-endpoint
 
-
   merchant-backend-flow-endpoint:
     build:
       context: ./merchant-integration-samples/backend-flow-endpoint

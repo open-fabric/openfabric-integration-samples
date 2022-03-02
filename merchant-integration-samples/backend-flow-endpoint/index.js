@@ -38,6 +38,7 @@ const fetchCardOptions = ({ card_fetch_token, access_token }) => ({
   body: { card_fetch_token: card_fetch_token },
   json: true,
 });
+
 const corsOptions = {
   origin: "*",
   methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"],
@@ -81,7 +82,7 @@ app.post("/fetch-card-details", async (req, res) => {
     if (!merchantToken) {
       return res.status(401).json({ error: "Authorization is not valid" });
     }
-    const card_fetch_token = request.body && request.body.card_fetch_token;
+    const card_fetch_token = req.body && req.body.card_fetch_token;
     if (!card_fetch_token) {
       return res.status(400).json({ error: "card_fetch_token is missing" });
     }
@@ -90,6 +91,7 @@ app.post("/fetch-card-details", async (req, res) => {
       authEndPoint,
       fetchCardAuthOptions
     );
+
     const result = await asyncRequest(
       `https://issuer.${env}.openfabric.co/i/fetchCard`,
       fetchCardOptions({ card_fetch_token, access_token })
