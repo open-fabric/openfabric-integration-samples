@@ -63,11 +63,19 @@ app.set("trust proxy", true);
 
 app.use(cors(corsOptions));
 
+const parseBody = body => {
+  try {
+    return JSON.parse(body);
+  } catch (e) {
+    return body;
+  }
+};
+
 const asyncRequest = (url, options) =>
   new Promise((resolve, reject) =>
     request(url, options, (error, res, body) => {
       if (!error && res.statusCode > 199 && res.statusCode < 300) {
-        resolve(body ? JSON.parse(body) : true);
+        resolve(body ? parseBody(body) : true);
       } else {
         reject(
           error ?? `HTTP error: ${res.statusCode} ${JSON.stringify(res.body)}`
@@ -82,6 +90,7 @@ app.post("/fetch-card-details", async (req, res) => {
     if (!merchantToken) {
       return res.status(401).json({ error: "Authorization is not valid" });
     }
+
     const card_fetch_token = req.body && req.body.card_fetch_token;
     if (!card_fetch_token) {
       return res.status(400).json({ error: "card_fetch_token is missing" });
