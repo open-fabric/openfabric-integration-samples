@@ -1,37 +1,79 @@
-# OpenFabric Merchant SDK
+# End-to-end account & merchant sample
 
-OpenFabric simplifies acceptance of closed-loop consumer side payment methods (Wallets, BNPLs, Loyalty Platforms, etc) that are integrated into OpenFabric's Platform.
+A sample to demonstrate end to end integration between ****Merchants**** & ****Accounts****
 
-While the consumer experiences with these payment methods remain the same (as if you are integrated directly with these payment methods), your integration to accept these payment methods should now be greatly simplified.
+## Prerequisites and setup
 
-# Integration
+* [Docker](https://www.docker.com/products/overview)
+* [Docker Compose](https://docs.docker.com/compose/overview/) - v2.2.3 or higher
+* [Node.js](https://nodejs.org/en/) v16.0.0 or higher
+* [jq](https://stedolan.github.io/jq/) 1.6 or higher
 
+## Running the sample program
+
+### Step 1: Update env file
+
+Create **.env** file in root of this folder, according to your input Account/Merchant credential - you can check the .sample.env file for more details
+
+```shell
+ACCOUNT_CLIENT_ID=<your account client id credential>
+ACCOUNT_CLIENT_SECRET=<your account client secret credential>
+MERCHANT_CLIENT_ID=<your merchant client id credential, must be the merchant of your account>
+MERCHANT_CLIENT_SECRET=<your merchant client secret credential, must be the merchant of your account >
+PAYMENT_METHODS=<your account slug>
 ```
-<script type="module" src="https://unpkg.com/@openfabric/merchant-sdk/dist/index.umd.min.js"></script>
+
+**Note:**
+
+* Merchant credential could be found in your Open Fabric Portal
+
+*Some additional config value if you want to try ***PGToken Flow****
+
+```shell
+PAYMENT_GATEWAY_PUBLISH_KEY=<Your merchant PG publish key>
+PAYMENT_GATEWAY_NAME=<your merchant PG name, e.g: Xendit>
 ```
 
-or 
+### Step 2: Run your sample
 
+```shell
+sh start.sh
 ```
-yarn add @openfabric/merchant-sdk
+
+or if you already setup your own account server
+
+```shell
+sh start.sh -s
 ```
 
-[Check out our detailed integration guide.](https://developer.openfabric.co/ZG9jOjIzNjI1Mzcz-merchant-integration-guide)
+* Without specifying any parameter, we gonna proxy a public sample account server for your experience
 
-# Local samples
+* By using `-s` you can skip this step and using your own configuration account server
 
-1. Copy `.sample.env` to `.env` and set the correct values
-2. Run `sh start.sh`
-3. Check the desired scenario:
-- [http://localhost:3000/](http://localhost:3000/) for the React sample application
-- [http://localhost:3000/vanilla](http://localhost:3000/vanilla) for the vanilla JS application
-- [http://localhost:3000/pg](http://localhost:3000/pg) for the Payment Gateway sample application
-- [http://localhost:3000/pg](http://localhost:3000/backend) for the Backend flow application
+Open <http://localhost:3000> on your browser and experience is ready to use.
 
+For more details, this is our scenario:
 
-# Live samples
+* [http://localhost:3000/](http://localhost:3000/) for the React sample application
+* [http://localhost:3000/vanilla](http://localhost:3000/vanilla) for the vanilla JS application
+* [http://localhost:3000/pg](http://localhost:3000/pg) for the Payment Gateway sample application (only valid if you input config value for this flow)
+* [http://localhost:3000/backend](http://localhost:3000/backend) for the Backend flow application
 
-[React sample](https://sample-merchant-flow.sandbox.openfabric.co/)
+## Structure
 
-[Vanilla JS sample](https://sample-merchant-server.sandbox.openfabric.co/Prod/vanilla)
-
+* [x] Merchant-integation-samples:
+  * [x] Front-end sample
+  * Demonstrate how to use our **MerchantSDK** 
+    * [React sample](merchant-integration-samples/frontend-sample/src/FillSample.tsx) 
+    * [Vanilla sample](merchant-integration-samples/frontend-sample/server/public/vanilla.html)
+    * [PG Sample](merchant-integration-samples/frontend-sample/src/PGSample.tsx)
+    * [FE Sample for **Backend flow**](merchant-integration-samples/frontend-sample/src/BackendSample.tsx)
+  * [x] backend-flow-endpoint
+    * [Server  sample for **Backend flow**](merchant-integration-samples/backend-flow-endpoint/index.js)
+* [x] Account-integration-sample
+  * [Demonstrate how Account server integrate with OF system](account-integration-sample/index.js)
+    * Authenticate with OF by using Account Client Credential
+    * Receive request create Transaction from OF system
+    * Approve Transaction: Notify OF system
+    * Cancel Transaction: Notify OF system
+    * Webhook to receive notification from OF system
