@@ -21,7 +21,7 @@
   "scripts": {
     "start:react-dev": "PORT=3000 react-scripts start",
     "build": "react-scripts build",
-    "start": "cd server && yarn start"
+    "start": "cd server && yarn && yarn start"
   },
   "eslintConfig": {
     "extends": [
