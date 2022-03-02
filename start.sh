@@ -68,6 +68,7 @@ printHelp() {
 function networkUp() {
     variablesUpdate
     networkDown
+    
     docker-compose up --force-recreate -d 2>&1
     if [ $? -ne 0 ]; then
         echo "ERROR !!!! Unable to start network"
