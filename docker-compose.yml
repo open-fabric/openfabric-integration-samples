@@ -12,8 +12,6 @@ services:
       - "3001:3001"
     container_name: account-integration-sample
     restart: always
-    links:
-      - ngrok-account-server
 
   ngrok:
     image: wernight/ngrok
