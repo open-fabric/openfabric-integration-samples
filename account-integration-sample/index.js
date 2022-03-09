@@ -1,10 +1,12 @@
 import { v4 as uuid } from "uuid";
 import path from "path";
 import express from "express";
-import request from "request";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
-
+import { getAccessToken } from "./utilities/getAccessToken";
+import { getTransactionById } from "./utilities/getTransactionById";
+import { approveTransaction } from "./utilities/approveTransaction";
+import { cancelTransaction } from "./utilities/cancelTransaction";
 const TRUSTED_API_KEY = "sample-api-key";
 const port = 3001;
 const app = express();
@@ -19,54 +21,6 @@ const __dirname = path.dirname(__filename);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-// Set CLIENT_ID, CLIENT_SECRET, GATEWAY_URL, AUTH_END_POINT in the .env file
-const auth = Buffer.from(
-  `${process.env.ACCOUNT_CLIENT_ID}:${process.env.ACCOUNT_CLIENT_SECRET}`
-).toString("base64");
-const basePath = process.env.OF_API_URL;
-const authEndPoint = process.env.OF_AUTH_URL;
-const env = process.env.ENV || 'sandbox'
-
-const asyncRequest = (url, options) =>
-  new Promise((resolve, reject) =>
-    request(url, options, (error, res, body) => {
-      if (!error && res.statusCode > 199 && res.statusCode < 300) {
-        resolve(body ? JSON.parse(body) : true);
-      } else {
-        reject(
-          error ?? `HTTP error: ${res.statusCode} ${JSON.stringify(res.body)}`
-        );
-      }
-    })
-  );
-
-const authOptions = {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded",
-    /*
-     * Authorization header is base64 encoded value
-     * of your clientId and clientSecret
-     */
-    Authorization: `Basic ${auth}`,
-  },
-  form: { 
-    grant_type: "client_credentials",
-    scope:
-    `${env}-resources/transactions.read ${env}-resources/transactions.write`
- },
-};
-
-const config = (token, method, body) => ({
-  method,
-  json: !!body,
-  body,
-  headers: {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "application/json",
-  },
-});
-
 // Render "Approve" and "Cancel" buttons
 app.get("/", async (req, res) => {
   const id = req.query.id;
@@ -75,11 +29,11 @@ app.get("/", async (req, res) => {
     return;
   }
   try {
-    const { access_token } = await asyncRequest(authEndPoint, authOptions);
-    const transInfo = await asyncRequest(
-      `${basePath}/t/transactions/${id}`,
-      config(access_token, "GET")
-    );
+    const { access_token } = await getAccessToken();
+    const transInfo = await getTransactionById({
+      access_token,
+      transaction_id: id,
+    });
     res.render("index", {
       account_reference_id: transInfo?.account_reference_id,
       id,
@@ -95,9 +49,8 @@ app.post("/transactions", async (req, res) => {
   const response = {
     account_reference_id: uuid(),
     // url for customer redirect to account system
-    payment_redirect_web_url: `http://localhost:${port}?id=${
-      body.fabric_reference_id || body.id
-    }`,
+    payment_redirect_web_url: `http://localhost:${port}?id=${body.fabric_reference_id ||
+      body.id}`,
   };
   return res.status(200).send(response);
 });
@@ -110,15 +63,15 @@ app.post("/transactions/approve", async (req, res) => {
     return;
   }
   try {
-    const { access_token } = await asyncRequest(authEndPoint, authOptions);
-    const transInfo = await asyncRequest(
-      `${basePath}/t/transactions/${id}`,
-      config(access_token, "GET")
-    );
-    const response = await asyncRequest(
-      `${basePath}/t/transactions`,
-      config(access_token, "PUT", req.body)
-    );
+    const { access_token } = await getAccessToken();
+    await approveTransaction({
+      access_token,
+      account_reference_id: req.body.account_reference_id,
+    });
+    const transInfo = await getTransactionById({
+      access_token,
+      transaction_id: id,
+    });
     res.redirect(transInfo.gateway_success_url);
   } catch (error) {
     console.error("Approve error: ", JSON.stringify(error));
@@ -133,15 +86,16 @@ app.post("/transactions/cancel", async (req, res) => {
     return;
   }
   try {
-    const { access_token } = await asyncRequest(authEndPoint, authOptions);
-    const transInfo = await asyncRequest(
-      `${basePath}/t/transactions/${id}`,
-      config(access_token, "GET")
-    );
-    await asyncRequest(
-      `${basePath}/t/transactions`,
-      config(access_token, "PUT", req.body)
-    );
+    const { access_token } = await getAccessToken();
+    await cancelTransaction({
+      access_token,
+      account_reference_id: req.body.account_reference_id,
+      reason: req.body.reason,
+    });
+    const transInfo = await getTransactionById({
+      access_token,
+      transaction_id: id,
+    });
     res.redirect(transInfo.gateway_fail_url);
   } catch (error) {
     console.error("Cancel error: ", error);
@@ -169,9 +123,7 @@ app.post("/transactions/callback", async (req, res) => {
     }
   } catch (error) {
     console.error("Callback error: ", error);
-    return res
-      .status(500)
-      .send({ status: "Failed", reason: error.message });
+    return res.status(500).send({ status: "Failed", reason: error.message });
   }
 });
 

@@ -5,7 +5,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_OPTIONS='--experimental-specifier-resolution=node' node index.js"
+    "start": "NODE_OPTIONS='--experimental-specifier-resolution=node' node index.js",
+    "start:nodemon": "NODE_OPTIONS='--experimental-specifier-resolution=node' nodemon index.js"
+
   },
   "author": "",
   "license": "ISC",
@@ -17,5 +19,8 @@
     "request": "^2.88.2",
     "url": "^0.11.0",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
