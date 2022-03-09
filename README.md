@@ -59,6 +59,10 @@ For more details, this is our scenario:
 * [http://localhost:3000/pg](http://localhost:3000/pg) for the Payment Gateway sample application (only valid if you input config value for this flow)
 * [http://localhost:3000/backend](http://localhost:3000/backend) for the Backend flow application
 
+
+* [http://localhost:3001/embedded-flow](http://localhost:3000/backend) for the Account Backend - EmbeddedFlow
+* [http://localhost:3001/pg-embedded-flow](http://localhost:3000/backend) for the Account Backend - PG EmbeddedFlow
+
 ## Structure
 
 * [x] Merchant-integation-samples:

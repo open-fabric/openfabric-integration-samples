@@ -1,5 +1,5 @@
-import {basePath} from './variables'
-import {asyncRequest} from './asyncRequest'
+import { basePath } from "./variables";
+import { asyncRequest } from "./asyncRequest";
 
 const config = (token, method, body) => ({
   method,
@@ -10,9 +10,9 @@ const config = (token, method, body) => ({
     "Content-Type": "application/json",
   },
 });
-export const getTransactionById = async ({access_token, transaction_id}) => {
- return await asyncRequest(
+export const getTransactionById = async ({ access_token, transaction_id }) => {
+  return await asyncRequest(
     `${basePath}/t/transactions/${transaction_id}`,
     config(access_token, "GET")
   );
-}
+};

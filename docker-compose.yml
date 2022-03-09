@@ -8,6 +8,8 @@ services:
       - OF_API_URL=${OF_API_URL}
       - OF_AUTH_URL=${OF_AUTH_URL}
       - ENV=${ENV}
+      - PAYMENT_GATEWAY_NAME={PAYMENT_GATEWAY_NAME}
+      - PAYMENT_GATEWAY_PUBLISH_KEY={PAYMENT_GATEWAY_PUBLISH_KEY}
     ports:
       - "3001:3001"
     container_name: account-integration-sample

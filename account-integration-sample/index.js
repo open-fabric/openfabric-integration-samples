@@ -7,6 +7,9 @@ import { getAccessToken } from "./utilities/getAccessToken";
 import { getTransactionById } from "./utilities/getTransactionById";
 import { approveTransaction } from "./utilities/approveTransaction";
 import { cancelTransaction } from "./utilities/cancelTransaction";
+import { createEmbeddedTransaction } from "./utilities/createTransactions_embedded";
+import { createPGEmbeddedTransaction } from "./utilities/createTransactions_pgEmbedded";
+
 const TRUSTED_API_KEY = "sample-api-key";
 const port = 3001;
 const app = express();
@@ -126,6 +129,41 @@ app.post("/transactions/callback", async (req, res) => {
     return res.status(500).send({ status: "Failed", reason: error.message });
   }
 });
+
+//========================== EMBEDDED FLOW ========================
+
+// Render UI Embedded flow
+app.get("/embedded-flow", async (req, res) => {
+  res.render("embedded");
+});
+
+// Embedded flow
+app.post("/embedded-flow", async (req, res) => {
+  try {
+    const { access_token } = await getAccessToken();
+    const response = await createEmbeddedTransaction({ access_token });
+    return res.status(200).send(response)
+
+  } catch (err) {
+    console.error("Create Transaction - Embedded Flow - error: ", err);
+  }
+});
+
+// Render UI PG Embedded flow
+app.get("/pg-embedded-flow", async (req, res) => {
+  res.render("pgEmbedded");
+});
+
+app.post("/pg-embedded-flow", async (req, res) => {
+  try {
+    const { access_token } = await getAccessToken();
+    const response = await createPGEmbeddedTransaction({ access_token });
+    return res.status(200).send(response)
+  } catch (err) {
+    console.error("Create Transaction - Embedded Flow - error: ", err);
+  }
+});
+//========================== END EMBEDDED FLOW ========================
 
 app.listen(port, () => {
   console.log(`Start Account Server, visit http://localhost:${port}`);

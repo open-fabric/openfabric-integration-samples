@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home Page</title>
+    <script>
+      function onClick() {
+        const btnId = "create-approve-trans";
+        const btn = document.getElementById(btnId);
+        btn.style.display = 'none'
+        const url = "/pg-embedded-flow";
+        const params = {
+          method: "POST",
+        };
+        const btnReset = document.getElementById('reset')
+       const loader = document.getElementById('loader')
+       loader.style.display = 'block'
+        fetch(url, params)
+          .then((response) => {
+            return response.text();
+          })
+          .then((text) => {
+
+            const resultElement = document.getElementById("result");
+            const preElement = document.createElement("pre");
+            preElement.style = "white-space: pre-wrap; word-break: keep-all;";
+            let result = syntaxHighlight(text);
+            result = result.replace(/{/g, "{<br/>");
+            result = result.replace(/}/g, "<br/>}");
+            result = result.replace(/,/g, ",<br/>");
+            preElement.innerHTML = result;
+            resultElement.appendChild(preElement);
+            loader.style.display = 'none'
+            btnReset.style.display = 'block'
+          });
+      }
+
+      function syntaxHighlight(json) {
+        json = json
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+        return json.replace(
+          /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+          function(match) {
+            var cls = "number";
+            if (/^"/.test(match)) {
+              if (/:$/.test(match)) {
+                cls = "key";
+              } else {
+                cls = "string";
+              }
+            } else if (/true|false/.test(match)) {
+              cls = "boolean";
+            } else if (/null/.test(match)) {
+              cls = "null";
+            }
+            const result =
+              (cls === "key" ? "   " : "") +
+              '<span class="' +
+              cls +
+              '">' +
+              match +
+              "</span>";
+
+            return result;
+          }
+        );
+      }
+    
+      function reset() {
+        location.reload();
+      }
+    </script>
+    <style media="screen">
+      .container {
+        font-family: sans-serif;
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .content {
+        flex: 1;
+        display: flex;
+        align-content: space-around;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+      }
+      pre {
+        outline: 1px solid #ccc;
+        padding: 5px;
+        margin: 5px;
+      }
+      .string {
+        color: green;
+      }
+      .number {
+        color: darkorange;
+      }
+      .boolean {
+        color: blue;
+      }
+      .null {
+        color: magenta;
+      }
+      .key {
+        color: red;
+      }
+      #create-approve-trans {
+        padding: 20px;
+        text-align: center;
+        border-radius: 16px;
+        margin: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        filter: drop-shadow(1px 1px 4px #888);
+        color: white;
+        font-size: 24px;
+        background-color: green;
+        border: none;
+      }
+      button:disabled,
+      button[disabled] {
+        background-color: #cccccc;
+        color: #666666;
+      }
+      #loader {
+        border: 9px solid #f3f3f3; /* Light grey */
+        border-top: 9px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 2s linear infinite;
+        display: none;
+      }
+      #reset {
+        display: none;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>OpenFabric - Account Integration Sample - PG EmbeddedFlow</h2>
+      <div class="content">
+        <button id="create-approve-trans" onclick="onClick()">
+          Create And Approved With PG data
+        </button>
+        <div id="loader"></div>
+        <div id="result"></div>
+        <button id="reset" onclick="reset()">Reset</button>
+      </div>
+    </div>
+  </body>
+</html>
