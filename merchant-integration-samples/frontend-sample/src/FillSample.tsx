@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 // @ts-ignore
-import {OpenFabric, FillConfig, Environment} from "@openfabric/merchant-sdk";
+import {OpenFabric, FillerObject, Environment} from "@openfabric/merchant-sdk";
 import * as faker from "faker";
 import {FailedHook} from "./HandleFailedHook";
 
@@ -86,35 +86,29 @@ export const FillSample = () => {
     setIsSubmitEnabled(true);
   };
 
-  const fillConfig = new FillConfig()
-    .cardNumber()
-    .id("cardnumber")
-    .afterFill(removeEmptyClass)
-    .cardExpiryMonthYear()
-    .id("exp-date")
-    .afterFill(removeEmptyClass)
-    .cardCVV()
-    .id("cvc")
-    .afterFill(removeEmptyClass);
-
-  const openFabric = OpenFabric(
-    fillConfig,
-    "http://localhost:3000", // optional callback url for a successful transaction
-    "http://localhost:3000/PaymentFailed" // optional callback url for a cancelled transaction
-  ).setDebug(true)
-    .setEnvironment(currentEnv)
-    .setItems([item])
-    .setPrefill(true);
-
   const initOpenFabric = useCallback((queryString: string) => {
+    const fillerObject = new FillerObject()
+      .cardNumber()
+      .id("cardnumber")
+      .afterFill(removeEmptyClass)
+      .cardExpiryMonthYear()
+      .id("exp-date")
+      .afterFill(removeEmptyClass)
+      .cardCVV()
+      .id("cvc")
+      .afterFill(removeEmptyClass)
+      .setQueryString(queryString);
+
     fetch(authHost)
       .then((response) => response.json())
       .then(({access_token}) => {
-          openFabric
-            .setQueryString(queryString)
-            .setAccessToken(access_token)
-            .setPrefill(true);
-          openFabric.setPaymentMethods([paymentMethods])
+          const openFabric = OpenFabric(access_token)
+          .setFillerObject(fillerObject)
+          .setDebug(true)
+          .setEnvironment(currentEnv)
+          .setPrefill(true)
+          .setPaymentMethods([paymentMethods]);
+
           openFabric.createOrder(
             {
               customer_info,
@@ -135,12 +129,11 @@ export const FillSample = () => {
           openFabric.initialize();
         }
       );
-  }, [openFabric]);
+  }, []);
 
   useEffect(() => {
     initOpenFabric(window.location.search);
   }, [initOpenFabric]);
-
 
   return (
     <div

@@ -1482,10 +1482,28 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@openfabric/merchant-sdk@^0.0.68":
-  version "0.0.68"
-  resolved "https://registry.yarnpkg.com/@openfabric/merchant-sdk/-/merchant-sdk-0.0.68.tgz#04c27b8529796241d18b1e927b0558c782916a2b"
-  integrity sha512-ly+uWlYbOfIFKQMMrrf4PPDRX8Rlg3c7mJHrVFHnh+EQQjuDSM33JPzE0zfCa1CwfKiRynU1SQBkLM8RakNOBQ==
+"@open-fabric/merchant-api-ts@0.0.30-9541389f321fce220d4da28e4081e56bb0d66d1b":
+  version "0.0.30-9541389f321fce220d4da28e4081e56bb0d66d1b"
+  resolved "https://npm.pkg.github.com/download/@open-fabric/merchant-api-ts/0.0.30-9541389f321fce220d4da28e4081e56bb0d66d1b/d37993ab9520ba51b62a231c1ee5404f09a1966d620aa737d2f3f417e15919a6#eda77284294680dbbe5800531a8c18703d281237"
+  integrity sha512-Hfhs4DSfRj6E5Be8hM1aG10evA2unHZi2TDDakrSLHBgJzxzGYvv+KXBPSzHtTpbUsHZwhneH/AkpkMgmjtQAA==
+  dependencies:
+    ajv "^8.6.3"
+    ajv-formats "^2.1.1"
+    ajv-merge-patch "^5.0.1"
+    url "^0.11.0"
+    uuid "^8.3.2"
+
+"@open-fabric/slice-merchant-sdk@0.0.68-a8db166", "@openfabric/merchant-sdk@npm:@open-fabric/slice-merchant-sdk@0.0.68-a8db166":
+  version "0.0.68-a8db166"
+  resolved "https://npm.pkg.github.com/download/@open-fabric/slice-merchant-sdk/0.0.68-a8db166/b1e702f1d1d13798208d228dd67ce3c474d4e7cec341d4d97c934607a9a31532#eeaf5ce569cb63e99995873d2d15b94e03d80c94"
+  integrity sha512-xaYSV2AnXMXH7XK0DdZTjjLQiXrvc28rvAO5AymrnYAe5w8Q6kSLOgNUF44SzAJDLrV4I0edtXLTl/ImytPADA==
+  dependencies:
+    "@open-fabric/merchant-api-ts" "0.0.30-9541389f321fce220d4da28e4081e56bb0d66d1b"
+    ajv "^8.6.3"
+    ajv-formats "^2.1.1"
+    ajv-merge-patch "^5.0.1"
+    url "^0.11.0"
+    uuid "^8.3.2"
 
 "@pmmmwh/react-refresh-webpack-plugin@0.4.2":
   version "0.4.2"
@@ -2260,10 +2278,25 @@ ajv-errors@^1.0.0:
   resolved "https://registry.yarnpkg.com/ajv-errors/-/ajv-errors-1.0.1.tgz#f35986aceb91afadec4102fbd85014950cefa64d"
   integrity sha512-DCRfO/4nQ+89p/RK43i8Ezd41EqdGIU4ld7nGF8OQ14oc/we5rEntLCUa7+jrn3nn83BosfwZA0wb4pon2o8iQ==
 
+ajv-formats@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/ajv-formats/-/ajv-formats-2.1.1.tgz#6e669400659eb74973bbf2e33327180a0996b520"
+  integrity sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==
+  dependencies:
+    ajv "^8.0.0"
+
 ajv-keywords@^3.1.0, ajv-keywords@^3.4.1, ajv-keywords@^3.5.2:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.5.2.tgz#31f29da5ab6e00d1c2d329acf7b5929614d5014d"
   integrity sha512-5p6WTN0DdTGVQk6VjcEju19IgaHudalcfabD7yhDGeA6bcQnmL+CpveLJq/3hvfwd1aof6L386Ougkx6RfyMIQ==
+
+ajv-merge-patch@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/ajv-merge-patch/-/ajv-merge-patch-5.0.1.tgz#0aba921a2ea8632813478aa3d039d8134b58f876"
+  integrity sha512-0UP3aJCzfzBOkmLR+EinJDCfg6DNtprj3bVPo7JJNgUpZMKt097t9xxQOWFGRoB4JvKKIHE2qe0HkVaS/HyrjQ==
+  dependencies:
+    fast-json-patch "^2.0.6"
+    json-merge-patch "^1.0.2"
 
 ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.4, ajv@^6.12.5:
   version "6.12.6"
@@ -2275,7 +2308,7 @@ ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.4, ajv@^6.12.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^8.0.1:
+ajv@^8.0.0, ajv@^8.0.1, ajv@^8.6.3:
   version "8.10.0"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.10.0.tgz#e573f719bd3af069017e3b66538ab968d040e54d"
   integrity sha512-bzqAEZOjkrUMl2afH8dknrq5KEk2SrwdBROR+vH1EKVQTqaUbJVPdc/gEdggTMM0Se+s+Ja4ju4TlNcStKl2Hw==
@@ -4902,6 +4935,11 @@ faker@^5.5.3:
   resolved "https://registry.yarnpkg.com/faker/-/faker-5.5.3.tgz#c57974ee484431b25205c2c8dc09fda861e51e0e"
   integrity sha512-wLTv2a28wjUyWkbnX7u/ABZBkUkIF2fCd73V6P2oFqEGEktDfzWx4UxrSqtPRw0xPRAcjeAOIiJWqZm3pP4u3g==
 
+fast-deep-equal@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
+  integrity sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk=
+
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
@@ -4917,6 +4955,13 @@ fast-glob@^3.1.1, fast-glob@^3.2.9:
     glob-parent "^5.1.2"
     merge2 "^1.3.0"
     micromatch "^4.0.4"
+
+fast-json-patch@^2.0.6:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/fast-json-patch/-/fast-json-patch-2.2.1.tgz#18150d36c9ab65c7209e7d4eb113f4f8eaabe6d9"
+  integrity sha512-4j5uBaTnsYAV5ebkidvxiLUYOwjQ+JSFljeqfTxCrH9bDmlCQaOJFS84oDJ2rAXZq2yskmk3ORfoP9DCwqFNig==
+  dependencies:
+    fast-deep-equal "^2.0.1"
 
 fast-json-stable-stringify@^2.0.0, fast-json-stable-stringify@^2.1.0:
   version "2.1.0"
@@ -6781,6 +6826,13 @@ jsesc@~0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
   integrity sha1-597mbjXW/Bb3EP6R1c9p9w8IkR0=
+
+json-merge-patch@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/json-merge-patch/-/json-merge-patch-1.0.2.tgz#c4626811943b2f362f8607ae8f03d528875465b0"
+  integrity sha512-M6Vp2GN9L7cfuMXiWOmHj9bEFbeC250iVtcKQbqVgEsDVYnIsrNsbU+h/Y/PkbBQCtEa4Bez+Ebv0zfbC8ObLg==
+  dependencies:
+    fast-deep-equal "^3.1.3"
 
 json-parse-better-errors@^1.0.1, json-parse-better-errors@^1.0.2:
   version "1.0.2"
@@ -11008,7 +11060,7 @@ uuid@^3.3.2, uuid@^3.4.0:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
-uuid@^8.3.0:
+uuid@^8.3.0, uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==

@@ -1,12 +1,18 @@
 import Button from "@material-ui/core/Button";
 
-export const RestartBtn = () => {
+type Props = {
+  path: string;
+  title: string;
+}
+export const RestartBtn = ({path, title}: Props) => {
   const onClick = () => {
-    window.location.href = window.location.origin;
+    window.location.href = window.location.origin + "/" + path;
   };
   return (
-    <Button variant="outlined" color="primary" onClick={onClick} style={{marginTop: 50}}>
-      Restart Flow
-    </Button>
+    <div style={{width: 300, margin: 12}}>
+      <Button fullWidth={true} variant="outlined" color="primary" onClick={onClick}>
+        {title}
+      </Button>
+    </div>
   );
 };
