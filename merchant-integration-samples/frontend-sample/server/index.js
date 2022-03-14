@@ -102,7 +102,7 @@ app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "..", "build", "index.html"))
 );
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || port, () => {
   clearTransactions();
-  console.log(`Check Merchant Integration Sample: http://localhost:${port}`);
+  console.log(`Check Merchant Integration Sample: http://localhost:${process.env.PORT || port}`);
 });
