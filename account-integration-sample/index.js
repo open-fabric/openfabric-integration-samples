@@ -74,7 +74,6 @@ app.post("/transactions/approve", async (req, res) => {
       account_reference_id: req.body.account_reference_id,
     });
     const transInfo = await getTransactionById({
-      access_token,
       transaction_id: id,
     });
     res.redirect(transInfo.gateway_success_url);
@@ -96,7 +95,6 @@ app.post("/transactions/cancel", async (req, res) => {
       reason: req.body.reason,
     });
     const transInfo = await getTransactionById({
-      access_token,
       transaction_id: id,
     });
     res.redirect(transInfo.gateway_fail_url);

@@ -4,7 +4,7 @@ import request from "request";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
-import { addNewTransaction, clearTransactions } from './db/index'
+import { addNewTransaction, clearTransactions } from "./db/index";
 import { createAccountTransaction } from "./utilities/createAccountTransactions";
 
 dotenv.config();
@@ -81,10 +81,14 @@ app.get("/embedded/checkout", (req, res) =>
 );
 
 app.post("/embedded/checkout", async (req, res) => {
-  const merchantTrans = { ...req.body, status: "Created" };
-  addNewTransaction(merchantTrans);
-  const response = await createAccountTransaction(merchantTrans);
-  res.status(200).json(response);
+  try {
+    const merchantTrans = { ...req.body, status: "Created" };
+    addNewTransaction(merchantTrans);
+    const response = await createAccountTransaction(merchantTrans);
+    res.status(200).json(response);
+  } catch (err) {
+    return res.status(500).json({ error: err });
+  }
 });
 
 app.get("/pg-embedded", (req, res) =>
