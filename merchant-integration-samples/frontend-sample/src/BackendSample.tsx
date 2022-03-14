@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from "react";
+import React, { useEffect} from "react";
 import {Theme, createStyles, makeStyles} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -90,71 +90,34 @@ export const BackendSample = () => {
       })
   }, []);
 
-  const cardHandler = React.useCallback(
-    (card_fetch_token: string) => {
-      fetch(`http://localhost:8080/fetch-card-details`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer merchanttokensystem`,
-        },
-        body: JSON.stringify({card_fetch_token}), // body data type must match "Content-Type" header
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          const message =
-            "Card details from backend: " + JSON.stringify(result);
-          console.log(message);
-          alert(message);
-        })
-        .catch((error) => {
-          console.log("Failed to fetch card details from the backend:", error);
-        });
-    },
-    []
-  );
-
-  const initOpenFabric = useCallback(
-    (queryString: string) => {
-      if (!accessToken) {
-        return;
-      }
-
-      const openFabric = OpenFabric()
-        .setDebug(true)
-        .setEnvironment(currentEnv)
-        .setCardHandler(cardHandler)
-        .setPaymentMethods([paymentMethods])
-        .setAccessToken(accessToken)
-        .setQueryString(queryString);
-
-      openFabric.createOrder(
-        {
-          customer_info,
-          amount: 2300,
-          currency: "SGD",
-          merchant_reference_id,
-          transaction_details: {
-            shipping_address,
-            billing_address,
-            items: [item],
-            tax_amount_percent: 10,
-            shipping_amount: 10,
-            original_amount: 130
-          },
-        }
-      )
-      openFabric.renderButton("bnpl-button");
-      openFabric.initialize();
-    },
-    [accessToken, cardHandler]
-  );
-
   useEffect(() => {
-    if (accessToken) {
-      initOpenFabric(window.location.search);
+    if (!accessToken) {
+      return;
     }
-  }, [initOpenFabric, accessToken]);
+    const openFabric = OpenFabric(accessToken, `${window.location}/PaymentSuccess`, `${window.location}/PaymentFailed`)
+      .setDebug(true)
+      .setEnvironment(currentEnv)
+      .setPaymentMethods([paymentMethods]);
+
+    openFabric.createOrder(
+      {
+        customer_info,
+        amount: 2300,
+        currency: "SGD",
+        merchant_reference_id,
+        transaction_details: {
+          shipping_address,
+          billing_address,
+          items: [item],
+          tax_amount_percent: 10,
+          shipping_amount: 10,
+          original_amount: 130
+        },
+      }
+    )
+    openFabric.renderButton("bnpl-button");
+    openFabric.initialize();
+  }, [accessToken]);
 
   return (
     <div
