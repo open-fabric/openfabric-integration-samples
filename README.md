@@ -53,15 +53,13 @@ sh start.sh -s
 Open <http://localhost:3000> on your browser and experience is ready to use.
 
 For more details, this is our scenario:
-
-* [http://localhost:3000/](http://localhost:3000/) for the React sample application
-* [http://localhost:3000/vanilla](http://localhost:3000/vanilla) for the vanilla JS application
-* [http://localhost:3000/pg](http://localhost:3000/pg) for the Payment Gateway sample application (only valid if you input config value for this flow)
-* [http://localhost:3000/backend](http://localhost:3000/backend) for the Backend flow application
-
-
-* [http://localhost:3001/embedded-flow](http://localhost:3000/backend) for the Account Backend - EmbeddedFlow
-* [http://localhost:3001/pg-embedded-flow](http://localhost:3000/backend) for the Account Backend - PG EmbeddedFlow
+* _Orchestrated flow_
+  * [http://localhost:3000/](http://localhost:3000/) for the React sample application
+  * [http://localhost:3000/vanilla](http://localhost:3000/vanilla) for the vanilla JS application
+  * [http://localhost:3000/pg](http://localhost:3000/pg) for the Payment Gateway sample application (only valid if you input config value for this flow)
+  * [http://localhost:3000/backend](http://localhost:3000/backend) for the Backend flow application
+* Embedded Flow
+  * [http://localhost:3000/embedded/checkout](http://localhost:3000/embedded/checkout) for the EmbeddedFlow
 
 ## Structure
 
