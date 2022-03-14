@@ -155,13 +155,13 @@
           <h2>Account - Approve payment</h2>
           <% } %>
         <div style="align-self:flex-start">
-          <span class="json-display">Account Referent Id: </span>
+          <span class="json-display">Account Reference Id: </span>
           <span class="json-display" style="font-weight: bold;"
             ><%= account_reference_id %>
           </span>
         </div>
         <div style="align-self:flex-start">
-          <span class="json-display">Merchant Referent Id: </span>
+          <span class="json-display">Merchant Reference Id: </span>
           <span class="json-display" style="font-weight: bold;"
             ><%= merchant_reference_id %>
           </span>
@@ -323,7 +323,7 @@
       headers.append("Accept", "application/json");
       const params = {
         method: "POST",
-        headers: myHeaders,
+        headers: headers,
         body: JSON.stringify({
           account_reference_id: queryString.get("account_reference_id"),
         }),
@@ -348,12 +348,12 @@
       const queryString = new URLSearchParams(window.location.search);
       const account_reference_id = queryString.get("account_reference_id")
       const url = "/fetchCard";
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("Accept", "application/json");
+      var headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      headers.append("Accept", "application/json");
       const params = {
         method: "GET",
-        headers: myHeaders,
+        headers: headers,
        
       };
       fetch(`${url}?account_reference_id=${account_reference_id}`, params)
