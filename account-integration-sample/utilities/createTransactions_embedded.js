@@ -1,4 +1,4 @@
-import { basePath } from "./variables";
+import { of_api_url } from "./variables";
 import { asyncRequest } from "./asyncRequest";
 import { getAccessToken } from "./getAccessToken";
 const config = (token, method, body) => ({
@@ -18,7 +18,7 @@ export const createEmbeddedTransaction = async ({
   });
 
   return asyncRequest(
-    `${basePath}/t/transactions`,
+    `${of_api_url}/t/transactions`,
     config(access_token, "POST", transaction)
   );
 };

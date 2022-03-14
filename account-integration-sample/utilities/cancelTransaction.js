@@ -1,4 +1,4 @@
-import { basePath } from "./variables";
+import { of_api_url } from "./variables";
 import { asyncRequest } from "./asyncRequest";
 import { getAccessToken } from "./getAccessToken";
 
@@ -16,7 +16,7 @@ export const cancelTransaction = async ({ account_reference_id, reason }) => {
     scopes: `resources/transactions.read resources/transactions.write`,
   });
   return await asyncRequest(
-    `${basePath}/t/transactions`,
+    `${of_api_url}/t/transactions`,
     config(access_token, "PUT", {
       account_reference_id,
       status: "Failed",

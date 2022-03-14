@@ -1,4 +1,4 @@
-import { of_issuer_url, env } from "./variables";
+import { of_issuer_url } from "./variables";
 import { asyncRequest } from "./asyncRequest";
 import { getAccessToken } from "./getAccessToken";
 

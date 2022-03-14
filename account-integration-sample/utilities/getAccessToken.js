@@ -2,7 +2,6 @@ import { asyncRequest } from "./asyncRequest";
 import {
   account_client_id,
   account_client_secret,
-  env,
   of_auth_url,
 } from "./variables";
 const auth = Buffer.from(

@@ -1,4 +1,4 @@
-import { basePath } from "./variables";
+import { of_api_url } from "./variables";
 import { asyncRequest } from "./asyncRequest";
 import { pg_key, pg_name } from "./variables";
 import {getAccessToken} from './getAccessToken'
@@ -14,7 +14,7 @@ const config = (token, method, body) => ({
 export const createPGEmbeddedTransaction = async () => {
   const { access_token } = await getAccessToken();
   return await asyncRequest(
-    `${basePath}/t/transactions`,
+    `${of_api_url}/t/transactions`,
     config(access_token, "POST", {
       account_reference_id: `ACC-REF-${Date.now()}`,
       amount: 120.1,

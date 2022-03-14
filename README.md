@@ -74,8 +74,8 @@ For more details, this is our scenario:
     * [Server  sample for **Backend flow**](merchant-integration-samples/backend-flow-endpoint/index.js)
 * [x] Account-integration-sample
   * [Demonstrate how Account server integrate with OF system](account-integration-sample/index.js)
-    * Authenticate with OF by using Account Client Credential
+    * [Authenticate with OF by using Account Client Credential](account-integration-sample/utilities/getAccessToken.js)
     * Receive request create Transaction from OF system
-    * Approve Transaction: Notify OF system
-    * Cancel Transaction: Notify OF system
+    * [Approve Transaction: Notify OF system](account-integration-sample/utilities/approveTransaction.js)
+    * [Cancel Transaction: Notify OF system](account-integration-sample/utilities/cancelTransaction.js)
     * Webhook to receive notification from OF system
