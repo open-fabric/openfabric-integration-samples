@@ -2,6 +2,8 @@
 
 OF_API_URL=https://api.sandbox.openfabric.co
 OF_AUTH_URL=https://auth.sandbox.openfabric.co/oauth2/token
+OF_ISSUER_URL=https://issuer.sandbox.openfabric.co
+
 ENV=sandbox
 SKIP_PROXY=0
 function networkDown() {
@@ -16,10 +18,12 @@ function variablesUpdate() {
     if [ "$CURRENT_ENV" == "dev" ]; then 
         OF_API_URL=https://api.dev.openfabric.co
         OF_AUTH_URL=https://auth.dev.openfabric.co/oauth2/token
+        OF_ISSUER_URL=https://issuer.dev.openfabric.co
         ENV=$CURRENT_ENV
     fi
     export OF_API_URL=$OF_API_URL
     export OF_AUTH_URL=$OF_AUTH_URL
+    export OF_ISSUER_URL=$OF_ISSUER_URL
     export ENV=$ENV
 }
 

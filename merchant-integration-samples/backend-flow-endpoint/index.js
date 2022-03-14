@@ -9,6 +9,7 @@ const merchantClientId = process.env.MERCHANT_CLIENT_ID;
 const merchantClientSecret = process.env.MERCHANT_CLIENT_SECRET;
 const authEndPoint = process.env.OF_AUTH_URL;
 const env = process.env.ENV || "sandbox";
+const ofIssuerURL = process.env.OF_ISSUER_URL
 const auth = Buffer.from(
   `${merchantClientId}:${merchantClientSecret}`
 ).toString("base64");
@@ -25,7 +26,7 @@ const fetchCardAuthOptions = {
   },
   form: {
     grant_type: "client_credentials",
-    scope: `${env}-resources/cards.read`,
+    scope: `resources/cards.read`,
   },
 };
 
@@ -102,7 +103,7 @@ app.post("/fetch-card-details", async (req, res) => {
     );
 
     const result = await asyncRequest(
-      `https://issuer.${env}.openfabric.co/i/fetchCard`,
+      `${ofIssuerURL}/i/fetchCard`,
       fetchCardOptions({ card_fetch_token, access_token })
     );
     return res.json(result);

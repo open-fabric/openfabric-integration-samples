@@ -1,5 +1,6 @@
-import {basePath} from './variables'
-import {asyncRequest} from './asyncRequest'
+import { of_api_url } from "./variables";
+import { asyncRequest } from "./asyncRequest";
+import { getAccessToken } from "./getAccessToken";
 
 const config = (token, method, body) => ({
   method,
@@ -10,9 +11,12 @@ const config = (token, method, body) => ({
     "Content-Type": "application/json",
   },
 });
-export const getTransactionById = async ({access_token, transaction_id}) => {
- return await asyncRequest(
-    `${basePath}/t/transactions/${transaction_id}`,
+export const getTransactionById = async ({ transaction_id }) => {
+  const { access_token } = await getAccessToken({
+    scopes: `resources/transactions.read resources/transactions.write`,
+  });
+  return await asyncRequest(
+    `${of_api_url}/t/transactions/${transaction_id}`,
     config(access_token, "GET")
   );
-}
+};

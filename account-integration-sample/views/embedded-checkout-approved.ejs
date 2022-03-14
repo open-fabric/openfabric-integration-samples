@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home Page</title>
+    <style media="screen">
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        background-color: #eef0f7;
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      .container {
+        background-color: #fff;
+        position: relative;
+        display: flex;
+        grid-template-columns: 1fr 1fr;
+        place-items: center;
+        line-height: 1.5;
+        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.185);
+      }
+      .container-close {
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        background-color: #fff;
+        width: 45px;
+        height: 45px;
+        display: grid;
+        place-items: center;
+        font-size: 1.7rem;
+        color: #2e4052;
+        border-radius: 50%;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.164);
+        cursor: pointer;
+      }
+      .container img {
+        width: 350px;
+        height: 400px;
+        object-fit: cover;
+        object-position: center;
+        padding: 0px 10px;
+      }
+      .container-text {
+        padding: 10px 40px 10px 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 70vw;
+        overflow: scroll;
+        margin-right: 10px;
+      }
+      .container-text h2 {
+        font-size: 1.2rem;
+        color: #1a2250;
+      }
+      .container-text p {
+        font-size: 14px;
+        color: #3b4169;
+        margin: 10px 0;
+      }
+      .container-text input,
+      .container-text button {
+        width: 100%;
+        border: none;
+        padding: 14px;
+        border-radius: 3px;
+      }
+      .container-text input {
+        border: 2px solid #daddec;
+        margin: 5px 0 10px;
+        font-size: 1rem;
+        color: #656880;
+      }
+      .container-text button {
+        background-image: linear-gradient(to right, #89caff, #6589ff);
+        display: block;
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+        box-shadow: 0 5px 20px #89caff94;
+        transition: box-shadow 0.3s ease-in-out;
+      }
+      .container-text button:hover {
+        box-shadow: none;
+      }
+      .container-text span {
+        display: block;
+        text-align: center;
+        margin: 20px 0 0;
+        color: #babdcb;
+        font-size: 12px;
+      }
+      #loader {
+        border: 9px solid #f3f3f3; /* Light grey */
+        border-top: 9px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 2s linear infinite;
+        display: none;
+      }
+
+      #payment-success {
+        display: none;
+        flex: 1;
+        border: 1px #89caff solid;
+        padding: 10px;
+        margin-top: 50px;
+        width: 100%;
+        flex-direction: column;
+        border-radius: 5px;
+        box-shadow: 0 5px 20px #89caff94;
+      }
+
+      #of-detail {
+        display: flex;
+        flex-direction: column;
+        max-width: 40vw;
+        overflow: scroll;
+      }
+
+      .json-display {
+        text-align: left;
+        display: inline-block !important;
+        color: #1a2250 !important;
+        margin: 0px !important;
+      }
+      hr.dashed {
+        border-top: 1px dashed #bbb;
+        width: 100%;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img
+        src="https://images.contentstack.io/v3/assets/bltf86d70f093add08d/blt5cd9d3da2a88d41d/5f3b6af75bf6816117eeaef9/Integrated_Payments.png?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
+        alt="image"
+      />
+      <div class="container-text">
+        <% if ( typeof ofTransaction != "undefined" ) { %>
+        <h2>Account - Transaction Info</h2>
+        <% } %>
+        <% if ( typeof ofTransaction == "undefined" ) { %>
+          <h2>Account - Approve payment</h2>
+          <% } %>
+        <div style="align-self:flex-start">
+          <span class="json-display">Account Reference Id: </span>
+          <span class="json-display" style="font-weight: bold;"
+            ><%= account_reference_id %>
+          </span>
+        </div>
+        <div style="align-self:flex-start">
+          <span class="json-display">Merchant Reference Id: </span>
+          <span class="json-display" style="font-weight: bold;"
+            ><%= merchant_reference_id %>
+          </span>
+        </div>
+        <div style="align-self:flex-start">
+          <span class="json-display">Amount: </span>
+          <span class="json-display" style="font-weight: bold;"
+            ><%= amount %>
+          </span>
+        </div>
+        <div style="align-self:flex-start">
+          <span class="json-display">Currency: </span>
+          <span class="json-display" style="font-weight: bold;"
+            ><%= currency %>
+          </span>
+        </div>
+        <% if ( typeof pg_token_provider_config != "undefined" ) { %>
+          <div style="align-self:flex-start">
+            <span class="json-display">PG Name: </span>
+            <span class="json-display" style="font-weight: bold;"
+              ><%= pg_token_provider_config.name %>
+            </span>
+          </div>
+          <div style="align-self:flex-start">
+            <span class="json-display">PG Key: </span>
+            <span class="json-display" style="font-weight: bold;"
+              ><%= pg_token_provider_config.publishable_key %>
+            </span>
+          </div>
+          <% } %>
+
+        <div style="align-self:flex-start">
+          <span class="json-display">Status: </span>
+          <span class="json-display" style="font-weight: bold;"
+            ><%= status %>
+          </span>
+        </div>
+
+        <% if ( typeof ofTransaction != "undefined" ) { %>
+        <hr class="dashed" />
+        <div style="align-self:flex-start">
+          <span class="json-display">Of Transaction Id: </span>
+          <span class="json-display" style="font-weight: bold;"
+            ><%= ofTransaction.id %>
+          </span>
+        </div>
+        <div style="align-self:flex-start">
+          <span class="json-display">Account Id: </span>
+          <span class="json-display" style="font-weight: bold;"
+            ><%= ofTransaction.account_id %>
+          </span>
+        </div>
+
+        <div style="align-self:flex-start">
+          <span class="json-display">OF Status: </span>
+          <span class="json-display" style="font-weight: bold;"
+            ><%= ofTransaction.status %>
+          </span>
+        </div>
+
+        <% if (ofTransaction.card_fetch_token != undefined ) { %>
+
+        <div style="align-self:flex-start">
+          <span class="json-display">Card Fetch Token: </span>
+          <span class="json-display" style="font-weight: bold;"
+            ><%= ofTransaction.card_fetch_token %>
+          </span>
+        </div>
+        <% } %>
+        <% if (ofTransaction.pg_card_token != undefined ) { %>
+
+          <div style="align-self:flex-start">
+            <span class="json-display">PG Card Token: </span>
+            <span class="json-display" style="font-weight: bold;"
+              ><%= ofTransaction.pg_card_token %>
+            </span>
+          </div>
+          <% } %>
+
+         <% } %> 
+
+
+        <% if ( typeof cardInfo != "undefined" ) { %>
+          <hr class="dashed" />
+          <div style="align-self:flex-start">
+            <span class="json-display">Card Provider: </span>
+            <span class="json-display" style="font-weight: bold;"
+              ><%= cardInfo.provider %>
+            </span>
+          </div>
+          <div style="align-self:flex-start">
+            <span class="json-display">Card Number: </span>
+            <span class="json-display" style="font-weight: bold;"
+              ><%= cardInfo.redacted_number %>
+            </span>
+          </div>
+          <div style="align-self:flex-start">
+            <span class="json-display">CVV: </span>
+            <span class="json-display" style="font-weight: bold;"
+              ><%= cardInfo.cvv %>
+            </span>
+          </div>
+          <div style="align-self:flex-start">
+            <span class="json-display">Expired Year: </span>
+            <span class="json-display" style="font-weight: bold;"
+              ><%= cardInfo.expiry_year %>
+            </span>
+          </div>
+
+          <div style="align-self:flex-start">
+            <span class="json-display">Expired Month: </span>
+            <span class="json-display" style="font-weight: bold;"
+              ><%= cardInfo.expiry_month %>
+            </span>
+          </div>
+          
+        <% } %>  
+
+
+        <% if (typeof ofTransaction != "undefined"  &&  ofTransaction.card_fetch_token != undefined && typeof cardInfo == "undefined") { %>
+          <button style="margin-top:20px" id="fetch-card-info" onclick="fetchCard()">
+            Fetch Card
+          </button>
+          <div id="loader"></div>
+  
+          <span id="description"
+            >Retrieve Card Info from Open Fabric with Account Credential</span
+          >
+          <% } %>
+        
+        <% if (status == 'Created') { %>
+        <button style="margin-top:20px" id="approve-trans" onclick="approve()">
+          Approve
+        </button>
+        <div id="loader"></div>
+
+        <span id="description"
+          >By clicking this one - Account server will submit transaction to
+          OpenFabric</span
+        >
+        <% } %>
+      </div>
+    </div>
+  </body>
+  <script>
+    function approve() {
+      const btnId = "approve-trans";
+      const btn = document.getElementById(btnId);
+      btn.style.display = "none";
+      const loader = document.getElementById("loader");
+      loader.style.display = "block";
+      const description = document.getElementById("description");
+      description.style.display = "none";
+
+      const queryString = new URLSearchParams(window.location.search);
+      const url = "/embedded-flow";
+      var headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      headers.append("Accept", "application/json");
+      const params = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+          account_reference_id: queryString.get("account_reference_id"),
+        }),
+      };
+      fetch(url, params)
+        .then((response) => {
+          return response.json();
+        })
+        .then((json) => {
+          location.reload();
+        });
+    }
+
+    function fetchCard() {
+      const btnId = "fetch-card-info";
+      const btn = document.getElementById(btnId);
+      btn.style.display = "none";
+      const loader = document.getElementById("loader");
+      loader.style.display = "block";
+
+
+      const queryString = new URLSearchParams(window.location.search);
+      const account_reference_id = queryString.get("account_reference_id")
+      const url = "/fetchCard";
+      var headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      headers.append("Accept", "application/json");
+      const params = {
+        method: "GET",
+        headers: headers,
+       
+      };
+      fetch(`${url}?account_reference_id=${account_reference_id}`, params)
+        .then((response) => {
+          return response.json();
+        })
+        .then((json) => {
+          location.reload();
+        });
+
+    }
+  </script>
+</html>

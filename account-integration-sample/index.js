@@ -3,10 +3,18 @@ import path from "path";
 import express from "express";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
-import { getAccessToken } from "./utilities/getAccessToken";
 import { getTransactionById } from "./utilities/getTransactionById";
 import { approveTransaction } from "./utilities/approveTransaction";
 import { cancelTransaction } from "./utilities/cancelTransaction";
+import { createEmbeddedTransaction } from "./utilities/createTransactions_embedded";
+import { fetchCardInfo } from "./utilities/fetchCardInfo";
+import {
+  addNewTransaction,
+  readTransaction,
+  updateTransaction,
+  clearTransactions
+} from "./db/index";
+
 const TRUSTED_API_KEY = "sample-api-key";
 const port = 3001;
 const app = express();
@@ -21,6 +29,8 @@ const __dirname = path.dirname(__filename);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+//========================== ORCHESTRATED FLOW ========================
+
 // Render "Approve" and "Cancel" buttons
 app.get("/", async (req, res) => {
   const id = req.query.id;
@@ -29,9 +39,7 @@ app.get("/", async (req, res) => {
     return;
   }
   try {
-    const { access_token } = await getAccessToken();
     const transInfo = await getTransactionById({
-      access_token,
       transaction_id: id,
     });
     res.render("index", {
@@ -63,13 +71,10 @@ app.post("/transactions/approve", async (req, res) => {
     return;
   }
   try {
-    const { access_token } = await getAccessToken();
     await approveTransaction({
-      access_token,
       account_reference_id: req.body.account_reference_id,
     });
     const transInfo = await getTransactionById({
-      access_token,
       transaction_id: id,
     });
     res.redirect(transInfo.gateway_success_url);
@@ -86,14 +91,11 @@ app.post("/transactions/cancel", async (req, res) => {
     return;
   }
   try {
-    const { access_token } = await getAccessToken();
     await cancelTransaction({
-      access_token,
       account_reference_id: req.body.account_reference_id,
       reason: req.body.reason,
     });
     const transInfo = await getTransactionById({
-      access_token,
       transaction_id: id,
     });
     res.redirect(transInfo.gateway_fail_url);
@@ -126,7 +128,96 @@ app.post("/transactions/callback", async (req, res) => {
     return res.status(500).send({ status: "Failed", reason: error.message });
   }
 });
+//========================== END OF ORCHESTRATED FLOW ========================
+
+//========================== EMBEDDED FLOW ========================
+
+// Embedded flow
+app.post("/embedded-flow", async (req, res) => {
+  try {
+    const account_reference_id = req.body.account_reference_id;
+    const transInfo = readTransaction(account_reference_id);
+    const response = await createEmbeddedTransaction({
+      transaction: transInfo,
+    });
+    const updatedTrans = {
+      ...transInfo,
+      status: response.status,
+      ofTransaction: response,
+    };
+    updateTransaction(updatedTrans);
+    return res.status(200).json(updatedTrans);
+  } catch (err) {
+    console.error("Create Transaction - Embedded Flow - error: ", err);
+  }
+});
+
+// Render UI PG Embedded flow
+app.get("/embedded/checkout-approved", async (req, res) => {
+  const account_reference_id = req.query.account_reference_id;
+  if (!account_reference_id) {
+    console.error("Missing `account_reference_id` in query");
+    return;
+  }
+  const transInfo = readTransaction(account_reference_id);
+  if (!transInfo) {
+    console.error("No transaction matching " + account_reference_id);
+    return;
+  }
+  res.render("embedded-checkout-approved", {
+    ...transInfo,
+  });
+});
+
+app.post("/merchant/create-transaction", async (req, res) => {
+  try {
+    const accountTransaction = {
+      ...req.body,
+      account_reference_id: `ACC-REF-${Date.now()}`,
+    };
+    addNewTransaction(accountTransaction);
+    return res.status(200).send({
+      ...accountTransaction,
+      redirect_url: `http://localhost:${port}/embedded/checkout-approved?account_reference_id=${accountTransaction.account_reference_id}`,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      error: err,
+    });
+  }
+});
+
+app.get("/fetchCard", async (req, res) => {
+  try {
+    const account_reference_id = req.query.account_reference_id;
+    if (!account_reference_id) {
+      console.error("Missing `account_reference_id` in query");
+      return;
+    }
+    const transInfo = readTransaction(account_reference_id);
+    if (!transInfo) {
+      console.error("No transaction matching " + account_reference_id);
+      return;
+    }
+    if (transInfo.ofTransaction && transInfo.ofTransaction.card_fetch_token) {
+      const response = await fetchCardInfo({
+        account_reference_id,
+        card_fetch_token: transInfo.ofTransaction.card_fetch_token,
+      });
+      updateTransaction({...transInfo, cardInfo: response})
+      return res.status(200).json(response);
+    }
+    throw new Error("There is no info related to OpenFabric card_fetch_token");
+  } catch (err) {
+    console.log("=== err", err);
+    return res.status(500).json({
+      error: err,
+    });
+  }
+});
+//========================== END OF EMBEDDED FLOW ========================
 
 app.listen(port, () => {
+  clearTransactions();
   console.log(`Start Account Server, visit http://localhost:${port}`);
 });

@@ -1,6 +1,8 @@
 {
   "name": "react-sample",
   "version": "0.0.1",
+  "type": "module",
+  "main": "index.js",
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@openfabric/merchant-sdk": "^0.0.68",

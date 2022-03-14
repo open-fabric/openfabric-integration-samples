@@ -8,6 +8,9 @@ services:
       - OF_API_URL=${OF_API_URL}
       - OF_AUTH_URL=${OF_AUTH_URL}
       - ENV=${ENV}
+      - PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}
+      - PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY}
+      - OF_ISSUER_URL=${OF_ISSUER_URL}
     ports:
       - "3001:3001"
     container_name: account-integration-sample
@@ -52,6 +55,7 @@ services:
       - OF_AUTH_URL=${OF_AUTH_URL}
       - MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID}
       - MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET}
+      - OF_ISSUER_URL=${OF_ISSUER_URL}
     ports:
       - "8080:8080"
     container_name: merchant-backend-flow-endpoint
