@@ -1,5 +1,6 @@
 import { basePath } from "./variables";
 import { asyncRequest } from "./asyncRequest";
+import { getAccessToken } from "./getAccessToken";
 
 const config = (token, method, body) => ({
   method,
@@ -10,13 +11,16 @@ const config = (token, method, body) => ({
     "Content-Type": "application/json",
   },
 });
-export const cancelTransaction = async ({ access_token, account_reference_id, reason }) => {
+export const cancelTransaction = async ({ account_reference_id, reason }) => {
+  const { access_token } = await getAccessToken({
+    scopes: `resources/transactions.read resources/transactions.write`,
+  });
   return await asyncRequest(
     `${basePath}/t/transactions`,
     config(access_token, "PUT", {
       account_reference_id,
-      status: 'Failed',
-      reason
+      status: "Failed",
+      reason,
     })
   );
 };

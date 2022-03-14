@@ -25,7 +25,7 @@ const fetchCardAuthOptions = {
   },
   form: {
     grant_type: "client_credentials",
-    scope: `${env}-resources/cards.read`,
+    scope: `resources/cards.read`,
   },
 };
 

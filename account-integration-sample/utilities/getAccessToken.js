@@ -8,7 +8,8 @@ import {
 const auth = Buffer.from(
   `${account_client_id}:${account_client_secret}`
 ).toString("base64");
-const authOptions = {
+
+const authOptions = ({scope}) =>  ({
   method: "POST",
   headers: {
     "Content-Type": "application/x-www-form-urlencoded",
@@ -20,9 +21,12 @@ const authOptions = {
   },
   form: {
     grant_type: "client_credentials",
-    scope: `${env}-resources/transactions.read ${env}-resources/transactions.write`,
+    scope: scope,
   },
-};
-export const getAccessToken = async () => {
-  return asyncRequest(of_auth_url, authOptions);
+});
+export const getAccessToken = async ({scopes}) => {
+  const tokenScope = !scopes ? `resources/transactions.read resources/transactions.write` : scopes
+  return asyncRequest(of_auth_url, authOptions({
+    scope: tokenScope
+  }));
 };

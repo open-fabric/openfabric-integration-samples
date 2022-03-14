@@ -1,6 +1,6 @@
 import { basePath } from "./variables";
 import { asyncRequest } from "./asyncRequest";
-
+import { getAccessToken } from "./getAccessToken";
 const config = (token, method, body) => ({
   method,
   json: true,
@@ -10,13 +10,15 @@ const config = (token, method, body) => ({
     "Content-Type": "application/json",
   },
 });
-export const createEmbeddedTransaction = async ({ access_token }) => {
+export const createEmbeddedTransaction = async ({
+  transaction,
+}) => {
+  const { access_token } = await getAccessToken({
+    scopes: `resources/transactions.read resources/transactions.write`,
+  });
+
   return asyncRequest(
     `${basePath}/t/transactions`,
-    config(access_token, "POST", {
-      account_reference_id: `ACC-REF-${Date.now()}`,
-      amount: 120.1,
-      currency: "SGD",
-    })
+    config(access_token, "POST", transaction)
   );
 };

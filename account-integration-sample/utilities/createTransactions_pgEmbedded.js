@@ -1,6 +1,7 @@
 import { basePath } from "./variables";
 import { asyncRequest } from "./asyncRequest";
 import { pg_key, pg_name } from "./variables";
+import {getAccessToken} from './getAccessToken'
 const config = (token, method, body) => ({
   method,
   json: !!body,
@@ -10,7 +11,8 @@ const config = (token, method, body) => ({
     "Content-Type": "application/json",
   },
 });
-export const createPGEmbeddedTransaction = async ({ access_token }) => {
+export const createPGEmbeddedTransaction = async () => {
+  const { access_token } = await getAccessToken();
   return await asyncRequest(
     `${basePath}/t/transactions`,
     config(access_token, "POST", {
