@@ -1,0 +1,27 @@
+setup:
+  config:
+    ENV: dev
+    ACCOUNT_CLIENT_ID: 6cjlneo78ekj36l9hce1lkhb68
+    ACCOUNT_CLIENT_SECRET: hvsd42o94vg0tq5n5cvqrpdko2j4ll5ma7dgtlr7cdhgvlojlmk
+    MERCHANT_CLIENT_ID: ipk0t3mvk80ttvh4ucdbvcr33
+    MERCHANT_CLIENT_SECRET: 1f9uvh9ljkavak702ffnlsnc0hr4f0h4n0d2bebdugbaoeot1fpd
+    PAYMENT_METHODS: dynamic-sample-at
+    PAYMENT_GATEWAY_PUBLISH_KEY: xnd_public_development_AZVI4iAxXD6fCgKzxhy1Rvr5obpIvKcJXNnXldhfjhJbWB7RDhwzakaf2dF3tQM
+    PAYMENT_GATEWAY_NAME: xendit
+build:
+  docker:
+    web: dockerfile
+    worker: worker/Dockerfile
+  config:
+    ENV: dev
+    ACCOUNT_CLIENT_ID: 6cjlneo78ekj36l9hce1lkhb68
+    ACCOUNT_CLIENT_SECRET: hvsd42o94vg0tq5n5cvqrpdko2j4ll5ma7dgtlr7cdhgvlojlmk
+    MERCHANT_CLIENT_ID: ipk0t3mvk80ttvh4ucdbvcr33
+    MERCHANT_CLIENT_SECRET: 1f9uvh9ljkavak702ffnlsnc0hr4f0h4n0d2bebdugbaoeot1fpd
+    PAYMENT_METHODS: dynamic-sample-at
+    PAYMENT_GATEWAY_PUBLISH_KEY: xnd_public_development_AZVI4iAxXD6fCgKzxhy1Rvr5obpIvKcJXNnXldhfjhJbWB7RDhwzakaf2dF3tQM
+    PAYMENT_GATEWAY_NAME: xendit
+release:
+  command:
+    - echo 123
+  image: worker
