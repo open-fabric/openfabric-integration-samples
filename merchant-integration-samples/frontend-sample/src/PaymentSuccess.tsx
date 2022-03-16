@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from "react";
 import {RestartBtn} from "./RestartBtn";
-import {Environment, OpenFabric} from "@open-fabric/slice-merchant-sdk";
+import {Environment, OpenFabric} from "@openfabric/merchant-sdk";
 import {CircularProgress} from "@material-ui/core";
 import {CardDetails} from "./CardDetails";
 
