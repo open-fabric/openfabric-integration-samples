@@ -30,6 +30,7 @@ function variablesUpdate() {
 function proxyAccountServer() {
     URL=$(curl -s $(docker port ngrok-account-server 4040)/api/tunnels/command_line | jq -r '.public_url')
     URL+="/transactions"
+    echo "NGROK URL: "${URL}
     
     accountClientId=$(grep 'ACCOUNT_CLIENT_ID' .env |  tr '\n' '\0')
     ACCOUNT_CLIENT_ID=${accountClientId#*=}
