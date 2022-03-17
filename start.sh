@@ -25,6 +25,7 @@ function variablesUpdate() {
     export OF_AUTH_URL=$OF_AUTH_URL
     export OF_ISSUER_URL=$OF_ISSUER_URL
     export ENV=$ENV
+    export ACCOUNT_SERVER_URL=http://host.docker.internal:3001
 }
 
 function proxyAccountServer() {

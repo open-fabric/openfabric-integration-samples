@@ -11,6 +11,7 @@ services:
       - PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}
       - PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY}
       - OF_ISSUER_URL=${OF_ISSUER_URL}
+      - ACCOUNT_SERVER_URL={ACCOUNT_SERVER_URL}
     ports:
       - "3001:3001"
     container_name: account-integration-sample
