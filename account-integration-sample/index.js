@@ -12,8 +12,9 @@ import {
   addNewTransaction,
   readTransaction,
   updateTransaction,
-  clearTransactions
+  clearTransactions,
 } from "./db/index";
+import { account_server_url } from "./utilities/variables";
 
 const TRUSTED_API_KEY = "sample-api-key";
 const port = 3001;
@@ -57,7 +58,7 @@ app.post("/transactions", async (req, res) => {
   const response = {
     account_reference_id: uuid(),
     // url for customer redirect to account system
-    payment_redirect_web_url: `http://localhost:${port}?id=${body.fabric_reference_id ||
+    payment_redirect_web_url: `${account_server_url}?id=${body.fabric_reference_id ||
       body.id}`,
   };
   return res.status(200).send(response);
@@ -178,7 +179,7 @@ app.post("/merchant/create-transaction", async (req, res) => {
     addNewTransaction(accountTransaction);
     return res.status(200).send({
       ...accountTransaction,
-      redirect_url: `http://localhost:${port}/embedded/checkout-approved?account_reference_id=${accountTransaction.account_reference_id}`,
+      redirect_url: `${account_server_url}/embedded/checkout-approved?account_reference_id=${accountTransaction.account_reference_id}`,
     });
   } catch (err) {
     return res.status(500).json({
@@ -204,7 +205,7 @@ app.get("/fetchCard", async (req, res) => {
         account_reference_id,
         card_fetch_token: transInfo.ofTransaction.card_fetch_token,
       });
-      updateTransaction({...transInfo, cardInfo: response})
+      updateTransaction({ ...transInfo, cardInfo: response });
       return res.status(200).json(response);
     }
     throw new Error("There is no info related to OpenFabric card_fetch_token");
@@ -217,7 +218,9 @@ app.get("/fetchCard", async (req, res) => {
 });
 //========================== END OF EMBEDDED FLOW ========================
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   clearTransactions();
-  console.log(`Start Account Server, visit http://localhost:${port}`);
+  console.log(
+    `Start Account Server, visit http://localhost:${process.env.PORT || port}`
+  );
 });

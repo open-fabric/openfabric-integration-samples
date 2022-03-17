@@ -5,3 +5,4 @@ export const account_client_secret = process.env.ACCOUNT_CLIENT_SECRET || 'hvsd4
 export const pg_name = process.env.PAYMENT_GATEWAY_NAME || 'xendit'
 export const pg_key = process.env.PAYMENT_GATEWAY_PUBLISH_KEY || 'xnd_public_development_AZVI4iAxXD6fCgKzxhy1Rvr5obpIvKcJXNnXldhfjhJbWB7RDhwzakaf2dF3tQM'
 export const of_issuer_url = process.env.OF_ISSUER_URL || 'https://issuer.sandbox.openfabric.co'
+export const account_server_url= process.env.ACCOUNT_SERVER_URL
