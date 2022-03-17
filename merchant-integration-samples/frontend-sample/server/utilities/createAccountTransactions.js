@@ -11,7 +11,7 @@ const config = (token, method, body) => ({
 });
 export const createAccountTransaction = async (trans) => {
   return asyncRequest(
-    `http://host.docker.internal:3001/merchant/create-transaction`,
+    `${process.env.ACCOUNT_SERVER_URL || 'http://host.docker.internal:3001'}/merchant/create-transaction`,
     config("tokenbetweenmerchantandaccount", "POST", trans)
   );
 };

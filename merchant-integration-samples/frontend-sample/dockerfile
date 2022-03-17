@@ -36,4 +36,4 @@ RUN sed -i -e "s/{ENV}/$ENV/g" ./server/public/vanilla.html
 EXPOSE 3000
 
 # Command to run our app
-CMD [ "yarn", "start"]
+ENTRYPOINT [ "yarn", "start"]

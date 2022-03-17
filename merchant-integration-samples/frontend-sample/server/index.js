@@ -20,7 +20,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const auth = Buffer.from(
   `${process.env.MERCHANT_CLIENT_ID}:${process.env.MERCHANT_CLIENT_SECRET}`
 ).toString("base64");
-const env = process.env.REACT_APP_ENV || "sandbox";
 const authEndpoint = process.env.OF_AUTH_URL;
 const authOptions = ({ scope }) => ({
   method: "POST",
@@ -50,6 +49,7 @@ app.get("/of-auth", (req, res) =>
         res.json(bodyJS);
       } else {
         console.error(error);
+        res.status(500).json(error);
       }
     }
   )
@@ -104,5 +104,8 @@ app.get("*", (req, res) =>
 
 app.listen(process.env.PORT || port, () => {
   clearTransactions();
-  console.log(`Check Merchant Integration Sample: http://localhost:${process.env.PORT || port}`);
+  console.log(
+    `Check Merchant Integration Sample: http://localhost:${process.env.PORT ||
+      port}`
+  );
 });
