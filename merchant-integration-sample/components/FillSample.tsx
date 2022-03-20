@@ -186,6 +186,7 @@ export const FillSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ margin: "10px",  textAlign: "left" }}
                   required
                   id="example2-zip"
                   label="ZIP"
