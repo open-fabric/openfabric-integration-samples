@@ -27,8 +27,7 @@ const useStyles = makeStyles({
   form: {
     textAlign: "left",
     "& .MuiTextField-root": {
-      width: "25ch",
-      margin: "10px",
+      width: "25ch"
     },
   },
 });
@@ -155,6 +154,7 @@ export const FillSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ margin: "10px",  textAlign: "left" }}
                   required
                   id="example2-address"
                   label="Address"
@@ -164,6 +164,7 @@ export const FillSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ margin: "10px",  textAlign: "left" }}
                   required
                   id="example2-city"
                   label="City"
@@ -175,6 +176,7 @@ export const FillSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ margin: "10px",  textAlign: "left" }}
                   required
                   id="example2-state"
                   label="State"
@@ -196,6 +198,7 @@ export const FillSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ margin: "10px",  textAlign: "left" }}
                   required
                   id="cardnumber"
                   name="cardnumber"
@@ -207,6 +210,7 @@ export const FillSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ margin: "10px",  textAlign: "left" }}
                   required
                   id="exp-date"
                   name="exp-date"
@@ -216,6 +220,7 @@ export const FillSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ margin: "10px",  textAlign: "left" }}
                   required
                   id="cvc"
                   name="cvc"
