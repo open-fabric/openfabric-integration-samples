@@ -7,32 +7,27 @@ jobs:
   deploy-merchant-sample:
     working_directory: 
       ~/openfabric-integration-samples/merchant-integration-sample
-    docker:
-      - image: 'cimg/node:16.8.0'
+    executor: heroku/default
     steps:
       - checkout:
           path: 
             ~/openfabric-integration-samples
-      - run: node --version
+      - heroku/install
+      - run: yarn install
+      - run:
+          name: Prepare envs
+          command: |
+                echo ${MERCHANT_SAMPLE_ENV} | base64 --decode > .env
+      - run: yarn build
       - heroku/deploy-via-git:
-          api-key: $HEROKU_API_KEY
+          api-key: HEROKU_API_KEY
           app-name: sandbox-merchant-sample
           branch: chore/heroku-deploy
-          post-steps:
-            - run: yarn install
-            - run:
-              name: Prepare envs
-              command: |
-                echo $MERCHANT_SAMPLE_ENV | base64 --decode > .env
-            - run: yarn build
+            
 
 workflows:
   sandbox-deploy-merchant:
     jobs:
       - deploy-merchant-sample:
-        context:
-          - sandbox-heroku-sample
-        filters:
-            branches:
-              only:
-                - chore/heroku-deploy
+          context:
+            - sandbox-heroku-sample
