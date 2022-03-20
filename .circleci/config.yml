@@ -5,31 +5,22 @@ orbs:
   slack: circleci/slack@4.4.4
 jobs:
   deploy-merchant-sample:
-    working_directory: 
-      ~/openfabric-integration-samples/merchant-integration-sample
     executor: heroku/default
     steps:
-      - checkout:
-          path: 
-            ~/openfabric-integration-samples
+      - checkout
       - run: ls
       - heroku/install
       - run:
           name: Prepare envs
           command: |
+                cd merchant-integration-sample
                 echo ${MERCHANT_SAMPLE_ENV} | base64 --decode > .env
       - run: 
           name: Push to heroku
           command: |
                 ls
-                cd sandbox-merchant-sample
-                ls
                 heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/sandbox-merchant-sample.git"
-                git push --force $heroku_url chore/heroku-deploy:main
-      # - heroku/deploy-via-git:
-      #     api-key: HEROKU_API_KEY
-      #     app-name: sandbox-merchant-sample
-      #     branch: chore/heroku-deploy
+                git subtree push --prefix merchant-integration-sample $heroku_url chore/heroku-deploy:main
             
 
 workflows:
