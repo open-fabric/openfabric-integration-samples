@@ -12,6 +12,7 @@ jobs:
       - checkout:
           path: 
             ~/openfabric-integration-samples
+      - run: ls
       - heroku/install
       - run:
           name: Prepare envs
