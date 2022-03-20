@@ -13,12 +13,10 @@ jobs:
           path: 
             ~/openfabric-integration-samples
       - heroku/install
-      - run: yarn install
       - run:
           name: Prepare envs
           command: |
                 echo ${MERCHANT_SAMPLE_ENV} | base64 --decode > .env
-      - run: yarn build
       - heroku/deploy-via-git:
           api-key: HEROKU_API_KEY
           app-name: sandbox-merchant-sample
