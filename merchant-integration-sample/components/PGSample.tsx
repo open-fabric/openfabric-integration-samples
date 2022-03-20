@@ -9,8 +9,10 @@ import Button from "@mui/material/Button";
 import {
   OpenFabric,
   Environment,
-  PGConfig,
+
+  // PGConfig,
 } from "@open-fabric/slice-merchant-sdk";
+import { PGConfig } from "@open-fabric/slice-merchant-sdk/dist/config";
 import { faker } from "@faker-js/faker";
 import { FailedHook } from "./HandleFailedHook";
 import { payment_methods, env } from "../lib/variables";
@@ -39,9 +41,8 @@ const tokenHandler = (token: string) => {
 };
 
 const pgConfig = {
-  publishable_key: process.env.REACT_APP_PAYMENT_GATEWAY_PUBLISH_KEY,
+  publishable_key: "xendit",
   name: process.env.REACT_APP_PAYMENT_GATEWAY_NAME,
-  tokenHandler,
 } as PGConfig;
 
 const authHost = "/api/fill-flow/of-auth";
