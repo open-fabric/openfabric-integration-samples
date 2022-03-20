@@ -77,10 +77,9 @@
 <script type="module" src="https://unpkg.com/@openfabric/merchant-sdk/dist/index.umd.min.js"></script>
 
 <script type="module">
-    const authHost = "http://localhost:3000/of-auth";
-    const paymentMethod = "PAYMENT_METHOD";
-    const currentEnv = process.env.NEXT_PUBLIC_ENV;
-    console.log('=== currentEnv', currentEnv)
+    const authHost = `${window.location.origin}/api/fill-flow/of-auth`;
+    const paymentMethod = "{PAYMENT_METHODS}";
+    const currentEnv = "{ENV}"
     const { FillConfig, OpenFabric, Environment } = OpenFabricMerchantSDK;
     const faker = window.faker;
     const initOpenFabric = (queryString) => {

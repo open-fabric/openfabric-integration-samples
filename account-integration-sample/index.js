@@ -4,7 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import routes from "./routes";
 import { errorHandler } from "./utils/errorHandler";
-const port = 3011;
+const port = 3001;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

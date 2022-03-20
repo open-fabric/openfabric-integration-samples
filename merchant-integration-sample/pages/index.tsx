@@ -1,4 +1,3 @@
-// import '../styles/globals.css'
 import { FillSample } from "../components/FillSample";
 
 function MyApp() {
