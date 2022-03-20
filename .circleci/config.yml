@@ -21,6 +21,9 @@ jobs:
       - run: 
           name: Push to heroku
           command: |
+                ls
+                cd sandbox-merchant-sample
+                ls
                 heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/sandbox-merchant-sample.git"
                 git push --force $heroku_url chore/heroku-deploy:main
       # - heroku/deploy-via-git:
