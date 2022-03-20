@@ -31,7 +31,7 @@ function submitMerchantTransaction(e, form) {
 
   const amount = 250;
   const currency = "USD";
-  const url = "/embedded/checkout";
+  const url = "/api/embedded/checkout";
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Accept", "application/json");

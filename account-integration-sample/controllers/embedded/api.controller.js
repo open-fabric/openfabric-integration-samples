@@ -1,7 +1,7 @@
 import { catchAsync } from "../../utils/catchAsync";
 import * as dbService from "../../services/db";
 import * as transactionService from "../../services/of-transactions";
-
+import { account_server_url } from "../../lib/variables";
 export const CreateTransaction = catchAsync(async (req, res) => {
   const accountTransaction = {
     ...req.body,
@@ -16,23 +16,25 @@ export const CreateTransaction = catchAsync(async (req, res) => {
 
 export const ApproveAndSubmitToOF = catchAsync(async (req, res) => {
   const account_reference_id = req.body.account_reference_id;
-    const transInfo = readTransaction(account_reference_id);
-    const response = await transactionService.createEmbeddedTransaction({
-      transaction: transInfo,
-    });
-    const updatedTrans = {
-      ...transInfo,
-      status: response.status,
-      ofTransaction: response,
-    };
-    dbService.updateTransaction(updatedTrans);
-    return res.status(200).json(updatedTrans);
+  const transInfo = dbService.readTransaction(account_reference_id);
+  const response = await transactionService.createEmbeddedTransaction({
+    transaction: transInfo,
+  });
+  console.log('=== response', response)
+
+  const updatedTrans = {
+    ...transInfo,
+    status: response.status,
+    ofTransaction: response,
+  };
+  dbService.updateTransaction(updatedTrans);
+  return res.status(200).json(updatedTrans);
 });
 
 export const FetchCard = catchAsync(async (req, res) => {
   const account_reference_id = req.query.account_reference_id;
   if (!account_reference_id) {
-   throw Error("Missing `account_reference_id` in query");
+    throw Error("Missing `account_reference_id` in query");
     return;
   }
   const transInfo = dbService.readTransaction(account_reference_id);

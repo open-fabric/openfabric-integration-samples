@@ -9,3 +9,4 @@ export const env = process.env.NEXT_PUBLIC_ENV || 'dev';
 export const payment_methods = process.env.NEXT_PUBLIC_PAYMENT_METHODS || ''
 export const payment_gateway_publish_key =
   process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLISH_KEY || '';
+export const account_api_url = process.env.ACCOUNT_API_URL || 'http://localhost:3011'

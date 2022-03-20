@@ -1,6 +1,6 @@
 {
     "transactions": {
-        "ACC-REF-1647767155549": {
+        "MER-1647766769998": {
             "merchant_reference_id": "MER-1647766769998",
             "amount": 250,
             "currency": "USD",
@@ -11,50 +11,13 @@
                     "price": 120,
                     "unit": "night",
                     "quantity": 2,
-                    "from": "Tues, Oct 2,2022",
-                    "to": "Friday, Oct 5,2022"
+                    "from": "Tues, Oct 2, 2022",
+                    "to": "Friday, Oct 5, 2022"
                 }
             ],
-            "status": "Created",
-            "account_reference_id": "ACC-REF-1647767155549"
+            "status": "Created"
         },
-        "ACC-REF-1647767190690": {
-            "merchant_reference_id": "MER-1647766769998",
-            "amount": 250,
-            "currency": "USD",
-            "tax": 10,
-            "items": [
-                {
-                    "id": "HOUSE-DANNY-1",
-                    "price": 120,
-                    "unit": "night",
-                    "quantity": 2,
-                    "from": "Tues, Oct 2,2022",
-                    "to": "Friday, Oct 5,2022"
-                }
-            ],
-            "status": "Created",
-            "account_reference_id": "ACC-REF-1647767190690"
-        },
-        "ACC-REF-1647767246256": {
-            "merchant_reference_id": "MER-1647766769998",
-            "amount": 250,
-            "currency": "USD",
-            "tax": 10,
-            "items": [
-                {
-                    "id": "HOUSE-DANNY-1",
-                    "price": 120,
-                    "unit": "night",
-                    "quantity": 2,
-                    "from": "Tues, Oct 2,2022",
-                    "to": "Friday, Oct 5,2022"
-                }
-            ],
-            "status": "Created",
-            "account_reference_id": "ACC-REF-1647767246256"
-        },
-        "ACC-REF-1647767351064": {
+        "MER-1647767348353": {
             "merchant_reference_id": "MER-1647767348353",
             "amount": 250,
             "currency": "USD",
@@ -69,10 +32,9 @@
                     "to": "Friday, Oct 5, 2022"
                 }
             ],
-            "status": "Created",
-            "account_reference_id": "ACC-REF-1647767351064"
+            "status": "Created"
         },
-        "ACC-REF-1647767803031": {
+        "MER-1647767798750": {
             "merchant_reference_id": "MER-1647767798750",
             "amount": 250,
             "currency": "USD",
@@ -87,10 +49,9 @@
                     "to": "Friday, Oct 5, 2022"
                 }
             ],
-            "status": "Created",
-            "account_reference_id": "ACC-REF-1647767803031"
+            "status": "Created"
         },
-        "ACC-REF-1647768232346": {
+        "MER-1647768227084": {
             "merchant_reference_id": "MER-1647768227084",
             "amount": 250,
             "currency": "USD",
@@ -105,10 +66,9 @@
                     "to": "Friday, Oct 5, 2022"
                 }
             ],
-            "status": "Created",
-            "account_reference_id": "ACC-REF-1647768232346"
+            "status": "Created"
         },
-        "ACC-REF-1647768350540": {
+        "MER-1647768347153": {
             "merchant_reference_id": "MER-1647768347153",
             "amount": 250,
             "currency": "USD",
@@ -123,8 +83,7 @@
                     "to": "Friday, Oct 5, 2022"
                 }
             ],
-            "status": "Created",
-            "account_reference_id": "ACC-REF-1647768350540"
+            "status": "Created"
         }
     }
 }

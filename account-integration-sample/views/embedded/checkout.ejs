@@ -317,7 +317,7 @@
       description.style.display = "none";
 
       const queryString = new URLSearchParams(window.location.search);
-      const url = "/embedded-flow";
+      const url = `${window.location.origin}/api/embedded/approve-checkout`;
       var headers = new Headers();
       headers.append("Content-Type", "application/json");
       headers.append("Accept", "application/json");

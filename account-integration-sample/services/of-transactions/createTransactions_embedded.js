@@ -12,6 +12,9 @@ export const createEmbeddedTransaction = async ({
       Authorization: `Bearer ${access_token}`,
       "Content-Type": "application/json",
     },
+  }).catch(err => {
+    console.log('=== err createEmbeddedTransaction', err)
+    throw new Error("OF Server - Embedded Flow return error: " + err.message)
   })
   return result.data
 };
