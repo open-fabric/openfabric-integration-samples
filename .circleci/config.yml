@@ -18,7 +18,7 @@ jobs:
                 echo ${NPM_KEY} | base64 --decode > .npmrc
                 ls -a
                 heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/sandbox-merchant-sample.git"
-                git push --force $heroku_url chore/heroku-deploy:main
+                git subtree push --prefix merchant-integration-sample $heroku_url chore/heroku-deploy:main
 workflows:
   sandbox-deploy-merchant:
     jobs:
