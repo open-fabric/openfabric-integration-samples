@@ -15,6 +15,7 @@ jobs:
           command: |
                 cd merchant-integration-sample
                 echo ${MERCHANT_SAMPLE_ENV} | base64 --decode > .env
+                echo ${NPM_KEY} | base64 --decode > .npmrc
       - run: 
           name: Push to heroku
           command: |
