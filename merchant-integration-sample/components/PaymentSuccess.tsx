@@ -7,7 +7,7 @@ import { CardDetails } from "./CardDetails";
 const envString = process.env.REACT_APP_ENV || "dev";
 const currentEnv: Environment =
   Environment[envString as keyof typeof Environment] || Environment.dev;
-const authHost = "/of-auth";
+const authHost = "/api/fill-flow/of-auth";
 
 export const PaymentSuccess = () => {
   const [accessToken, setAccessToken] = React.useState<string | null>(null);

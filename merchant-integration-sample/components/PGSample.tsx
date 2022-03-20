@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -6,9 +6,14 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
 // @ts-ignore
-import {OpenFabric, Environment, PGConfig} from "@openfabric/merchant-sdk";
+import {
+  OpenFabric,
+  Environment,
+  PGConfig,
+} from "@open-fabric/slice-merchant-sdk";
 import { faker } from "@faker-js/faker";
-import {FailedHook} from "./HandleFailedHook";
+import { FailedHook } from "./HandleFailedHook";
+import { payment_methods, env } from "../lib/variables";
 
 const useStyles = makeStyles({
   root: {
@@ -28,22 +33,22 @@ const useStyles = makeStyles({
   },
 });
 
-
 const tokenHandler = (token: string) => {
   alert(`Payment Gateway token: ${token}`);
-  console.log('Payment Gateway token: ', token);
+  console.log("Payment Gateway token: ", token);
 };
 
 const pgConfig = {
   publishable_key: process.env.REACT_APP_PAYMENT_GATEWAY_PUBLISH_KEY,
   name: process.env.REACT_APP_PAYMENT_GATEWAY_NAME,
-  tokenHandler
-} as PGConfig
+  tokenHandler,
+} as PGConfig;
 
 const authHost = "/api/fill-flow/of-auth";
-const envString = process.env.REACT_APP_ENV || "dev";
+const envString = env || "sandbox";
 const currentEnv: Environment =
   Environment[envString as keyof typeof Environment] || Environment.dev;
+const paymentMethods = payment_methods || "";
 
 const customer_info = {
   mobile_number: faker.phone.phoneNumber("!##-!##-####"),
@@ -79,8 +84,6 @@ const billing_address = {
 };
 
 const merchant_reference_id = `MT${Date.now()}`;
-const paymentMethods = process.env.REACT_APP_PAYMENT_METHODS || "";
-
 export const PGSample = () => {
   const classes = useStyles();
   FailedHook();
@@ -89,39 +92,39 @@ export const PGSample = () => {
   React.useEffect(() => {
     fetch(authHost)
       .then((response) => response.json())
-      .then(({access_token}) => setAccessToken(access_token));
+      .then(({ access_token }) => setAccessToken(access_token));
   }, []);
-
 
   useEffect(() => {
     if (!accessToken) {
-      return
+      return;
     }
-    const openFabric = OpenFabric(accessToken, `${window.location}/PaymentSuccess`, `${window.location}/PaymentFailed`)
+    const openFabric = OpenFabric(
+      accessToken,
+      `${window.location}/PaymentSuccess`,
+      `${window.location}/PaymentFailed`
+    )
       .setDebug(true)
       .setEnvironment(currentEnv)
       .setPGConfig(pgConfig);
 
-    openFabric.setPaymentMethods([paymentMethods])
-    openFabric.createOrder(
-      {
-        customer_info,
-        amount: 2300,
-        currency: "SGD",
-        merchant_reference_id,
-        transaction_details: {
-          shipping_address,
-          billing_address,
-          items: [item],
-          tax_amount_percent: 10,
-          shipping_amount: 10,
-          original_amount: 130
-        },
-      }
-    )
+    openFabric.setPaymentMethods([paymentMethods]);
+    openFabric.createOrder({
+      customer_info,
+      amount: 2300,
+      currency: "SGD",
+      merchant_reference_id,
+      transaction_details: {
+        shipping_address,
+        billing_address,
+        items: [item],
+        tax_amount_percent: 10,
+        shipping_amount: 10,
+        original_amount: 130,
+      },
+    });
     openFabric.renderButton("bnpl-button");
     openFabric.initialize();
-
   }, [accessToken]);
 
   return (
@@ -223,9 +226,9 @@ export const PGSample = () => {
               >
                 <div
                   id="bnpl-button"
-                  style={{width: "160px", height: "36px"}}
+                  style={{ width: "160px", height: "36px" }}
                 />
-                <div style={{width: "10px"}}/>
+                <div style={{ width: "10px" }} />
                 <Button
                   id="submit-button"
                   type="submit"
@@ -248,4 +251,3 @@ export const PGSample = () => {
     </div>
   );
 };
-
