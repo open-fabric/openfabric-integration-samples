@@ -18,10 +18,15 @@ jobs:
           name: Prepare envs
           command: |
                 echo ${MERCHANT_SAMPLE_ENV} | base64 --decode > .env
-      - heroku/deploy-via-git:
-          api-key: HEROKU_API_KEY
-          app-name: sandbox-merchant-sample
-          branch: chore/heroku-deploy
+      - run: 
+          name: Push to heroku
+          command: |
+                heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/sandbox-merchant-sample.git"
+                git subtree push --force --prefix merchant-integration-sample $heroku_url main
+      # - heroku/deploy-via-git:
+      #     api-key: HEROKU_API_KEY
+      #     app-name: sandbox-merchant-sample
+      #     branch: chore/heroku-deploy
             
 
 workflows:
