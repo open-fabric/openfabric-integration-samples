@@ -15,6 +15,7 @@ jobs:
           command: |
                 cd merchant-integration-sample
                 echo ${MERCHANT_SAMPLE_ENV} | base64 --decode > .env
+                git add .env -f
                 heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/sandbox-merchant-sample.git"
                 cd ..
                 git subtree push --prefix merchant-integration-sample $heroku_url chore/heroku-deploy:main
