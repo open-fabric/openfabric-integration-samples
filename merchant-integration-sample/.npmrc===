@@ -1,4 +1,0 @@
-//npm.pkg.github.com/:_authToken=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
-@open-fabric:registry=https://npm.pkg.github.com
-registry=https://registry.npmjs.org
-always-auth=true
