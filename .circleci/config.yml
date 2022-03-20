@@ -9,19 +9,16 @@ jobs:
     steps:
       - checkout
       - run: ls
-      - heroku/install
-      - run:
-          name: Prepare envs
-          command: |
-                cd merchant-integration-sample
-                echo ${MERCHANT_SAMPLE_ENV} | base64 --decode > .env
-                echo ${NPM_KEY} | base64 --decode > .npmrc
+      - heroku/install               
       - run: 
           name: Push to heroku
           command: |
                 cd merchant-integration-sample
+                echo ${MERCHANT_SAMPLE_ENV} | base64 --decode > .env
+                echo ${NPM_KEY} | base64 --decode > .npmrc
                 ls
                 heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/sandbox-merchant-sample.git"
+                
             
 
 workflows:
