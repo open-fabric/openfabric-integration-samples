@@ -16,9 +16,10 @@ jobs:
                 cd merchant-integration-sample
                 echo ${MERCHANT_SAMPLE_ENV} | base64 --decode > .env
                 echo ${NPM_KEY} | base64 --decode > .npmrc
-                ls
+                ls -a
                 heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/sandbox-merchant-sample.git"
-                
+
+
             
 
 workflows:
