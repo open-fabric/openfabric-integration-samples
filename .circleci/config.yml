@@ -21,7 +21,6 @@ jobs:
           command: |
                 ls
                 heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/sandbox-merchant-sample.git"
-                git subtree push --prefix merchant-integration-sample $heroku_url chore/heroku-deploy:main
             
 
 workflows:
