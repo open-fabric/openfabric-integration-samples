@@ -72,7 +72,7 @@ const billing_address = {
 const merchant_reference_id = `MT${Date.now()}`;
 export const PGSample = () => {
   FailedHook({
-    failedUrl: `${window.location.origin}/orchestrated/pg-sample/payment-failed`
+    failedUrl: `/orchestrated/pg-sample/payment-failed`
   });
   const [accessToken, setAccessToken] = React.useState<string | null>(null);
 

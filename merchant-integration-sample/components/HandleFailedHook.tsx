@@ -5,7 +5,7 @@ export const FailedHook = (props: {
 }) => {
   const failedTransaction = useCallback(() => {
     setTimeout(() => {
-      window.location.href = props.failedUrl;
+      window.location.href = `${window.location.origin}${props.failedUrl}`;
     }, 2000);
   }, []);
   const callback = useCallback(

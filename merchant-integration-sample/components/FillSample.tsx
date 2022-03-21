@@ -67,7 +67,7 @@ const merchant_reference_id = `MT${Date.now()}`;
 
 export const FillSample = () => {
   FailedHook({
-    failedUrl: `${window.location.origin}/orchestrated/payment-failed`,
+    failedUrl: `/orchestrated/payment-failed`,
   });
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 

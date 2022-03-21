@@ -60,7 +60,7 @@ const paymentMethods = payment_methods || "";
 const authHost = "/api/orchestrated/of-auth";
 export const BackendSample = () => {
   FailedHook({
-    failedUrl: `${window.location.origin}/orchestrated/backend-sample/payment-failed`,
+    failedUrl: `/orchestrated/backend-sample/payment-failed`,
   });
   const [accessToken, setAccessToken] = React.useState<string | null>(null);
 
