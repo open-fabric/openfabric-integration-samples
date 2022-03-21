@@ -11,8 +11,10 @@ export const updateTransaction = (trans) => {
 };
 
 export const readTransaction = (account_reference_id) => {
-  db.reload()
   return db.getData(`/transactions/${account_reference_id}`);
+};
+export const readAllTransaction = () => {
+  return db.getData(`/transactions`);
 };
 
 export const clearTransactions = () => {

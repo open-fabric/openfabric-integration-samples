@@ -11,6 +11,7 @@ services:
       - PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}
       - PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY}
       - OF_ISSUER_URL=${OF_ISSUER_URL}
+      - ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}
     ports:
       - "3001:3001"
     container_name: account-integration-sample
@@ -27,36 +28,21 @@ services:
     depends_on:
       - account-integration-sample
 
-  merchant-integration-samples:
+  merchant-integration-sample:
     build:
-      context: ./merchant-integration-samples/frontend-sample
+      context: ./merchant-integration-sample
       args:
         - PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY}
         - PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}
         - PAYMENT_METHODS=${PAYMENT_METHODS}
         - ENV=${ENV}
-    environment:
-      - OF_AUTH_URL=${OF_AUTH_URL}
-      - OF_API_URL=${OF_API_URL}
-      - MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID}
-      - MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET}
+        - OF_AUTH_URL=${OF_AUTH_URL}
+        - OF_API_URL=${OF_API_URL}
+        - MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID}
+        - MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET}
+        - OF_ISSUER_URL=${OF_ISSUER_URL}
+        - ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}
     ports:
       - "3000:3000"
-    container_name: merchant-server
-    restart: always
-    depends_on:
-      - merchant-backend-flow-endpoint
-
-  merchant-backend-flow-endpoint:
-    build:
-      context: ./merchant-integration-samples/backend-flow-endpoint
-    environment:
-      - ENV=${ENV}
-      - OF_AUTH_URL=${OF_AUTH_URL}
-      - MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID}
-      - MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET}
-      - OF_ISSUER_URL=${OF_ISSUER_URL}
-    ports:
-      - "8080:8080"
-    container_name: merchant-backend-flow-endpoint
+    container_name: merchant-integration-sample
     restart: always

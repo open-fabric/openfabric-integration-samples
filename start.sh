@@ -3,7 +3,7 @@
 OF_API_URL=https://api.sandbox.openfabric.co
 OF_AUTH_URL=https://auth.sandbox.openfabric.co/oauth2/token
 OF_ISSUER_URL=https://issuer.sandbox.openfabric.co
-
+ACCOUNT_SERVER_URL=http://host.docker.internal:3001
 ENV=sandbox
 SKIP_PROXY=0
 function networkDown() {
@@ -25,12 +25,12 @@ function variablesUpdate() {
     export OF_AUTH_URL=$OF_AUTH_URL
     export OF_ISSUER_URL=$OF_ISSUER_URL
     export ENV=$ENV
+    export ACCOUNT_SERVER_URL=$ACCOUNT_SERVER_URL
 }
 
 function proxyAccountServer() {
     URL=$(curl -s $(docker port ngrok-account-server 4040)/api/tunnels/command_line | jq -r '.public_url')
-    URL+="/transactions"
-    echo "NGROK URL: "${URL}
+    URL+="/api/orchestrated/transactions"
     
     accountClientId=$(grep 'ACCOUNT_CLIENT_ID' .env |  tr '\n' '\0')
     ACCOUNT_CLIENT_ID=${accountClientId#*=}
