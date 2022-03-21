@@ -11,6 +11,7 @@ export const CheckOutUI = catchAsync(async (req, res) => {
     console.error("No transaction matching " + account_reference_id);
     return;
   }
+  console.log('==== CheckOutUI', transInfo)
   res.render("embedded/checkout", {
     ...transInfo,
   });
