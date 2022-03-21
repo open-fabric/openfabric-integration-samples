@@ -347,14 +347,14 @@
 
       const queryString = new URLSearchParams(window.location.search);
       const account_reference_id = queryString.get("account_reference_id")
-      const url = "/fetchCard";
+      const url = `${window.location.origin}/api/embedded/fetch-card`;
       var headers = new Headers();
       headers.append("Content-Type", "application/json");
       headers.append("Accept", "application/json");
       const params = {
         method: "GET",
         headers: headers,
-       
+
       };
       fetch(`${url}?account_reference_id=${account_reference_id}`, params)
         .then((response) => {
