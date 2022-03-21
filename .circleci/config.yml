@@ -5,10 +5,9 @@ orbs:
   slack: circleci/slack@4.4.4
 jobs:
   deploy-merchant-sample:
-    docker:
-      - image: 'cimg/node:cimg/node:16.0.0'
     steps:
       - checkout
+      - run: ls
       - run: 
           name: Push to heroku
           command: |
