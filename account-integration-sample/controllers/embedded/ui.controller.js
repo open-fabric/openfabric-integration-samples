@@ -12,6 +12,7 @@ export const CheckOutUI = catchAsync(async (req, res) => {
     return;
   }
   console.log('==== CheckOutUI', transInfo)
+  console.log('==== time', Date.now())
   res.render("embedded/checkout", {
     ...transInfo,
   });
