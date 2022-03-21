@@ -10,27 +10,17 @@ import {
 } from "@open-fabric/slice-merchant-sdk";
 import { faker } from "@faker-js/faker";
 import { FailedHook } from "./HandleFailedHook";
-import { makeStyles } from "@mui/styles";
 import { payment_methods, env } from "../lib/variables";
-const useStyles = makeStyles({
+const styles = {
   root: {
     display: "flex",
     flex: 1,
     height: "100vh",
     justifyContent: "center",
     alignItems: "center",
-  },
-  paper: {
     padding: "20px",
-    textAlign: "center",
   },
-  form: {
-    textAlign: "left",
-    "& .MuiTextField-root": {
-      width: "25ch"
-    },
-  },
-});
+};
 
 const authHost = "/api/fill-flow/of-auth";
 const paymentMethods = payment_methods || "";
@@ -76,9 +66,7 @@ const billing_address = {
 const merchant_reference_id = `MT${Date.now()}`;
 
 export const FillSample = () => {
-  const classes = useStyles();
   FailedHook();
-
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
   const removeEmptyClass = (input: Element) => {
@@ -142,19 +130,19 @@ export const FillSample = () => {
         flexDirection: "column",
       }}
     >
-      <div className={classes.root}>
-        <Paper elevation={3} className={classes.paper}>
-          <Typography variant="h5" gutterBottom>
+      <div style={styles.root}>
+        <Paper elevation={3} style={{ padding: "20px" }}>
+          <Typography variant="h5" gutterBottom style={{ textAlign: "center" }}>
             Prefill Experience
           </Typography>
           <div>
-            <div className={classes.form}>
+            <div>
               <div>
                 <TextField
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  style={{ margin: "10px",  textAlign: "left" }}
+                  style={{ margin: "10px", textAlign: "left" }}
                   required
                   id="example2-address"
                   label="Address"
@@ -164,7 +152,7 @@ export const FillSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  style={{ margin: "10px",  textAlign: "left" }}
+                  style={{ margin: "10px", textAlign: "left" }}
                   required
                   id="example2-city"
                   label="City"
@@ -176,7 +164,7 @@ export const FillSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  style={{ margin: "10px",  textAlign: "left" }}
+                  style={{ margin: "10px", textAlign: "left" }}
                   required
                   id="example2-state"
                   label="State"
@@ -186,7 +174,7 @@ export const FillSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  style={{ margin: "10px",  textAlign: "left" }}
+                  style={{ margin: "10px", textAlign: "left" }}
                   required
                   id="example2-zip"
                   label="ZIP"
@@ -199,7 +187,7 @@ export const FillSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  style={{ margin: "10px",  textAlign: "left" }}
+                  style={{ margin: "10px", textAlign: "left" }}
                   required
                   id="cardnumber"
                   name="cardnumber"
@@ -211,7 +199,7 @@ export const FillSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  style={{ margin: "10px",  textAlign: "left" }}
+                  style={{ margin: "10px", textAlign: "left" }}
                   required
                   id="exp-date"
                   name="exp-date"
@@ -221,7 +209,7 @@ export const FillSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  style={{ margin: "10px",  textAlign: "left" }}
+                  style={{ margin: "10px", textAlign: "left" }}
                   required
                   id="cvc"
                   name="cvc"

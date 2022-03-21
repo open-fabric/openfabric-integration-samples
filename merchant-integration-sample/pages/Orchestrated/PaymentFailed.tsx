@@ -1,4 +1,4 @@
-import { PaymentFailed } from "../components/PaymentFailed"
+import { PaymentFailed } from "../../components/PaymentFailed"
 
 const PaymentFailedPage = () => {
   return <PaymentFailed/>

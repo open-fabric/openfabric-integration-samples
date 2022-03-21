@@ -1,4 +1,4 @@
-import { PGSample } from "../components/PGSample"
+import { PGSample } from "../../../components/PGSample"
 
 const PGPage = () => {
   return <PGSample/>

@@ -13,7 +13,6 @@ COPY package*.json ./
 COPY *.js ./
 COPY *.json ./
 COPY yarn.lock ./
-COPY .npmrc ./
 COPY .babelrc ./
 COPY .eslintrc.json ./
 COPY next.config.js ./
