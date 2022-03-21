@@ -6,33 +6,40 @@ orbs:
 jobs:
   deploy-merchant-sample:
     executor: heroku/default
+    parameters:
+      env:
+        type: string
+        default: sandbox
     steps:
       - checkout
       - run: 
           name: Push to heroku
           command: |
-                heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/$ENV-merchant-sample.git"
+                heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/<< parameters.env >>-merchant-sample.git"
                 git subtree push --prefix merchant-integration-sample $heroku_url chore/heroku-deploy:main
   deploy-account-sample:
     executor: heroku/default
+    parameters:
+      env:
+        type: string
+        default: sandbox
     steps:
       - checkout
       - run: 
           name: Push to heroku
           command: |
-                heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/$ENV-account-sample.git"
+                heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/<< parameters.env >>-account-sample.git"
                 git subtree push --prefix account-integration-sample $heroku_url chore/heroku-deploy:main
 workflows:
   sandbox-deploy:
     jobs:
       - deploy-merchant-sample:
+          env: sandbox
           context:
             - heroku-sample
-          environment:
-            ENV: sandbox
       - deploy-account-sample:
+          env: sandbox
           context:
             - heroku-sample
-          environment:
-            ENV: sandbox
+          
 
