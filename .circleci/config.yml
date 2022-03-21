@@ -5,7 +5,7 @@ orbs:
 jobs:
   deploy-merchant-sample:
     docker:
-      - image: 'cimg/node:cimg/node:16.0.0'
+      - image: 'cimg/node:16.0.0'
     steps:
       - checkout
       - run: 
@@ -15,7 +15,7 @@ jobs:
                 git subtree push --prefix merchant-integration-sample $heroku_url chore/heroku-deploy:main
   deploy-account-sample:
     docker:
-      - image: 'cimg/node:cimg/node:16.0.0'
+      - image: 'cimg/node:16.0.0'
     steps:
       - checkout
       - run: 
