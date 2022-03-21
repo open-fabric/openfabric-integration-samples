@@ -1,4 +1,4 @@
-import { PaymentSuccess } from "../../components/PaymentSuccess"
+import { PaymentSuccess } from "../../components/PaymentSuccess-Orchestrated-prefill"
 
 const PaymentSuccessPage = () => {
   return <PaymentSuccess/>

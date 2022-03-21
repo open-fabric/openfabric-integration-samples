@@ -1,9 +1,11 @@
 import { useCallback, useEffect } from "react";
 
-export const FailedHook = () => {
+export const FailedHook = (props: {
+  failedUrl: string
+}) => {
   const failedTransaction = useCallback(() => {
     setTimeout(() => {
-      window.location.href = `${window.location.origin}/PaymentFailed`;
+      window.location.href = props.failedUrl;
     }, 2000);
   }, []);
   const callback = useCallback(

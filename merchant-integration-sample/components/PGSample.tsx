@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@mui/styles";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -9,43 +8,29 @@ import Button from "@mui/material/Button";
 import {
   OpenFabric,
   Environment,
-
-  // PGConfig,
-} from "@open-fabric/slice-merchant-sdk";
-import { PGConfig } from "@open-fabric/slice-merchant-sdk/dist/config";
+} from "@openfabric/merchant-sdk";
+import { PGConfig } from "@openfabric/merchant-sdk/dist/config";
 import { faker } from "@faker-js/faker";
 import { FailedHook } from "./HandleFailedHook";
-import { payment_methods, env } from "../lib/variables";
+import { payment_methods, env, payment_gateway_name } from "../lib/variables";
 
-const useStyles = makeStyles({
+const styles = {
   root: {
     display: "flex",
     flex: 1,
     height: "100vh",
     justifyContent: "center",
     alignItems: "center",
-  },
-  paper: {
     padding: "20px",
   },
-  form: {
-    "& .MuiTextField-root": {
-      width: "25ch",
-    },
-  },
-});
-
-const tokenHandler = (token: string) => {
-  alert(`Payment Gateway token: ${token}`);
-  console.log("Payment Gateway token: ", token);
 };
 
 const pgConfig = {
   publishable_key: "xendit",
-  name: process.env.REACT_APP_PAYMENT_GATEWAY_NAME,
+  name: payment_gateway_name,
 } as PGConfig;
 
-const authHost = "/api/fill-flow/of-auth";
+const authHost = "/api/orchestrated/of-auth";
 const envString = env || "sandbox";
 const currentEnv: Environment =
   Environment[envString as keyof typeof Environment] || Environment.dev;
@@ -86,8 +71,9 @@ const billing_address = {
 
 const merchant_reference_id = `MT${Date.now()}`;
 export const PGSample = () => {
-  const classes = useStyles();
-  FailedHook();
+  FailedHook({
+    failedUrl: `${window.location.origin}/orchestrated/pg-sample/payment-failed`
+  });
   const [accessToken, setAccessToken] = React.useState<string | null>(null);
 
   React.useEffect(() => {
@@ -102,8 +88,8 @@ export const PGSample = () => {
     }
     const openFabric = OpenFabric(
       accessToken,
-      `${window.location}/PaymentSuccess`,
-      `${window.location}/PaymentFailed`
+      `${window.location.origin}/orchestrated/pg-sample/payment-success`,
+      `${window.location.origin}/orchestrated/pg-sample/payment-failed`
     )
       .setDebug(true)
       .setEnvironment(currentEnv)
@@ -138,18 +124,19 @@ export const PGSample = () => {
         flexDirection: "column",
       }}
     >
-      <div className={classes.root}>
-        <Paper elevation={3} className={classes.paper}>
+      <div style={styles.root}>
+        <Paper elevation={3}style={{ padding: "20px" }}>
           <Typography variant="h5" gutterBottom>
             Payment Gateway Experience
           </Typography>
           <div>
-            <div className={classes.form}>
-              <div>
+            <div>
+            <div>
                 <TextField
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ margin: "10px", textAlign: "left" }}
                   required
                   id="example2-address"
                   label="Address"
@@ -159,6 +146,7 @@ export const PGSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ margin: "10px", textAlign: "left" }}
                   required
                   id="example2-city"
                   label="City"
@@ -170,6 +158,7 @@ export const PGSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ margin: "10px", textAlign: "left" }}
                   required
                   id="example2-state"
                   label="State"
@@ -179,18 +168,19 @@ export const PGSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ margin: "10px", textAlign: "left" }}
                   required
                   id="example2-zip"
                   label="ZIP"
                   autoComplete="postal-code"
                 />
               </div>
-
               <div>
                 <TextField
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ margin: "10px", textAlign: "left" }}
                   required
                   id="cardnumber"
                   name="cardnumber"
@@ -202,6 +192,7 @@ export const PGSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ margin: "10px", textAlign: "left" }}
                   required
                   id="exp-date"
                   name="exp-date"
@@ -211,12 +202,14 @@ export const PGSample = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  style={{ margin: "10px", textAlign: "left" }}
                   required
                   id="cvc"
                   name="cvc"
                   label="CVC"
                 />
               </div>
+
               <div
                 style={{
                   marginTop: "20px",
@@ -238,7 +231,7 @@ export const PGSample = () => {
                   disabled={true}
                   onClick={() => {
                     setTimeout(() => {
-                      window.location.href = `${window.location.origin}/PaymentSuccess`;
+                      window.location.href = `${window.location.origin}/pg-sample/payment-success`;
                     }, 200);
                   }}
                 >

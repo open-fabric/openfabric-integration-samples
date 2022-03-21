@@ -1,16 +1,15 @@
-import { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import {
-  OpenFabric,
-  FillerObject,
-  Environment,
-} from "@openfabric/merchant-sdk";
+
+// @ts-ignore
+import { OpenFabric, Environment } from "@openfabric/merchant-sdk";
 import { faker } from "@faker-js/faker";
 import { FailedHook } from "./HandleFailedHook";
 import { payment_methods, env } from "../lib/variables";
+
 const styles = {
   root: {
     display: "flex",
@@ -22,19 +21,11 @@ const styles = {
   },
 };
 
-const authHost = "/api/orchestrated/fill-flow/of-auth";
-const paymentMethods = payment_methods || "";
-const envString = env;
-// @refresh reset
-const currentEnv: Environment =
-  Environment[envString as keyof typeof Environment] || Environment.dev;
-
 const customer_info = {
   mobile_number: faker.phone.phoneNumber("!##-!##-####"),
   first_name: faker.name.firstName(),
   email: faker.internet.email(),
 };
-
 const item = {
   item_id: "P100-1222",
   name: "iPhone",
@@ -63,69 +54,58 @@ const billing_address = {
   post_code,
 };
 
-const merchant_reference_id = `MT${Date.now()}`;
-
-export const FillSample = () => {
+const currentEnv: Environment =
+  Environment[env as keyof typeof Environment] || Environment.dev;
+const paymentMethods = payment_methods || "";
+const authHost = "/api/orchestrated/of-auth";
+export const BackendSample = () => {
   FailedHook({
-    failedUrl: `${window.location.origin}/orchestrated/payment-failed`,
+    failedUrl: `${window.location.origin}/orchestrated/backend-sample/payment-failed`,
   });
-  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+  const [accessToken, setAccessToken] = React.useState<string | null>(null);
 
-  const removeEmptyClass = (input: Element) => {
-    input.classList.add("focused");
-    input.classList.remove("empty");
-    setIsSubmitEnabled(true);
-  };
-
-  const initOpenFabric = useCallback((queryString: string) => {
-    const fillerObject = new FillerObject()
-      .cardNumber()
-      .id("cardnumber")
-      .afterFill(removeEmptyClass)
-      .cardExpiryMonthYear()
-      .id("exp-date")
-      .afterFill(removeEmptyClass)
-      .cardCVV()
-      .id("cvc")
-      .afterFill(removeEmptyClass)
-      .setQueryString(queryString);
-
+  React.useEffect(() => {
     fetch(authHost)
       .then((response) => response.json())
-      .then(({ access_token }) => {
-        const openFabric = OpenFabric(access_token)
-          .setFillerObject(fillerObject)
-          .setDebug(true)
-          .setEnvironment(currentEnv)
-          .setPrefill(true)
-          .setPaymentMethods([paymentMethods]);
-
-        openFabric.createOrder({
-          customer_info,
-          amount: 2300,
-          currency: "SGD",
-          merchant_reference_id,
-          transaction_details: {
-            shipping_address,
-            billing_address,
-            items: [item],
-            tax_amount_percent: 10,
-            shipping_amount: 10,
-            original_amount: 130,
-          },
-        });
-        openFabric.renderButton("bnpl-button");
-        openFabric.initialize();
-      });
+      .then(({ access_token }) => setAccessToken(access_token));
   }, []);
 
   useEffect(() => {
-    initOpenFabric(window.location.search);
-  }, [initOpenFabric]);
+    if (!accessToken) {
+      return;
+    }
+    const openFabric = OpenFabric(
+      accessToken,
+      `${window.location.origin}/orchestrated/backend-sample/payment-success`,
+      `${window.location.origin}/orchestrated/backend-sample/payment-failed`
+    )
+      .setDebug(true)
+      .setEnvironment(currentEnv)
+      .setPaymentMethods([paymentMethods]);
+    const merchant_reference_id = `MT${Date.now()}`;
+
+    openFabric.createOrder({
+      customer_info,
+      amount: 2300,
+      currency: "SGD",
+      merchant_reference_id,
+      transaction_details: {
+        shipping_address,
+        billing_address,
+        items: [item],
+        tax_amount_percent: 10,
+        shipping_amount: 10,
+        original_amount: 130,
+      },
+    });
+    openFabric.renderButton("bnpl-button");
+    openFabric.initialize();
+  }, [accessToken]);
 
   return (
     <div
       style={{
+        marginTop: "50px",
         alignItems: "center",
         justifyContent: "center",
         display: "flex",
@@ -135,7 +115,7 @@ export const FillSample = () => {
       <div style={styles.root}>
         <Paper elevation={3} style={{ padding: "20px" }}>
           <Typography variant="h5" gutterBottom style={{ textAlign: "center" }}>
-            Prefill Experience
+            Backend Experience
           </Typography>
           <div>
             <div>
@@ -236,10 +216,9 @@ export const FillSample = () => {
                   type="submit"
                   variant="contained"
                   color="primary"
-                  disabled={!isSubmitEnabled}
                   onClick={() => {
                     setTimeout(() => {
-                      window.location.href = `${window.location.origin}/orchestrated/payment-success`;
+                      window.location.href = `${window.location.origin}/orchestrated/backend-sample/payment-success`;
                     }, 200);
                   }}
                 >

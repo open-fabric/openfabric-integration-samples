@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import NextCors from 'nextjs-cors';
-import { OpenFabricAuthentication } from '../../../controllers/of-auth';
+import { Authentication } from '../../../controllers/of-auth';
 
 const handler = async (req: NextApiRequest,
    res: NextApiResponse) => {
@@ -10,6 +10,6 @@ const handler = async (req: NextApiRequest,
     origin: '*',
     optionsSuccessStatus: 200,
  });
- return OpenFabricAuthentication(req,res)
+ return Authentication(req,res)
 }
 export default handler

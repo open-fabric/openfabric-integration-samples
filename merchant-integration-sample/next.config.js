@@ -2,16 +2,18 @@
 const nextConfig = {
   reactStrictMode: true,
   redirects: async () => {
-    return [{
-      source: '/',
-      destination: '/Orchestrated',
-      permanent: true
-    }]
+    return [
+      {
+        source: "/",
+        destination: "/orchestrated",
+        permanent: true,
+      },
+    ];
   },
   rewrites: async () => {
     return [
       {
-        source: "/Orchestrated/vanilla",
+        source: "/orchestrated/vanilla",
         destination: "/vanilla.html",
       },
       {
@@ -26,6 +28,6 @@ const nextConfig = {
   },
 };
 const withTM = require("next-transpile-modules")([
-  "@open-fabric/slice-merchant-sdk",
+  "@openfabric/merchant-sdk",
 ]);
 module.exports = withTM(nextConfig);

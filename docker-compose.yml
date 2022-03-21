@@ -39,7 +39,9 @@ services:
         - OF_AUTH_URL=${OF_AUTH_URL}
         - OF_API_URL=${OF_API_URL}
         - MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID}
-        - MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET}      
+        - MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET}
+        - OF_ISSUER_URL=${OF_ISSUER_URL}
+        - ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}
     ports:
       - "3000:3000"
     container_name: merchant-integration-sample
