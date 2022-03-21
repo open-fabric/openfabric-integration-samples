@@ -29,6 +29,10 @@ const defaultRoutes = [
     path: "/embedded",
     route: uiRoute.EmbeddedCheckout,
   },
+  {
+    path: "/utitlies",
+    route: apiRoute.DbController,
+  },
 ];
 defaultRoutes.forEach((route) => {
   router.use(route.path, route.route);
