@@ -5,6 +5,7 @@ orbs:
   slack: circleci/slack@4.4.4
 jobs:
   deploy-merchant-sample:
+    executor: heroku/default
     steps:
       - checkout
       - run: ls
