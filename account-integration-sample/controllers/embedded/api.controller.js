@@ -16,10 +16,11 @@ export const CreateTransaction = catchAsync(async (req, res) => {
 
 export const getTransaction = catchAsync(async (req, res) => {
   const account_reference_id = req.query.account_reference_id;
-  const transaction = dbService.readTransaction(account_reference_id);
+  const transaction = !account_reference_id
+    ? dbService.readAllTransaction()
+    : dbService.readTransaction(account_reference_id);
   return res.status(200).send(transaction);
 });
-
 
 export const ApproveAndSubmitToOF = catchAsync(async (req, res) => {
   const account_reference_id = req.body.account_reference_id;
