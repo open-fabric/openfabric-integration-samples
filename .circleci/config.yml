@@ -8,17 +8,27 @@ jobs:
     executor: heroku/default
     steps:
       - checkout
-      - run: ls
       - run: 
           name: Push to heroku
           command: |
-                cd merchant-integration-sample
                 heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/sandbox-merchant-sample.git"
-                cd ..
                 git subtree push --prefix merchant-integration-sample $heroku_url chore/heroku-deploy:main
+  deploy-account-sample:
+    executor: heroku/default
+    steps:
+      - checkout
+      - run: 
+          name: Push to heroku
+          command: |
+                heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/sandbox-account-sample.git"
+                git subtree push --prefix account-integration-sample $heroku_url chore/heroku-deploy:main
 workflows:
-  sandbox-deploy-merchant:
+  sandbox-deploy:
     jobs:
       - deploy-merchant-sample:
           context:
             - sandbox-heroku-sample
+      - deploy-account-sample:
+          context:
+            - sandbox-heroku-sample
+
