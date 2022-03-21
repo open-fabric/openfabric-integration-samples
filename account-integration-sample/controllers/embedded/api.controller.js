@@ -14,14 +14,19 @@ export const CreateTransaction = catchAsync(async (req, res) => {
   });
 });
 
+export const getTransaction = catchAsync(async (req, res) => {
+  const account_reference_id = req.query.account_reference_id;
+  const transaction = dbService.readTransaction(account_reference_id);
+  return res.status(200).send(transaction);
+});
+
+
 export const ApproveAndSubmitToOF = catchAsync(async (req, res) => {
   const account_reference_id = req.body.account_reference_id;
   const transInfo = dbService.readTransaction(account_reference_id);
   const response = await transactionService.createEmbeddedTransaction({
     transaction: transInfo,
   });
-  console.log('=== response', response)
-
   const updatedTrans = {
     ...transInfo,
     status: response.status,
