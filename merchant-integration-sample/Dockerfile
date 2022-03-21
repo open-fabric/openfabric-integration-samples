@@ -52,8 +52,8 @@ RUN echo "NEXT_PUBLIC_OF_API_URL=${OF_API_URL}" >> ./.env
 
 RUN echo "MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID}" >> ./.env
 RUN echo "MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET}" >> ./.env
-RUN echo "OF_ISSUER_URL=${OF_ISSUER_URL}"
-RUN echo "ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}"
+RUN echo "OF_ISSUER_URL=${OF_ISSUER_URL}" >> ./.env
+RUN echo "ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}" >> ./.env
 
 RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/vanilla.html
 RUN sed -i -e "s/{ENV}/$ENV/g" ./public/vanilla.html
