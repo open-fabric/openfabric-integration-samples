@@ -16,9 +16,6 @@ export const ApproveTransaction = async ({ account_reference_id }) => {
         "Content-Type": "application/json",
       },
     }
-  ).catch(err => {
-    console.log('==== approve error', err)
-  });
-  console.log('==== approve response', response.data)
+  )
   return response.data;
 };
