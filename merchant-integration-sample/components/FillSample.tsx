@@ -67,7 +67,7 @@ const merchant_reference_id = `MT${Date.now()}`;
 
 export const FillSample = () => {
   FailedHook({
-    failedUrl: `/orchestrated/payment-failed`,
+    failedUrl: `/orchestrated/fill-sample/payment-failed`,
   });
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
@@ -239,7 +239,7 @@ export const FillSample = () => {
                   disabled={!isSubmitEnabled}
                   onClick={() => {
                     setTimeout(() => {
-                      window.location.href = `${window.location.origin}/orchestrated/payment-success`;
+                      window.location.href = `${window.location.origin}/orchestrated/fill-sample/payment-success`;
                     }, 200);
                   }}
                 >

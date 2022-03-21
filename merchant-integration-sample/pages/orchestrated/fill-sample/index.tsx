@@ -1,4 +1,4 @@
-import { FillSample } from "../../components/FillSample";
+import { FillSample } from "../../../components/FillSample";
 
 function Orchestrated() {
   return <FillSample />;
