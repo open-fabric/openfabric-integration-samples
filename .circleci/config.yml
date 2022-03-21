@@ -1,33 +1,24 @@
 version: 2.1
 orbs:
-  node: circleci/node@5.0.1
+  node: circleci/node@5.0
   heroku: circleci/heroku@1.2.6
   slack: circleci/slack@4.4.4
 jobs:
   deploy-merchant-sample:
-    steps:
-      - checkout
-      - run: 
-          name: Push to heroku
-          command: |
-                heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/sandbox-merchant-sample.git"
-                git subtree push --prefix merchant-integration-sample $heroku_url chore/heroku-deploy:main
-  deploy-account-sample:
     docker:
-      - image: 'cimg/node:16.0.0'
+      - image: 'cimg/node:cimg/node:16.0.0'
     steps:
       - checkout
       - run: 
           name: Push to heroku
           command: |
-                heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/sandbox-account-sample.git"
-                git subtree push --prefix account-integration-sample $heroku_url chore/heroku-deploy:main
+                cd merchant-integration-sample
+                heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/sandbox-merchant-sample.git"
+                cd ..
+                git subtree push --prefix merchant-integration-sample $heroku_url chore/heroku-deploy:main
 workflows:
   sandbox-deploy-merchant:
     jobs:
       - deploy-merchant-sample:
-          context:
-            - sandbox-heroku-sample
-      - deploy-account-sample:
           context:
             - sandbox-heroku-sample
