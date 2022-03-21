@@ -10,46 +10,93 @@ jobs:
       env:
         type: string
         default: sandbox
+      branch:
+        type: string
+        default: release-sandbox
     steps:
       - checkout
       - run: 
           name: Push to heroku
           command: |
                 heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/<< parameters.env >>-merchant-sample.git"
-                git subtree push --prefix merchant-integration-sample $heroku_url chore/heroku-deploy:main
+                git subtree push --prefix merchant-integration-sample $heroku_url << parameters.branch >>:main
   deploy-account-sample:
     executor: heroku/default
     parameters:
       env:
         type: string
         default: sandbox
+      branch:
+        type: string
+        default: release-sandbox
     steps:
       - checkout
       - run: 
           name: Push to heroku
           command: |
                 heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/<< parameters.env >>-account-sample.git"
-                git subtree push --prefix account-integration-sample $heroku_url chore/heroku-deploy:main
+                git subtree push --prefix account-integration-sample $heroku_url << parameters.branch >>:main
+  notify-deploy:
+      docker:
+        - image: 'cimg/base:stable'
+      steps:
+        - slack/notify:
+            event: fail
+            mentions: '@here'
+            template: basic_fail_1
+        - slack/notify:
+            event: pass
+            template: success_tagged_deploy_1
 workflows:
   dev-deploy:
     jobs:
       - deploy-merchant-sample:
           env: dev
+          branch: main
           context:
             - heroku-sample
+          filters:
+            branches:
+              only:
+                - main
       - deploy-account-sample:
           env: dev
+          branch: main
           context:
             - heroku-sample
+          filters:
+            branches:
+              only:
+                - main
+      - notify-deploy:
+          context: dev-slack-secrets
+          requires:
+            - deploy-merchant-sample
   sandbox-deploy:
     jobs:
       - deploy-merchant-sample:
           env: sandbox
+          branch: chore/heroku-deploy
           context:
             - heroku-sample
+          filters:
+            branches:
+              only:
+                - release-sandbox
+                - chore/heroku-deploy
       - deploy-account-sample:
           env: sandbox
+          branch: chore/heroku-deploy
           context:
             - heroku-sample
+          filters:
+            branches:
+              only:
+                - release-sandbox
+                - chore/heroku-deploy
+      - notify-deploy:
+          context: sandbox-slack-secrets
+          requires:
+            - deploy-merchant-sample
           
 

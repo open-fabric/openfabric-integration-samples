@@ -27,7 +27,7 @@ export const PaymentSuccessBase: FunctionComponent = (props) => {
       >
         <h1 style={{ color: "green", marginBottom: 32 }}>Payment Success</h1>
         {props.children}
-        <RestartBtn title="Restart Fill Flow" path="orchestrated" />
+        <RestartBtn title="Restart Fill Flow" path="orchestrated/fill-sample" />
         <RestartBtn title="Restart Fill Flow - Vanilla" path="orchestrated/vanilla" />
         <RestartBtn title="Restart Backend Flow" path="orchestrated/backend-sample" />
         <RestartBtn title="Restart Payment Gateway Flow" path="orchestrated/pg-sample" />
