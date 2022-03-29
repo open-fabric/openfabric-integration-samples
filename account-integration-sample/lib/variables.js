@@ -7,11 +7,6 @@ export const account_client_id =
 export const account_client_secrect =
   process.env.ACCOUNT_CLIENT_SECRET ||
   "1ung5oeeurolb87tvgfnvv75tboolaokk1snpu75bhsq1co66te5";
-// export const account_client_id =
-//   process.env.ACCOUNT_CLIENT_ID || "6cjlneo78ekj36l9hce1lkhb68";
-// export const account_client_secrect =
-//   process.env.ACCOUNT_CLIENT_SECRET ||
-//   "hvsd42o94vg0tq5n5cvqrpdko2j4ll5ma7dgtlr7cdhgvlojlmk";
 export const env = process.env.ENV;
 export const of_issuer_url =
   process.env.OF_ISSUER_URL || "https://issuer.dev.openfabric.co";

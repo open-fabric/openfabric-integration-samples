@@ -1,36 +1,15 @@
-# Base image
-FROM node:16.0.0
+# 1. Install dependencies only when needed
+FROM node:16-alpine AS deps
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-# Make folder to put our files in
-RUN mkdir -p /usr/src/merchant-integration-sample
-
-# Set working directory so that all
-# subsequent command runs in this folder
-WORKDIR /usr/src/merchant-integration-sample
-
-# Copy package json and install dependencies
-COPY package*.json ./
-COPY *.js ./
-COPY *.json ./
-COPY yarn.lock ./
-COPY .babelrc ./
-COPY .eslintrc.json ./
-COPY next.config.js ./
-COPY tsconfig.json ./
-COPY public ./public
-COPY components ./components
-COPY controllers ./controllers
-COPY db ./db
-COPY lib ./lib
-COPY pages ./pages
-COPY services ./services
-COPY styles ./styles
-COPY util ./util
-
-
-# Copy our app
+FROM node:16-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
 ARG ENV
 ARG PAYMENT_GATEWAY_PUBLISH_KEY
 ARG PAYMENT_GATEWAY_NAME
@@ -42,7 +21,6 @@ ARG MERCHANT_CLIENT_SECRET
 ARG OF_ISSUER_URL
 ARG ACCOUNT_SERVER_URL
 RUN cat >> .env
-
 RUN echo "NEXT_PUBLIC_ENV=${ENV}" >> ./.env
 RUN echo "NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY}" >> ./.env
 RUN echo "NEXT_PUBLIC_PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}" >> ./.env
@@ -57,11 +35,22 @@ RUN echo "ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}" >> ./.env
 
 RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/vanilla.html
 RUN sed -i -e "s/{ENV}/$ENV/g" ./public/vanilla.html
-
-RUN yarn install
 RUN yarn build
-# Expose port to access server
-EXPOSE 3000
 
-# Command to run our app
-ENTRYPOINT [ "yarn", "start"]
+
+FROM node:16-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/vanilla.html
+RUN sed -i -e "s/{ENV}/$ENV/g" ./public/vanilla.html
+USER nextjs
+EXPOSE 3000
+ENV PORT 3000
+CMD ["node", "server.js"]

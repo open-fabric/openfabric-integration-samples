@@ -1,0 +1,7 @@
+{
+  "name": "OpenFabric integration samples",
+  "description": "A Sample to demonstrate how merchant and account interact with openfabric system ",
+  "repository": "https://github.com/open-fabric/openfabric-integration-samples",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["openfabric", "account", "merchant"]
+}

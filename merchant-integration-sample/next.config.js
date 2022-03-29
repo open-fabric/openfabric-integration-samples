@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    outputStandalone: true,
+  },
   redirects: async () => {
     return [
       {
@@ -27,7 +30,5 @@ const nextConfig = {
     ];
   },
 };
-const withTM = require("next-transpile-modules")([
-  "@openfabric/merchant-sdk",
-]);
+const withTM = require("next-transpile-modules")(["@openfabric/merchant-sdk"]);
 module.exports = withTM(nextConfig);

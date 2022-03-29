@@ -1,0 +1,1 @@
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/open-fabric/openfabric-integration-samples/tree/fix/CICd-with-dev-heroku/merchant-integration-sample)

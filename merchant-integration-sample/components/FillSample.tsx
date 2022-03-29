@@ -25,10 +25,8 @@ const styles = {
 const authHost = "/api/orchestrated/fill-flow/of-auth";
 const paymentMethods = payment_methods || "";
 const envString = env;
-// @refresh reset
 const currentEnv: Environment =
   Environment[envString as keyof typeof Environment] || Environment.dev;
-
 const customer_info = {
   mobile_number: faker.phone.phoneNumber("!##-!##-####"),
   first_name: faker.name.firstName(),
