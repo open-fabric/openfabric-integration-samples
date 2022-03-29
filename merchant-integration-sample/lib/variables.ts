@@ -7,7 +7,6 @@ export const payment_gateway_publish_key =
   process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLISH_KEY || "";
 export const payment_gateway_name = process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_NAME
 
-
 // BE only
 export const account_api_url =
   process.env.ACCOUNT_SERVER_URL;

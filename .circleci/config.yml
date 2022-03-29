@@ -4,99 +4,38 @@ orbs:
   heroku: circleci/heroku@1.2.6
   slack: circleci/slack@4.4.4
 jobs:
-  deploy-merchant-sample:
+  deploy-heroku-sample:
     executor: heroku/default
-    parameters:
-      env:
-        type: string
-        default: sandbox
-      branch:
-        type: string
-        default: release-sandbox
     steps:
       - checkout
+      - heroku/install
+      - heroku/check-authentication:
+          print-whoami: true
+      - setup_remote_docker:
+          version: 20.10.11
       - run: 
-          name: Push to heroku
+          name: Run heroku-deploy.sh
           command: |
-                heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/<< parameters.env >>-merchant-sample.git"
-                git subtree push --prefix merchant-integration-sample $heroku_url << parameters.branch >>:main
-  deploy-account-sample:
-    executor: heroku/default
-    parameters:
-      env:
-        type: string
-        default: sandbox
-      branch:
-        type: string
-        default: release-sandbox
-    steps:
-      - checkout
-      - run: 
-          name: Push to heroku
-          command: |
-                heroku_url="https://heroku:$HEROKU_API_KEY@git.heroku.com/<< parameters.env >>-account-sample.git"
-                git subtree push --prefix account-integration-sample $heroku_url << parameters.branch >>:main
-  notify-deploy:
-      docker:
-        - image: 'cimg/base:stable'
-      steps:
-        - slack/notify:
-            event: fail
-            mentions: '@here'
-            template: basic_fail_1
-        - slack/notify:
-            event: pass
-            template: success_tagged_deploy_1
+                echo $ENV | base64 --decode > ./.env
+                chmod +x ./heroku-deploy.sh
+                ./heroku-deploy.sh
+      
 workflows:
   dev-deploy:
     jobs:
-      - deploy-merchant-sample:
-          env: dev
-          branch: main
+      - deploy-heroku-sample:
           context:
-            - heroku-sample
+            - dev-heroku-sample
           filters:
             branches:
               only:
-                - main
-      - deploy-account-sample:
-          env: dev
-          branch: main
-          context:
-            - heroku-sample
-          filters:
-            branches:
-              only:
-                - main
-      - notify-deploy:
-          context: dev-slack-secrets
-          requires:
-            - deploy-merchant-sample
+                - fix/CICd-with-dev-heroku
   sandbox-deploy:
     jobs:
-      - deploy-merchant-sample:
-          env: sandbox
-          branch: chore/heroku-deploy
+      - deploy-heroku-sample:
           context:
-            - heroku-sample
+            - sandbox-heroku-sample
           filters:
             branches:
               only:
                 - release-sandbox
-                - chore/heroku-deploy
-      - deploy-account-sample:
-          env: sandbox
-          branch: chore/heroku-deploy
-          context:
-            - heroku-sample
-          filters:
-            branches:
-              only:
-                - release-sandbox
-                - chore/heroku-deploy
-      - notify-deploy:
-          context: sandbox-slack-secrets
-          requires:
-            - deploy-merchant-sample
-          
-

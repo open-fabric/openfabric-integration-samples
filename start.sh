@@ -38,7 +38,7 @@ function proxyAccountServer() {
     accountClientSecret=$(grep 'ACCOUNT_CLIENT_SECRET' .env |  tr '\n' '\0')
     ACCOUNT_CLIENT_SECRET=${accountClientSecret#*=}
     
-    BASE_64=$(printf $ACCOUNT_CLIENT_ID:$ACCOUNT_CLIENT_SECRET | base64)
+    BASE_64=$(echo $ACCOUNT_CLIENT_ID:$ACCOUNT_CLIENT_SECRET | tr -d '\n' | base64 | tr -d '\n')
     #get account access token
     ACCESSTOKEN=$(curl -s --location --request POST $OF_AUTH_URL \
         --header 'Content-Type: application/x-www-form-urlencoded' \
@@ -48,6 +48,7 @@ function proxyAccountServer() {
     # update account endpoint
     echo
     echo "================================ Publish Sample Account Endpoint ================================"
+    echo "Call API: PUT $OF_API_URL/a/settings to update account_transaction_url:$URL "
     echo
     UPDATE_RESULT=$(curl -s --location --request PUT $OF_API_URL/a/settings \
         --header "Authorization: Bearer $ACCESSTOKEN" \
