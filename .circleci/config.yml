@@ -29,7 +29,7 @@ workflows:
           filters:
             branches:
               only:
-                - fix/CICd-with-dev-heroku
+                - main
   sandbox-deploy:
     jobs:
       - deploy-heroku-sample:
