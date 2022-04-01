@@ -29,6 +29,7 @@ export const PaymentSuccessBase: FunctionComponent = (props) => {
         {props.children}
         <RestartBtn title="Restart Fill Flow" path="orchestrated/fill-sample" />
         <RestartBtn title="Restart Fill Flow - Vanilla" path="orchestrated/vanilla" />
+        <RestartBtn title="Restart Fill Flow - Vanilla + Custom Button" path="orchestrated/vanilla-custom-button" />
         <RestartBtn title="Restart Backend Flow" path="orchestrated/backend-sample" />
         <RestartBtn title="Restart Payment Gateway Flow" path="orchestrated/pg-sample" />
         <RestartBtn title="Restart Embedded Flow" path="embedded/checkout" />
