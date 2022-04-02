@@ -35,6 +35,8 @@ RUN echo "ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}" >> ./.env
 
 RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/vanilla.html
 RUN sed -i -e "s/{ENV}/$ENV/g" ./public/vanilla.html
+RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/vanilla-custom-button.html
+RUN sed -i -e "s/{ENV}/$ENV/g" ./public/vanilla-custom-button.html
 RUN yarn build
 
 
@@ -50,9 +52,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/vanilla.html
 RUN sed -i -e "s/{ENV}/$ENV/g" ./public/vanilla.html
-RUN cat >> merchantsTransaction.json
-RUN echo "{}" >> merchantsTransaction.json
-RUN chmod -R 777 merchantsTransaction.json
+RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/vanilla-custom-button.html
+RUN sed -i -e "s/{ENV}/$ENV/g" ./public/vanilla-custom-button.html
 RUN chmod 777 ./
 USER nextjs
 EXPOSE 3000

@@ -1,13 +1,11 @@
 import React, { useCallback, useEffect } from "react";
-import { RestartBtn } from "./RestartBtn";
 import { Environment, OpenFabric } from "@openfabric/merchant-sdk";
 import { CircularProgress } from "@mui/material";
 import { CardDetails } from "./CardDetails";
-import { env, of_auth_url } from "../lib/variables";
+import { env } from "../lib/variables";
 import { PaymentSuccessBase } from "./PaymentSuccessBase";
-const envString = env;
 const currentEnv: Environment =
-  Environment[envString as keyof typeof Environment] || Environment.dev;
+  Environment[env as keyof typeof Environment] || Environment.dev;
 export const PaymentSuccess = () => {
   const [accessToken, setAccessToken] = React.useState<string | null>(null);
   const [cardDetails, setCardDetails] = React.useState<Object | null>(null);
