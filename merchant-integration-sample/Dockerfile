@@ -43,8 +43,8 @@ RUN yarn build
 FROM node:16-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+RUN addgroup -g 1777 -S nodejs
+RUN adduser -S nextjs -u 1777
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
@@ -54,6 +54,7 @@ RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/vanilla.html
 RUN sed -i -e "s/{ENV}/$ENV/g" ./public/vanilla.html
 RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/vanilla-custom-button.html
 RUN sed -i -e "s/{ENV}/$ENV/g" ./public/vanilla-custom-button.html
+RUN chmod 777 ./
 USER nextjs
 EXPOSE 3000
 ENV PORT 3000

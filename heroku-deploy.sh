@@ -3,7 +3,7 @@
 OF_API_URL=https://api.sandbox.openfabric.co
 OF_AUTH_URL=https://auth.sandbox.openfabric.co/oauth2/token
 OF_ISSUER_URL=https://issuer.sandbox.openfabric.co
-ACCOUNT_SERVER_URL=http://host.docker.internal:3001
+ACCOUNT_SERVER_URL=host.docker.internal:3001
 ENV=sandbox
 
 function variablesUpdate() {
