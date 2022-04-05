@@ -1,60 +1,113 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>Home Page</title>
-
     <style media="screen">
-        .container {
-            font-family: sans-serif;
-            display: flex;
-            flex: 1;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
+      .container {
+        font-family: sans-serif;
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .content {
+        flex: 1;
+        display: flex;
+        align-content: space-around;
+        justify-content: center;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      button {
+        display: block;
+        margin: 0 auto;
+        padding: 0.6em 0.8em;
+        /* Font-size is the root value that determines size of spinner parts. 
+            Change this to whatever you want and spinner elements will size to match. */
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 0.4em;
+        border: none;
+        overflow: hidden;
+        cursor: pointer;
+        position: relative;
+        transition: all 1s;
+        color: white;
+        margin: 20px;
+        padding: 20px;
+      }
+
+      /* focus/disabled styles, you can change this for accessibility */
+      button:focus,
+      button:disabled {
+        outline: none;
+        background: #aaa;
+      }
+
+      /* This is the space for the spinner to appear, applied to the button */
+      .spin {
+        padding-left: 2.5em;
+        display: block;
+      }
+
+      /* position of the spinner when it appears, you might have to change these values */
+      .spin .spinner {
+        left: -15px;
+        top: 15px;
+        width: 2.5em;
+        display: block;
+        position: absolute;
+      }
+
+      /* spinner animation */
+      @keyframes spinner {
+        0% {
+          transform: rotate(0deg);
         }
 
-        .content {
-            flex: 1;
-            display: flex;
-            align-content: space-around;
-            justify-content: center;
-            flex-direction: row;
-            align-items: center;
+        100% {
+          transform: rotate(360deg);
         }
+      }
 
-        h2 {
+      /* The actual spinner element is a pseudo-element */
+      .spin .spinner::before {
+        content: "";
+        width: 1.5em; /* Size of the spinner */
+        height: 1.5em; /* Change as desired */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        border-radius: 50%;
+        border: solid 0.35em white; /* Thickness/color of spinner track */
+        border-bottom-color: transparent; /* Color of variant spinner piece */
+        animation: 0.8s linear infinite spinner; /* speed of spinner */
+        transform: translate(-50%, -50%);
+        will-change: transform;
+      }
 
-        }
-
-        .button {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 180px;
-            height: 180px;
-            text-align: center;
-            border-radius: 16px;
-            margin: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            filter: drop-shadow(1px 1px 4px #888);
-            color: white;
-            font-size: 24px;
-        }
+      /* optional, but it will affect the size if changed */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
     </style>
-</head>
-<body>
-<div class="container">
-    <h2>OpenFabric - Account Integration Sample</h2>
-    <div class="content">
+  </head>
+  <body>
+    <div class="container">
+      <h2>OpenFabric - Account Integration Sample</h2>
+      <div class="content">
         <%- include('button', {
             id,
             account_reference_id,
             title: "Approve Transaction",
-            color: "green",
+            color: "dodgerblue",
             status: "Approved",
+            btnId: "approveBtn",
             path: "/api/orchestrated/approve"
         }) %>
         <%- include('button', {
@@ -64,8 +117,9 @@
             color: "red",
             status: "Failed",
             reason: "User trigger failed",
+            btnId: "cancelBtn",
             path: "/api/orchestrated/cancel"}) %>
+      </div>
     </div>
-</div>
-</body>
+  </body>
 </html>

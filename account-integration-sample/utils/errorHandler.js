@@ -3,7 +3,8 @@ export const errorHandler = (err, req, res, next) => {
   const response = {
     code: 500,
     message,
-    stack: err.stack,
+    data: err.response && err.response.data,
+    stack: (!err.response || !err.response.data) && err.stack,
   };
   res.status(500).json(response);
 };
