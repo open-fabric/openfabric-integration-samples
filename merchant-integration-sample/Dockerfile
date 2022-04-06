@@ -36,6 +36,8 @@ RUN echo "ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}" >> ./.env
 RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/vanilla.html
 RUN sed -i -e "s/{ENV}/$ENV/g" ./public/vanilla.html
 RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/vanilla-custom-button.html
+RUN sed -i -e "s/{PAYMENT_GATEWAY_PUBLISH_KEY}/$PAYMENT_GATEWAY_PUBLISH_KEY/g" ./public/vanilla-custom-button.html
+RUN sed -i -e "s/{PAYMENT_GATEWAY_NAME}/$PAYMENT_GATEWAY_NAME/g" ./public/vanilla-custom-button.html
 RUN sed -i -e "s/{ENV}/$ENV/g" ./public/vanilla-custom-button.html
 RUN yarn build
 

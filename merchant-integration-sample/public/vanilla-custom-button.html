@@ -117,6 +117,11 @@
 
     const { OpenFabric } = OpenFabricMerchantSDK;
 
+    const pgConfig = {
+        publishable_key: "{PAYMENT_GATEWAY_PUBLISH_KEY}",
+        name: "{PAYMENT_GATEWAY_NAME}",
+    };
+
     const faker = window.faker;
     const initOpenFabric = () => {
         const customer_info = {
@@ -160,11 +165,12 @@
 
                 const openFabric = OpenFabric(
                     access_token,
-                    `${window.location.origin}/orchestrated/backend-sample/payment-success`,
-                    `${window.location.origin}/orchestrated/backend-sample/payment-failed`
+                    `${window.location.origin}/orchestrated/pg-sample/payment-success`,
+                    `${window.location.origin}/orchestrated/pg-sample/payment-failed`
                 )
                     .setDebug(true)
                     .setEnvironment(currentEnv)
+                    .setPGConfig(pgConfig)
                     .setPaymentMethods([paymentMethod]);
 
                 openFabric.createOrder(
