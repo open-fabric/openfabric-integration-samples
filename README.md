@@ -58,7 +58,6 @@ For more details, this is our scenario:
 * Orchestrated flow
   * [http://localhost:3000/orchestrated/fill-sample](http://localhost:3000/orchestrated/fill-sample) for the React sample application
   * [http://localhost:3000/orchestrated/vanilla](http://localhost:3000/orchestrated/vanilla) for the vanilla JS application
-  * [http://localhost:3000/orchestrated/vanilla-custom-button](http://localhost:3000/orchestrated/vanilla-custom-button) for the vanilla with custom button JS application
   * [http://localhost:3000/orchestrated/pg-sample](http://localhost:3000/orchestrated/pg-sample) for the Payment Gateway sample application (only valid if you input config value for this flow)
   * [http://localhost:3000/orchestrated/backend-sample](http://localhost:3000/orchestrated/backend-sample) for the Backend flow application
 * Embedded Flow
