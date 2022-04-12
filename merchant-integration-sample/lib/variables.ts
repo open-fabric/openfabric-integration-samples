@@ -9,7 +9,7 @@ export const payment_gateway_name = process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_NAME
 
 // BE only
 export const account_api_url =
-  process.env.ACCOUNT_SERVER_URL;
+  process.env.ACCOUNT_SERVER_URL || 'http://localhost:3001';
 export const of_issuer_url = process.env.OF_ISSUER_URL;
 export const merchant_client_id = process.env.MERCHANT_CLIENT_ID || "";
 export const merchant_client_secret = process.env.MERCHANT_CLIENT_SECRET || "";

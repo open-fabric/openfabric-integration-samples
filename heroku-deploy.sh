@@ -4,6 +4,7 @@ OF_API_URL=https://api.sandbox.openfabric.co
 OF_AUTH_URL=https://auth.sandbox.openfabric.co/oauth2/token
 OF_ISSUER_URL=https://issuer.sandbox.openfabric.co
 ACCOUNT_SERVER_URL=host.docker.internal:3001
+MERCHANT_SERVER_URL=host.docker.internal:3000
 ENV=sandbox
 
 function variablesUpdate() {
@@ -102,7 +103,8 @@ function networkUp() {
 
     MERCHANT_DOMAIN=$(heroku domains --app ${HEROKU_MERCHANT_REPO} -j | jq -r '.[0].hostname')
     echo "MERCHANT_DOMAIN ${MERCHANT_DOMAIN}"
-    
+    export MERCHANT_SERVER_URL=https://${MERCHANT_DOMAIN}
+
     ACCOUNT_DOMAIN=$(heroku domains --app ${HEROKU_ACCOUNT_REPO} -j | jq -r '.[0].hostname')
     echo "ACCOUNT_DOMAIN ${ACCOUNT_DOMAIN}"
     export ACCOUNT_SERVER_URL=https://${ACCOUNT_DOMAIN}

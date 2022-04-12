@@ -64,8 +64,9 @@ function submitMerchantTransaction(e, form) {
       return response.json();
     })
     .then((value) => {
+      console.log('=== url', value)
       if (value.redirect_url) {
-        window.location.replace(value.redirect_url);
+        window.location.href = value.redirect_url;
       }
     });
 }
