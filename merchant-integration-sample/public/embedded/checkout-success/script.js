@@ -39,7 +39,10 @@ function displayPGToken(pg_card_token) {
   const pgValue = document.getElementById('pg-token-value')
   pgValue.innerText = pg_card_token
   pgElement.style.display = 'inherit'
+  const makePaymentSection = document.getElementById("make-payment-section");
+  makePaymentSection.style.display = 'inherit'
 }
+
 async function displayCardInfo(trans) {
   const loader = createElementFromHTML(loaderTemplate);
 
@@ -68,6 +71,8 @@ async function displayCardInfo(trans) {
   cvvEl.innerText = cardInfo.cvv
   const cardInfoElement = document.getElementById("card-infomation");
   cardInfoElement.style.display = "inherit";
+  const makePaymentSection = document.getElementById("make-payment-section");
+  makePaymentSection.style.display = 'inherit'
   loader.remove();
 }
 
@@ -131,4 +136,8 @@ function transactionByMerchantRefId(merchant_reference_id) {
     .then((response) => response.text())
     .then((result) => JSON.parse(result))
     .catch((error) => console.log("error", error));
+}
+
+function makePayment() {
+  window.location.href = `${window.location.origin}/embedded/payment-success`
 }

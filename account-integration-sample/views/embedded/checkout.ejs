@@ -278,8 +278,7 @@
           return response.json();
         })
         .then((json) => {
-          window.location.href = `http://localhost:3000/embedded/checkout-success?merchant_reference_id=${json.merchant_reference_id}`;
-          //location.reload();
+          location.reload();
         });
     }
   </script>

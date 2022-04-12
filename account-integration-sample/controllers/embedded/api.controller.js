@@ -1,7 +1,7 @@
 import { catchAsync } from "../../utils/catchAsync";
 import * as dbService from "../../services/db";
 import * as transactionService from "../../services/of-transactions";
-import * as merchantService from "../../services/merchant-embedded";
+import * as merchantService from "../../services/merchant-webhook-embedded";
 import { account_server_url } from "../../lib/variables";
 import { GetAccessToken } from "../../services/auth";
 

@@ -125,7 +125,7 @@ function networkUp() {
     heroku container:release web -a ${HEROKU_ACCOUNT_REPO}
     cd ..
     proxyAccountServer
-    heroku config:set --app ${HEROKU_ACCOUNT_REPO} ENV=${ENV} OF_AUTH_URL=${OF_AUTH_URL} OF_API_URL=${OF_API_URL} ACCOUNT_CLIENT_ID=${ACCOUNT_CLIENT_ID} ACCOUNT_CLIENT_SECRET=${ACCOUNT_CLIENT_SECRET} OF_ISSUER_URL=${OF_ISSUER_URL} ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL} 
+    heroku config:set --app ${HEROKU_ACCOUNT_REPO} ENV=${ENV} OF_AUTH_URL=${OF_AUTH_URL} OF_API_URL=${OF_API_URL} ACCOUNT_CLIENT_ID=${ACCOUNT_CLIENT_ID} ACCOUNT_CLIENT_SECRET=${ACCOUNT_CLIENT_SECRET} OF_ISSUER_URL=${OF_ISSUER_URL} ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL} MERCHANT_SERVER_URL=${MERCHANT_SERVER_URL}
     echo
     echo " ____    _____      _      ____    _____ "
     echo "/ ___|  |_   _|    / \    |  _ \  |_   _|"
