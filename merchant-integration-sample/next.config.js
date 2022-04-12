@@ -25,11 +25,15 @@ const nextConfig = {
       },
       {
         source: "/embedded/checkout",
-        destination: "/checkout-form/index.html",
+        destination: "/embedded/checkout-form/index.html",
       },
       {
         source: "/embedded/checkout/:path*",
-        destination: "/checkout-form/:path*",
+        destination: "/embedded/checkout-form/:path*",
+      },
+      {
+        source: "/embedded/checkout-success",
+        destination: "/embedded/checkout-success/index.html",
       },
     ];
   },

@@ -99,6 +99,10 @@
         color: #babdcb;
         font-size: 12px;
       }
+      #description {
+        text-align: start;
+        margin: 10px 0 0;
+      }
       #loader {
         border: 9px solid #f3f3f3; /* Light grey */
         border-top: 9px solid #3498db; /* Blue */
@@ -150,10 +154,9 @@
       <div class="container-text">
         <% if ( typeof ofTransaction != "undefined" ) { %>
         <h2>Account - Transaction Info</h2>
+        <% } %> <% if ( typeof ofTransaction == "undefined" ) { %>
+        <h2>Account - Approve payment</h2>
         <% } %>
-        <% if ( typeof ofTransaction == "undefined" ) { %>
-          <h2>Account - Approve payment</h2>
-          <% } %>
         <div style="align-self:flex-start">
           <span class="json-display">Account Reference Id: </span>
           <span class="json-display" style="font-weight: bold;"
@@ -179,19 +182,19 @@
           </span>
         </div>
         <% if ( typeof pg_token_provider_config != "undefined" ) { %>
-          <div style="align-self:flex-start">
-            <span class="json-display">PG Name: </span>
-            <span class="json-display" style="font-weight: bold;"
-              ><%= pg_token_provider_config.name %>
-            </span>
-          </div>
-          <div style="align-self:flex-start">
-            <span class="json-display">PG Key: </span>
-            <span class="json-display" style="font-weight: bold;"
-              ><%= pg_token_provider_config.publishable_key %>
-            </span>
-          </div>
-          <% } %>
+        <div style="align-self:flex-start">
+          <span class="json-display">PG Name: </span>
+          <span class="json-display" style="font-weight: bold;"
+            ><%= pg_token_provider_config.name %>
+          </span>
+        </div>
+        <div style="align-self:flex-start">
+          <span class="json-display">PG Key: </span>
+          <span class="json-display" style="font-weight: bold;"
+            ><%= pg_token_provider_config.publishable_key %>
+          </span>
+        </div>
+        <% } %>
 
         <div style="align-self:flex-start">
           <span class="json-display">Status: </span>
@@ -221,88 +224,30 @@
             ><%= ofTransaction.status %>
           </span>
         </div>
-
-        <% if (ofTransaction.card_fetch_token != undefined ) { %>
-
-        <div style="align-self:flex-start">
-          <span class="json-display">Card Fetch Token: </span>
-          <span class="json-display" style="font-weight: bold;"
-            ><%= ofTransaction.card_fetch_token %>
-          </span>
-        </div>
-        <% } %>
         <% if (ofTransaction.pg_card_token != undefined ) { %>
 
-          <div style="align-self:flex-start">
-            <span class="json-display">PG Card Token: </span>
-            <span class="json-display" style="font-weight: bold;"
-              ><%= ofTransaction.pg_card_token %>
-            </span>
-          </div>
-          <% } %>
-
-         <% } %> 
-
-
-        <% if ( typeof cardInfo != "undefined" ) { %>
-          <hr class="dashed" />
-          <div style="align-self:flex-start">
-            <span class="json-display">Card Provider: </span>
-            <span class="json-display" style="font-weight: bold;"
-              ><%= cardInfo.provider %>
-            </span>
-          </div>
-          <div style="align-self:flex-start">
-            <span class="json-display">Card Number: </span>
-            <span class="json-display" style="font-weight: bold;"
-              ><%= cardInfo.redacted_number %>
-            </span>
-          </div>
-          <div style="align-self:flex-start">
-            <span class="json-display">CVV: </span>
-            <span class="json-display" style="font-weight: bold;"
-              ><%= cardInfo.cvv %>
-            </span>
-          </div>
-          <div style="align-self:flex-start">
-            <span class="json-display">Expired Year: </span>
-            <span class="json-display" style="font-weight: bold;"
-              ><%= cardInfo.expiry_year %>
-            </span>
-          </div>
-
-          <div style="align-self:flex-start">
-            <span class="json-display">Expired Month: </span>
-            <span class="json-display" style="font-weight: bold;"
-              ><%= cardInfo.expiry_month %>
-            </span>
-          </div>
-          
-        <% } %>  
-
-
-        <% if (typeof ofTransaction != "undefined"  &&  ofTransaction.card_fetch_token != undefined && typeof cardInfo == "undefined") { %>
-          <button style="margin-top:20px" id="fetch-card-info" onclick="fetchCard()">
-            Fetch Card
-          </button>
-          <div id="loader"></div>
-  
-          <span id="description"
-            >Retrieve Card Info from Open Fabric with Account Credential</span
-          >
-          <% } %>
-        
-        <% if (status == 'Created') { %>
+        <div style="align-self:flex-start">
+          <span class="json-display">PG Card Token: </span>
+          <span class="json-display" style="font-weight: bold;"
+            ><%= ofTransaction.pg_card_token %>
+          </span>
+        </div>
+        <% } %> <% } %> <% if (status == 'Created') { %>
         <button style="margin-top:20px" id="approve-trans" onclick="approve()">
           Approve
         </button>
         <div id="loader"></div>
-
-        <span id="description"
-          >By clicking this one - Account server will submit transaction to
-          OpenFabric</span
-        >
-        <% } %>
+        <div style="align-self: flex-start;">
+          <span id="description"
+            >By clicking this button - Account server will:</span
+          >
+          <div style="margin-left: 20px;">
+            <span id="description">- Submit transaction to OpenFabric</span>
+            <span id="description">- Handover transaction info to Merchant (include pg_card_token or card_fetch_token)</span>
+            <span id="description">- Navigate back to Merchant page</span>
+          </div>
+          <% } %>
+        </div>
       </div>
     </div>
   </body>
@@ -335,35 +280,6 @@
         .then((json) => {
           location.reload();
         });
-    }
-
-    function fetchCard() {
-      const btnId = "fetch-card-info";
-      const btn = document.getElementById(btnId);
-      btn.style.display = "none";
-      const loader = document.getElementById("loader");
-      loader.style.display = "block";
-
-
-      const queryString = new URLSearchParams(window.location.search);
-      const account_reference_id = queryString.get("account_reference_id")
-      const url = `${window.location.origin}/api/embedded/fetch-card`;
-      var headers = new Headers();
-      headers.append("Content-Type", "application/json");
-      headers.append("Accept", "application/json");
-      const params = {
-        method: "GET",
-        headers: headers,
-
-      };
-      fetch(`${url}?account_reference_id=${account_reference_id}`, params)
-        .then((response) => {
-          return response.json();
-        })
-        .then((json) => {
-          location.reload();
-        });
-
     }
   </script>
 </html>

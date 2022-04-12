@@ -1,9 +1,6 @@
 import axios from "axios";
-import { of_issuer_url } from "../../lib/variables";
-import { GetAccessToken } from "../auth";
-export const fetchCardInfo = async ({ card_fetch_token }) => {
-  const { access_token } = await GetAccessToken("resources/cards.read");
-
+import { of_issuer_url } from "../lib/variables";
+export const OfFetchCard = async (card_fetch_token: string, access_token: string) => {
   const result = await axios.post(
     `${of_issuer_url}/i/fetchCard`,
     {

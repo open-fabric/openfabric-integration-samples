@@ -4,6 +4,7 @@ OF_API_URL=https://api.sandbox.openfabric.co
 OF_AUTH_URL=https://auth.sandbox.openfabric.co/oauth2/token
 OF_ISSUER_URL=https://issuer.sandbox.openfabric.co
 ACCOUNT_SERVER_URL=host.docker.internal:3001
+MERCHANT_SERVER_URL=host.docker.internal:3000
 ENV=sandbox
 
 function variablesUpdate() {
@@ -102,7 +103,8 @@ function networkUp() {
 
     MERCHANT_DOMAIN=$(heroku domains --app ${HEROKU_MERCHANT_REPO} -j | jq -r '.[0].hostname')
     echo "MERCHANT_DOMAIN ${MERCHANT_DOMAIN}"
-    
+    export MERCHANT_SERVER_URL=https://${MERCHANT_DOMAIN}
+
     ACCOUNT_DOMAIN=$(heroku domains --app ${HEROKU_ACCOUNT_REPO} -j | jq -r '.[0].hostname')
     echo "ACCOUNT_DOMAIN ${ACCOUNT_DOMAIN}"
     export ACCOUNT_SERVER_URL=https://${ACCOUNT_DOMAIN}
@@ -123,7 +125,7 @@ function networkUp() {
     heroku container:release web -a ${HEROKU_ACCOUNT_REPO}
     cd ..
     proxyAccountServer
-    heroku config:set --app ${HEROKU_ACCOUNT_REPO} ENV=${ENV} OF_AUTH_URL=${OF_AUTH_URL} OF_API_URL=${OF_API_URL} ACCOUNT_CLIENT_ID=${ACCOUNT_CLIENT_ID} ACCOUNT_CLIENT_SECRET=${ACCOUNT_CLIENT_SECRET} OF_ISSUER_URL=${OF_ISSUER_URL} ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL} 
+    heroku config:set --app ${HEROKU_ACCOUNT_REPO} ENV=${ENV} OF_AUTH_URL=${OF_AUTH_URL} OF_API_URL=${OF_API_URL} ACCOUNT_CLIENT_ID=${ACCOUNT_CLIENT_ID} ACCOUNT_CLIENT_SECRET=${ACCOUNT_CLIENT_SECRET} OF_ISSUER_URL=${OF_ISSUER_URL} ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL} MERCHANT_SERVER_URL=${MERCHANT_SERVER_URL}
     echo
     echo " ____    _____      _      ____    _____ "
     echo "/ ___|  |_   _|    / \    |  _ \  |_   _|"
