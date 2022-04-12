@@ -40,7 +40,7 @@ function displayPGToken(pg_card_token) {
   pgValue.innerText = pg_card_token
   pgElement.style.display = 'inherit'
   const makePaymentSection = document.getElementById("make-payment-section");
-  makePaymentSection.style.display = 'inherit'
+  makePaymentSection.style.display = 'flex'
 }
 
 async function displayCardInfo(trans) {
@@ -72,7 +72,7 @@ async function displayCardInfo(trans) {
   const cardInfoElement = document.getElementById("card-infomation");
   cardInfoElement.style.display = "inherit";
   const makePaymentSection = document.getElementById("make-payment-section");
-  makePaymentSection.style.display = 'inherit'
+  makePaymentSection.style.display = 'flex'
   loader.remove();
 }
 
