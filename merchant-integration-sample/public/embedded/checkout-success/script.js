@@ -7,7 +7,7 @@ let loaderTemplate = `
 </div>
 `;
 let pgTemplate = `
-`
+`;
 function onLoad() {
   const loader = createElementFromHTML(loaderTemplate);
   document.body.insertAdjacentElement("afterbegin", loader);
@@ -29,18 +29,18 @@ function handlePaymentInfo(trans) {
   if (trans.status === "Approved" && trans.ofTransaction) {
     const card_fetch_token = trans.ofTransaction.card_fetch_token;
     card_fetch_token && displayCardInfo(trans);
-    const pg_card_token = trans.ofTransaction.pg_card_token
-    pg_card_token && displayPGToken(pg_card_token)
+    const pg_card_token = trans.ofTransaction.pg_card_token;
+    pg_card_token && displayPGToken(pg_card_token);
   }
 }
 
 function displayPGToken(pg_card_token) {
-  const pgElement =  document.getElementById('pg-token-infomation')
-  const pgValue = document.getElementById('pg-token-value')
-  pgValue.innerText = pg_card_token
-  pgElement.style.display = 'inherit'
+  const pgElement = document.getElementById("pg-token-infomation");
+  const pgValue = document.getElementById("pg-token-value");
+  pgValue.innerText = pg_card_token;
+  pgElement.style.display = "inherit";
   const makePaymentSection = document.getElementById("make-payment-section");
-  makePaymentSection.style.display = 'flex'
+  makePaymentSection.style.display = "flex";
 }
 
 async function displayCardInfo(trans) {
@@ -50,29 +50,29 @@ async function displayCardInfo(trans) {
   paymentInfoElement.insertAdjacentElement("afterbegin", loader);
   updateLoaderMessage("Fetch Card Info ...");
   const cardInfo = await fetchCardByRefId(trans.merchant_reference_id);
-  const card_number = cardInfo.card_number
+  const card_number = cardInfo.card_number;
   const sections = card_number.match(/.{1,4}/g);
   const section1 = document.getElementById("section1");
-  section1.innerText = sections[0]
-  
+  section1.innerText = sections[0];
+
   const section2 = document.getElementById("section2");
-  section2.innerText = sections[1]
+  section2.innerText = sections[1];
 
   const section3 = document.getElementById("section3");
-  section3.innerText = sections[2]
+  section3.innerText = sections[2];
 
   const section4 = document.getElementById("section4");
-  section4.innerText = sections[3]
+  section4.innerText = sections[3];
 
-  const expEl =  document.getElementById("exp-date");
-  expEl.innerText = `${cardInfo.expiry_month}/${cardInfo.expiry_year}`
+  const expEl = document.getElementById("exp-date");
+  expEl.innerText = `${cardInfo.expiry_month}/${cardInfo.expiry_year}`;
 
-  const cvvEl = document.getElementById('cvv-number')
-  cvvEl.innerText = cardInfo.cvv
+  const cvvEl = document.getElementById("cvv-number");
+  cvvEl.innerText = cardInfo.cvv;
   const cardInfoElement = document.getElementById("card-infomation");
   cardInfoElement.style.display = "inherit";
   const makePaymentSection = document.getElementById("make-payment-section");
-  makePaymentSection.style.display = 'flex'
+  makePaymentSection.style.display = "flex";
   loader.remove();
 }
 
@@ -139,5 +139,5 @@ function transactionByMerchantRefId(merchant_reference_id) {
 }
 
 function makePayment() {
-  window.location.href = `${window.location.origin}/embedded/payment-success`
+  window.location.href = `${window.location.origin}/embedded/payment-success`;
 }
