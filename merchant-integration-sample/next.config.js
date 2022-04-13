@@ -20,10 +20,6 @@ const nextConfig = {
         destination: "/vanilla.html",
       },
       {
-        source: "/orchestrated/vanilla-custom-button",
-        destination: "/vanilla-custom-button.html",
-      },
-      {
         source: "/embedded/checkout",
         destination: "/embedded/checkout-form/index.html",
       },
