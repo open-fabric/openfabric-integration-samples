@@ -8,7 +8,7 @@ const nextConfig = {
     return [
       {
         source: "/",
-        destination: "/orchestrated/fill-sample",
+        destination: "/orchestrated/pg-sample",
         permanent: false,
       },
     ];
