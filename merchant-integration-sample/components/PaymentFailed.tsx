@@ -21,7 +21,6 @@ export const PaymentFailed = () => {
         filter: "drop-shadow(4px 4px 2px darkgrey)"
       }}>
         <h1 style={{color: 'red'}}>Payment Failed</h1>
-        <RestartBtn title="Restart Fill Flow" path=""/>
         <RestartBtn title="Restart Backend Flow" path="backend"/>
         <RestartBtn title="Restart Payment Gateway Flow" path="pg"/>
       </div>
