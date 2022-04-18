@@ -1,4 +1,4 @@
-<form action="<%= path %>" id="transactions-form" method="post">
+<form action="<%= path %>" id="transactions-form-<%= status %>" method="post">
   <input
     type="hidden"
     id="account_reference_id"
@@ -27,7 +27,7 @@
         btn<%= btnId %>.classList.add("spin");
         btn<%= btnId %>.disabled = true;
         btn<%= btnId %>.style.opacity = 0.6
-        const form =  document.getElementById("transactions-form");
+        const form =  document.getElementById("transactions-form-<%= status %>");
         form && form.submit()
       },
       false
