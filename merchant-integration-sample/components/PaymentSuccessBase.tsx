@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { RestartBtn } from "./RestartBtn";
+import { RestartBtns } from "./RestartBtns";
 
 export const PaymentSuccessBase: FunctionComponent = (props) => {
   return (
@@ -27,10 +27,7 @@ export const PaymentSuccessBase: FunctionComponent = (props) => {
       >
         <h1 style={{ color: "green", marginBottom: 32 }}>Payment Success</h1>
         {props.children}
-        <RestartBtn title="Restart Pure JS Payment Gateway Flow - Vanilla" path="orchestrated/vanilla" />
-        <RestartBtn title="Restart Backend Flow" path="orchestrated/backend-sample" />
-        <RestartBtn title="Restart Payment Gateway Flow" path="orchestrated/pg-sample" />
-        <RestartBtn title="Restart Embedded Flow" path="embedded/checkout" />
+        <RestartBtns/>
       </div>
     </div>
   );

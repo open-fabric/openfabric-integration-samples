@@ -1,5 +1,5 @@
-import { RestartBtn } from "./RestartBtn";
 import React from "react";
+import { RestartBtns } from "./RestartBtns";
 export const PaymentFailed = () => {
   return (
     <div style={{
@@ -21,8 +21,7 @@ export const PaymentFailed = () => {
         filter: "drop-shadow(4px 4px 2px darkgrey)"
       }}>
         <h1 style={{color: 'red'}}>Payment Failed</h1>
-        <RestartBtn title="Restart Backend Flow" path="backend"/>
-        <RestartBtn title="Restart Payment Gateway Flow" path="pg"/>
+        <RestartBtns/>
       </div>
     </div>
   );
