@@ -1,8 +1,8 @@
 import axios from "axios";
 import {
   account_api_url,
-} from "../lib/variables";
-import { addNewTransaction } from "../db";
+} from "../../lib/variables";
+import { addNewTransaction } from "../../db";
 export const Checkout = async (transaction: any) => {
   const merchantTrans = { ...transaction, status: "Created" };
   addNewTransaction(merchantTrans);

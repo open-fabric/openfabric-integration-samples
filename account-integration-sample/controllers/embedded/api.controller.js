@@ -1,7 +1,10 @@
 import { catchAsync } from "../../utils/catchAsync";
 import * as dbService from "../../services/db";
 import * as transactionService from "../../services/of-transactions";
+import * as merchantService from "../../services/merchant-webhook-embedded";
 import { account_server_url } from "../../lib/variables";
+import { GetAccessToken } from "../../services/auth";
+
 export const CreateTransaction = catchAsync(async (req, res) => {
   const accountTransaction = {
     ...req.body,
@@ -34,26 +37,31 @@ export const ApproveAndSubmitToOF = catchAsync(async (req, res) => {
     ofTransaction: response,
   };
   dbService.updateTransaction(updatedTrans);
+  // update merchant webhook
+  await merchantService.UpdateMerchantWebhook(updatedTrans);
   return res.status(200).json(updatedTrans);
 });
 
-export const FetchCard = catchAsync(async (req, res) => {
-  const account_reference_id = req.query.account_reference_id;
-  if (!account_reference_id) {
-    throw Error("Missing `account_reference_id` in query");
-    return;
+export const CardAccessTokenWithRefId = catchAsync(
+  async (req, res) => {
+    const account_reference_id = req.body.account_reference_id;
+    const transInfo = dbService.readTransaction(account_reference_id);
+    if (
+      !transInfo ||
+      transInfo.status !== "Approved" ||
+      !transInfo.ofTransaction
+    ) {
+      return res.status(500).json({
+        message: `There is not relevant info related to ${account_reference_id}`,
+      });
+    }
+    if (
+      transInfo &&
+      transInfo.status === "Approved" &&
+      transInfo.ofTransaction
+    ) {
+      const accessToken = await GetAccessToken("resources/cards.read");
+      return res.status(200).json(accessToken);
+    }
   }
-  const transInfo = dbService.readTransaction(account_reference_id);
-  if (!transInfo) {
-    console.error("No transaction matching " + account_reference_id);
-    return;
-  }
-  if (transInfo.ofTransaction && transInfo.ofTransaction.card_fetch_token) {
-    const response = await transactionService.fetchCardInfo({
-      card_fetch_token: transInfo.ofTransaction.card_fetch_token,
-    });
-    dbService.updateTransaction({ ...transInfo, cardInfo: response });
-    return res.status(200).json(response);
-  }
-  throw new Error("There is no info related to OpenFabric card_fetch_token");
-});
+);

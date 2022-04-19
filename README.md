@@ -56,7 +56,6 @@ Open <http://localhost:3000> on your browser and experience is ready to use.
 For more details, this is our scenario:
 
 * Orchestrated flow
-  * [http://localhost:3000/orchestrated/fill-sample](http://localhost:3000/orchestrated/fill-sample) for the React sample application
   * [http://localhost:3000/orchestrated/vanilla](http://localhost:3000/orchestrated/vanilla) for the vanilla JS application
   * [http://localhost:3000/orchestrated/pg-sample](http://localhost:3000/orchestrated/pg-sample) for the Payment Gateway sample application (only valid if you input config value for this flow)
   * [http://localhost:3000/orchestrated/backend-sample](http://localhost:3000/orchestrated/backend-sample) for the Backend flow application
@@ -107,8 +106,7 @@ After deploy scripts finished, our sample is ready to try on heroku
 
 * [x] merchant-integation-sample:
   * Demonstrate how to use our **MerchantSDK**
-    * [Fill Flow sample](merchant-integration-sample/components/FillSample.tsx)
-      * [Vanilla sample](merchant-integration-sample/public/vanilla.html)
+    * [Vanilla sample](merchant-integration-sample/public/vanilla.html)
     * [PG Flow Sample](merchant-integration-sample/components/PGSample.tsx)
     * [BE Flow Sample](merchant-integration-samples/frontend-sample/src/BackendSample.tsx)
 * [x] account-integration-sample

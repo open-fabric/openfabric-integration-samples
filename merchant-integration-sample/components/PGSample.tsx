@@ -12,7 +12,7 @@ import {
 import { PGConfig } from "@openfabric/merchant-sdk/dist/config";
 import { faker } from "@faker-js/faker";
 import { FailedHook } from "./HandleFailedHook";
-import { payment_methods, env, payment_gateway_name } from "../lib/variables";
+import { payment_methods, env, payment_gateway_name, payment_gateway_publish_key } from "../lib/variables";
 
 const styles = {
   root: {
@@ -26,7 +26,7 @@ const styles = {
 };
 
 const pgConfig = {
-  publishable_key: "xendit",
+  publishable_key: payment_gateway_publish_key,
   name: payment_gateway_name,
 } as PGConfig;
 

@@ -10,6 +10,9 @@ export const readTransaction = (merchant_reference_id: string) => {
  return db.getData(`/transactions/${merchant_reference_id}`)
 }
 
+export const updateTransaction = (trans: any) => {
+  db.push(`/transactions/${trans.merchant_reference_id}`, trans);
+};
 export const clearTransactions = () => {
   db.delete('/transactions')
 }

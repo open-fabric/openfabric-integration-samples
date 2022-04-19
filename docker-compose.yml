@@ -10,6 +10,7 @@ services:
       - ENV=${ENV}
       - OF_ISSUER_URL=${OF_ISSUER_URL}
       - ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}
+      - MERCHANT_SERVER_URL=${MERCHANT_SERVER_URL}
     ports:
       - "3001:3001"
     container_name: account-integration-sample
