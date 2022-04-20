@@ -12,6 +12,7 @@
             width: 24px;
             height: 24px;
         }
+
         .lds-ring div {
             box-sizing: border-box;
             display: block;
@@ -24,15 +25,19 @@
             animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
             border-color: #fff transparent transparent transparent;
         }
+
         .lds-ring div:nth-child(1) {
             animation-delay: -0.45s;
         }
+
         .lds-ring div:nth-child(2) {
             animation-delay: -0.3s;
         }
+
         .lds-ring div:nth-child(3) {
             animation-delay: -0.15s;
         }
+
         @keyframes lds-ring {
             0% {
                 transform: rotate(0deg);
@@ -93,10 +98,13 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <button type="button" class="w-100 btn btn-lg btn-primary" id="bnpl-button" disabled>Buy now</button>
+                    <button type="button" class="w-100 btn btn-lg btn-primary" id="bnpl-button" disabled>Buy now
+                    </button>
                 </div>
                 <div class="col-md-6">
-                    <button type="button" class="w-100 btn btn-lg btn-primary" id="submit-button" disabled>Continue to checkout</button>
+                    <button type="button" class="w-100 btn btn-lg btn-primary" id="submit-button" disabled>Continue to
+                        checkout
+                    </button>
                 </div>
             </div>
 
@@ -107,7 +115,7 @@
 </div>
 
 <script type="module" src="https://unpkg.com/faker@5.5.3/dist/faker.min.js"></script>
-<script type="module" src="https://unpkg.com/@openfabric/merchant-sdk/dist/index.umd.min.js"></script>
+<script type="module" src="https://unpkg.com/@openfabric/merchant-sdk@0.0.71/dist/index.umd.min.js"></script>
 
 
 <script type="module">
@@ -116,11 +124,6 @@
     const currentEnv = "{ENV}"
 
     const { OpenFabric } = OpenFabricMerchantSDK;
-
-    const pgConfig = {
-        publishable_key: "{PAYMENT_GATEWAY_PUBLISH_KEY}",
-        name: "{PAYMENT_GATEWAY_NAME}",
-    };
 
     const faker = window.faker;
     const initOpenFabric = () => {
@@ -170,7 +173,6 @@
                 )
                     .setDebug(true)
                     .setEnvironment(currentEnv)
-                    .setPGConfig(pgConfig)
                     .setPaymentMethods([paymentMethod]);
 
                 openFabric.createOrder(
@@ -187,6 +189,8 @@
                             shipping_amount: 10,
                             original_amount: 130
                         },
+                        pg_publishable_key: "{PAYMENT_GATEWAY_PUBLISH_KEY}",
+                        pg_name: "{PAYMENT_GATEWAY_NAME}"
                     }
                 )
                 let bnplButton = document.getElementById("bnpl-button");
@@ -194,7 +198,7 @@
                 openFabric.initialize().then(() => {
                     bnplButton.disabled = false;
                 });
-                bnplButton.onclick = function() {
+                bnplButton.onclick = function () {
                     if (bnplButton.disabled) {
                         return;
                     }

@@ -9,7 +9,6 @@ import {
   OpenFabric,
   Environment,
 } from "@openfabric/merchant-sdk";
-import { PGConfig } from "@openfabric/merchant-sdk/dist/config";
 import { faker } from "@faker-js/faker";
 import { FailedHook } from "./HandleFailedHook";
 import { payment_methods, env, payment_gateway_name, payment_gateway_publish_key } from "../lib/variables";
@@ -24,11 +23,6 @@ const styles = {
     padding: "20px",
   },
 };
-
-const pgConfig = {
-  publishable_key: payment_gateway_publish_key,
-  name: payment_gateway_name,
-} as PGConfig;
 
 const authHost = "/api/orchestrated/of-auth";
 const envString = env || "sandbox";
@@ -93,7 +87,6 @@ export const PGSample = () => {
     )
       .setDebug(true)
       .setEnvironment(currentEnv)
-      .setPGConfig(pgConfig);
 
     openFabric.setPaymentMethods([paymentMethods]);
     openFabric.createOrder({
@@ -109,6 +102,8 @@ export const PGSample = () => {
         shipping_amount: 10,
         original_amount: 130,
       },
+      pg_publishable_key: payment_gateway_publish_key,
+      pg_name: payment_gateway_name,
     });
     openFabric.renderButton("bnpl-button");
     openFabric.initialize();
