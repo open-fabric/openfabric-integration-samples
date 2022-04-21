@@ -12,7 +12,7 @@ export const OFAuthentication = async (scope?: string) => {
   ).toString("base64");
   const body = qs.stringify({
     grant_type: "client_credentials",
-    scope: scope || 'resources/transactions.read resources/transactions.write'
+    scope: scope || 'resources/transactions.read resources/transactions.create'
   });
   const response = await axios.post(of_auth_url, body, {
     headers: {
