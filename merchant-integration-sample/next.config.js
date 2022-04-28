@@ -20,6 +20,10 @@ const nextConfig = {
         destination: "/vanilla.html",
       },
       {
+        source: "/orchestrated/dynamic-schema",
+        destination: "/dynamic-schema.html",
+      },
+      {
         source: "/embedded/checkout",
         destination: "/embedded/checkout-form/index.html",
       },
