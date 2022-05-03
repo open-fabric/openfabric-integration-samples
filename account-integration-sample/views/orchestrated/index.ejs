@@ -25,7 +25,7 @@
         display: block;
         margin: 0 auto;
         padding: 0.6em 0.8em;
-        /* Font-size is the root value that determines size of spinner parts. 
+        /* Font-size is the root value that determines size of spinner parts.
             Change this to whatever you want and spinner elements will size to match. */
         font-size: 20px;
         font-weight: bold;
@@ -120,6 +120,20 @@
             btnId: "cancelBtn",
             path: "/api/orchestrated/cancel"}) %>
       </div>
+      <% if ( typeof qrSRC != "undefined" ) { %>
+        <h3>If you have OpenFabric app installed you can approve the transaction by scanning!</h3>
+        <img alt="QR Code Image" src="<%=qrSRC%>" />
+      <% } %>
+      <% if ( typeof deeplink != "undefined" ) { %>
+        <script>
+          setTimeout(function() {
+            window.location = "https://itunes.apple.com/us/app/amadeus-code/id1323778025?mt=8";
+          }, 3000);
+
+          window.location = "<%=deeplink%>";
+        </script>
+      <% } %>
+      <br>
     </div>
   </body>
 </html>
