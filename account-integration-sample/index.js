@@ -1,15 +1,18 @@
 import express from "express";
 import bodyParser from "body-parser";
 import path from "path";
+import device from "express-device";
 import { fileURLToPath } from "url";
 import routes from "./routes";
 import { errorHandler } from "./utils/errorHandler";
+
 const port = 3001;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use(device.capture());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(routes);
