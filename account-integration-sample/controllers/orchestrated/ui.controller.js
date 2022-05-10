@@ -19,7 +19,7 @@ export const CheckOutUI = catchAsync(async (req, res) => {
     });
   }
 
-  const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  const fullUrl = 'openfabric://' + req.get('host') + req.originalUrl;
   qr.toDataURL(fullUrl, (err, qrSRC) => {
     res.render("orchestrated/index", {
       account_reference_id: transInfo?.account_reference_id,

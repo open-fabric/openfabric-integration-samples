@@ -1,14 +1,12 @@
 import axios from "axios";
 import qs from "qs";
 import {
-  merchant_client_secret,
-  merchant_client_id,
   of_auth_url,
 } from "../lib/variables";
 
-export const OFAuthentication = async (scope?: string) => {
+export const OFAuthentication = (id: string, secret: string) => async (scope?: string, ) => {
   const basic = Buffer.from(
-    `${merchant_client_id}:${merchant_client_secret}`
+    `${id}:${secret}`
   ).toString("base64");
   const body = qs.stringify({
     grant_type: "client_credentials",

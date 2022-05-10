@@ -10,6 +10,6 @@ const handler = async (req: NextApiRequest,
     origin: '*',
     optionsSuccessStatus: 200,
  });
- return Authentication(req,res)
+ return Authentication()(req,res)
 }
 export default handler
