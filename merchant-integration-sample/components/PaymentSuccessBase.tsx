@@ -1,7 +1,17 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { RestartBtns } from "./RestartBtns";
 
 export const PaymentSuccessBase: FunctionComponent = (props) => {
+  const [ofAmount, setOfAmount] = React.useState<string>();
+  const [ofCurrency, setOfcurrency] = React.useState<string>();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const amount = queryParams.get("of_amt");
+    const currency = queryParams.get("of_ccy");
+    currency && setOfcurrency(currency);
+    amount && setOfAmount(amount);
+  }, []);
   return (
     <div
       style={{
@@ -26,8 +36,20 @@ export const PaymentSuccessBase: FunctionComponent = (props) => {
         }}
       >
         <h1 style={{ color: "green", marginBottom: 32 }}>Payment Success</h1>
+        {ofCurrency && (
+          <div style={{ wordBreak: "break-all" }}>
+            <b>Approved Currency:</b>
+            {ofCurrency}
+          </div>
+        )}
+        {ofAmount && (
+          <div style={{ wordBreak: "break-all" }}>
+            <b>Approved Amount:</b>
+            {ofAmount}
+          </div>
+        )}
         {props.children}
-        <RestartBtns/>
+        <RestartBtns />
       </div>
     </div>
   );

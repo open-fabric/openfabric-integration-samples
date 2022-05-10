@@ -86,7 +86,7 @@ export const BackendSample = () => {
 
     openFabric.createOrder({
       customer_info,
-      amount: 2300,
+      amount: 230,
       currency: "SGD",
       merchant_reference_id,
       transaction_details: {
