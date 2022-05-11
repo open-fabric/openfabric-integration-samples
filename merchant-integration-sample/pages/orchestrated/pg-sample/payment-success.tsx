@@ -7,7 +7,7 @@ const PaymentSuccess = () => {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    const token = queryParams.get("of_pg_token");
+    const token = queryParams.get("txn_pg_token");
     if (token != null) {
       setPGToken(token);
     }

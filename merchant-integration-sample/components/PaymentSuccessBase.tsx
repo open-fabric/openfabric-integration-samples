@@ -7,8 +7,8 @@ export const PaymentSuccessBase: FunctionComponent = (props) => {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    const amount = queryParams.get("of_amt");
-    const currency = queryParams.get("of_ccy");
+    const amount = queryParams.get("txn_app_amt");
+    const currency = queryParams.get("txn_app_ccy");
     currency && setOfcurrency(currency);
     amount && setOfAmount(amount);
   }, []);
