@@ -25,14 +25,6 @@ const PaymentSuccess = () => {
           {pgToken}
         </div>
       )}
-      <Divider/>
-      {paymentInfo && (
-        <JsonDisplay
-          content={paymentInfo && paymentInfo.data}
-          title={"Payment Info from webhook"}
-        />
-      )}
-      <Divider/>
       {!pgToken && !paymentInfo && (
         <div style={{ margin: 24 }}>
           <CircularProgress />

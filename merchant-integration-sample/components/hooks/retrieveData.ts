@@ -12,7 +12,7 @@ export const retrieveDataHook = () => {
       .then((response) => response.text())
       .then((result) => JSON.parse(result))
       .then((data) => {
-        console.log("=== data.webhook", data.webhook);
+        console.log("=== data from Webhook", data.webhook);
         data.webhook && setPaymentInfo(data.webhook);
       })
       .catch((error) => {
