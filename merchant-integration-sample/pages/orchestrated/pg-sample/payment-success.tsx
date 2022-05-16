@@ -22,7 +22,7 @@ const PaymentSuccess = () => {
       {pgToken && (
         <div style={{ wordBreak: "break-all" }}>
           <b>Payment Gateway Token: </b>
-          {pgToken}
+          {pgToken || (paymentInfo && paymentInfo.data && paymentInfo.data.txn_pg_token)}
         </div>
       )}
       {!pgToken && !paymentInfo && (
