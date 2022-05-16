@@ -1,17 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
+import CircularProgress from "@mui/material/CircularProgress";
 // @ts-ignore
-import {
-  OpenFabric,
-  Environment,
-} from "@openfabric/merchant-sdk";
+import { OpenFabric, Environment } from "@openfabric/merchant-sdk";
 import { faker } from "@faker-js/faker";
 import { FailedHook } from "./HandleFailedHook";
-import { payment_methods, env, payment_gateway_name, payment_gateway_publish_key } from "../lib/variables";
+import {
+  payment_methods,
+  env,
+  payment_gateway_name,
+  payment_gateway_publish_key,
+} from "../lib/variables";
 
 const styles = {
   root: {
@@ -66,10 +68,12 @@ const billing_address = {
 const merchant_reference_id = `MT${Date.now()}`;
 export const PGSample = () => {
   FailedHook({
-    failedUrl: `/orchestrated/pg-sample/payment-failed`
+    failedUrl: `/orchestrated/pg-sample/payment-failed`,
   });
   const [accessToken, setAccessToken] = React.useState<string | null>(null);
-
+  const payBtn = useRef(null);
+  const openFabricRef = useRef<any>();
+  const [loading, setLoading] = useState(true);
   React.useEffect(() => {
     fetch(authHost)
       .then((response) => response.json())
@@ -82,12 +86,11 @@ export const PGSample = () => {
     }
     const openFabric = OpenFabric(
       accessToken,
-      `${window.location.origin}/orchestrated/pg-sample/payment-success`,
-      `${window.location.origin}/orchestrated/pg-sample/payment-failed`
+      `${window.location.origin}/orchestrated/pg-sample/payment-success?merchant_ref=${merchant_reference_id}`,
+      `${window.location.origin}/orchestrated/pg-sample/payment-failed?merchant_ref=${merchant_reference_id}`
     )
       .setDebug(true)
-      .setEnvironment(currentEnv)
-
+      .setEnvironment(currentEnv);
     openFabric.setPaymentMethods([paymentMethods]);
     openFabric.createOrder({
       customer_info,
@@ -105,9 +108,22 @@ export const PGSample = () => {
       pg_publishable_key: payment_gateway_publish_key,
       pg_name: payment_gateway_name,
     });
-    openFabric.renderButton("bnpl-button");
-    openFabric.initialize();
+    openFabric.initialize().then(() => {
+      setLoading(false);
+    });
+    openFabricRef.current = openFabric;
   }, [accessToken]);
+
+  const onPayClick = () => {
+    setLoading(true);
+    fetch("/api/orchestrated/checkout", {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/json" }),
+      body: JSON.stringify(openFabricRef.current.transactionRequest),
+    }).then((response) => {
+      openFabricRef.current.startFlow();
+    });
+  };
 
   return (
     <div
@@ -120,13 +136,13 @@ export const PGSample = () => {
       }}
     >
       <div style={styles.root}>
-        <Paper elevation={3}style={{ padding: "20px" }}>
+        <Paper elevation={3} style={{ padding: "20px" }}>
           <Typography variant="h5" gutterBottom>
             Payment Gateway Experience
           </Typography>
           <div>
             <div>
-            <div>
+              <div>
                 <TextField
                   InputLabelProps={{
                     shrink: true,
@@ -213,12 +229,25 @@ export const PGSample = () => {
                   alignItems: "center",
                 }}
               >
-                <div
-                  id="bnpl-button"
-                  style={{ width: "160px", height: "36px" }}
-                />
+                <Button
+                  variant="contained"
+                  style={{ width: "160px", height: "36px", fontSize: "14px" }}
+                  disabled={loading}
+                  ref={payBtn}
+                  onClick={onPayClick}
+                >
+                  {loading && (
+                    <CircularProgress
+                      size={20}
+                      thickness={4}
+                      color="secondary"
+                    />
+                  )}
+                  {!loading && "Buy Now"}
+                </Button>
                 <div style={{ width: "10px" }} />
                 <Button
+                  size="small"
                   id="submit-button"
                   type="submit"
                   variant="contained"

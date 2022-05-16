@@ -4,7 +4,6 @@ import { RestartBtns } from "./RestartBtns";
 export const PaymentSuccessBase: FunctionComponent = (props) => {
   const [ofAmount, setOfAmount] = React.useState<string>();
   const [ofCurrency, setOfcurrency] = React.useState<string>();
-
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     const amount = queryParams.get("of_amt");
