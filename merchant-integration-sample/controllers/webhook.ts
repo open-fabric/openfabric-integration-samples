@@ -5,7 +5,7 @@ export const Webhook = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  console.log('=== req.body', req.body)
+  console.log('=== Body Webhook', req.body)
   if(req.method !== 'POST') {
     return res.status(500).json({
       error: "Method not supported"

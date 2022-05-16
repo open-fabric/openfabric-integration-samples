@@ -1,13 +1,17 @@
 import React from "react";
 import { retrieveDataHook } from "../../components/hooks/retrieveData";
+import { JsonDisplay } from "../../components/JsonDisplay";
 
 const TransactionInfo = () => {
   const { paymentInfo } = retrieveDataHook();
   return (
     <div>
-      <pre>
-        {JSON.stringify(paymentInfo)}
-      </pre>
+      {paymentInfo && (
+        <JsonDisplay
+          content={paymentInfo && paymentInfo.data}
+          title={"Payment Info from webhook"}
+        />
+      )}
     </div>
   );
 };

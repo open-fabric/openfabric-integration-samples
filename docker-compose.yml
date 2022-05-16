@@ -26,6 +26,17 @@ services:
     container_name: ngrok-account-server
     depends_on:
       - account-integration-sample
+  
+  ngrok-merchant:
+    image: wernight/ngrok
+    ports:
+      - "4041:4040"
+    environment:
+      NGROK_PROTOCOL: https
+      NGROK_PORT: merchant-integration-sample:3000
+    container_name: ngrok-merchant-server
+    depends_on:
+      - merchant-integration-sample
 
   merchant-integration-sample:
     build:

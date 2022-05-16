@@ -4,10 +4,12 @@ import { CircularProgress } from "@mui/material";
 import { CardDetails } from "./CardDetails";
 import { env } from "../lib/variables";
 import { PaymentSuccessBase } from "./PaymentSuccessBase";
+import { retrieveDataHook } from "./hooks/retrieveData";
 const currentEnv: Environment =
   Environment[env as keyof typeof Environment] || Environment.dev;
 export const PaymentSuccess = () => {
   const [cardDetails, setCardDetails] = React.useState<Object | null>(null);
+  const { paymentInfo } = retrieveDataHook();
 
   const cardHandler = useCallback((card_fetch_token: string) => {
     fetch(`/api/orchestrated/backend-flow/fetch-card`, {
@@ -32,11 +34,11 @@ export const PaymentSuccess = () => {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    const token = queryParams.get("of_card_token");
-    if (token != null) {
+    const token = queryParams.get("of_card_token") || (paymentInfo && paymentInfo.data && paymentInfo.data.txn_card_token);
+    if (token != null ) {
       cardHandler(token);
     }
-  }, [cardHandler]);
+  }, [cardHandler, paymentInfo]);
 
   return (
     <PaymentSuccessBase>
