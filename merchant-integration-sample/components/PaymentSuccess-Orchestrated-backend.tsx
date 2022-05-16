@@ -34,7 +34,7 @@ export const PaymentSuccess = () => {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    const token = queryParams.get("of_card_token") || (paymentInfo && paymentInfo.data && paymentInfo.data.txn_card_token);
+    const token = queryParams.get("txn_card_token") || (paymentInfo && paymentInfo.data && paymentInfo.data.txn_card_token);
     if (token != null ) {
       cardHandler(token);
     }
