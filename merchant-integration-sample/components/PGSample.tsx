@@ -27,7 +27,7 @@ const styles = {
 const authHost = "/api/orchestrated/of-auth";
 const envString = env || "sandbox";
 const currentEnv: Environment =
-  Environment[envString as keyof typeof Environment] || Environment.dev;
+  Environment[envString as keyof typeof Environment] || (envString === 'prod' ? Environment.production : Environment.dev);
 const paymentMethods = payment_methods || "";
 
 const customer_info = {

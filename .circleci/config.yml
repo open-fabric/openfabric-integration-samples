@@ -39,3 +39,12 @@ workflows:
             branches:
               only:
                 - release-sandbox
+  prod-deploy:
+    jobs:
+      - deploy-heroku-sample:
+          context:
+            - prod-heroku-sample
+          filters:
+            branches:
+              only:
+                - release-sandbox
