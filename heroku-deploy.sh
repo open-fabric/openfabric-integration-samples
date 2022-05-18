@@ -75,6 +75,67 @@ function proxyAccountServer() {
     echo "================================"
     echo "Sample account endpoint: "$UPDATE_RESULT
     echo
+
+    echo "================================ Update Merchant Webhook Config ================================"
+    merchantClientId=$(grep 'MERCHANT_CLIENT_ID' .env |  tr '\n' '\0')
+    MERCHANT_CLIENT_ID=${merchantClientId#*=}
+    
+    merchantClientSecret=$(grep 'MERCHANT_CLIENT_SECRET' .env |  tr '\n' '\0')
+    MERCHANT_CLIENT_SECRET=${merchantClientSecret#*=}
+
+    paymentMethods=$(grep 'PAYMENT_METHODS' .env |  tr '\n' '\0')
+    PAYMENT_METHODS=${paymentMethods#*=}
+
+    MERCHANT_BASE_64=$(echo $MERCHANT_CLIENT_ID:$MERCHANT_CLIENT_SECRET | tr -d '\n' | base64 | tr -d '\n')
+
+
+    MERCHANT_WEBHOOK_URL+="$MERCHANT_SERVER_URL/api/orchestrated/webhook"
+
+    #get merchant access token
+    MERCHANT_ACCESSTOKEN=$(curl -s --location --request POST $OF_AUTH_URL \
+        --header 'Content-Type: application/x-www-form-urlencoded' \
+        --header "Authorization: Basic $MERCHANT_BASE_64" \
+    --data-urlencode 'grant_type=client_credentials' | jq -r '.access_token')
+    echo
+    MERCHANT_METADATA=$(curl -s --location --request GET $OF_API_URL/m/auth/metadata?payment_methods=$PAYMENT_METHODS \
+        --header "Authorization: Bearer $MERCHANT_ACCESSTOKEN" \
+        --header 'Content-Type: application/json' | jq -r '.[0]')
+    echo "MERCHANT_METADATA ${MERCHANT_METADATA}"
+
+    ACCOUNT_MERCHANT_ID=$(echo $MERCHANT_METADATA | jq -r '.account_merchant_id')
+    ACCOUNT_ID=$(echo $MERCHANT_METADATA | jq -r '.account_id')
+
+    echo "ACCOUNT_MERCHANT_ID ${ACCOUNT_MERCHANT_ID}"
+    echo "ACCOUNT_ID ${ACCOUNT_ID}"
+
+    MERCHANT_API_CREDENTIAL=$(curl -s --location --request GET $OF_API_URL/a/merchants/api-credentials?account_merchant_id=$ACCOUNT_MERCHANT_ID \
+        --header "Authorization: Bearer $ACCESSTOKEN" \
+        --header 'Content-Type: application/json')
+    echo "MERCHANT_API_CREDENTIAL ${MERCHANT_API_CREDENTIAL}"
+    MERCHANT_ID=$(echo $MERCHANT_API_CREDENTIAL | jq -r '.merchant_id')
+
+    echo "MERCHANT_ID ${MERCHANT_ID}"
+    
+    CREATE_MERCHANT_WEBHOOK=$(curl -s --location --request POST $OF_API_URL/n/subscriptions \
+            --header "Authorization: Bearer $ACCESSTOKEN" \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+                "type": "webhook",
+                "merchant_id": "'$MERCHANT_ID'",
+                "subscribed_events": [
+                    "*"
+                ],
+                "config": {
+                    "url": "'$MERCHANT_WEBHOOK_URL'",
+                    "authConfig": {
+                        "header": "X-API-Key",
+                        "value": "HxMrzQBFbaDeLkUar87nczWNi"
+                    }
+                }
+            }' | jq -r '.config.url')
+    echo
+    echo "Sample merchant webhook endpoint: "$CREATE_MERCHANT_WEBHOOK
+    echo
 }
 
 printHelp() {

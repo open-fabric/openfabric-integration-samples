@@ -121,11 +121,10 @@ function proxyAccountServer() {
                         "value": "HxMrzQBFbaDeLkUar87nczWNi"
                     }
                 }
-            }')
-
-
-   echo "CREATE_MERCHANT_WEBHOOK ${CREATE_MERCHANT_WEBHOOK}"
-    
+            }' | jq -r '.config.url')
+    echo
+    echo "Sample merchant webhook endpoint: "$CREATE_MERCHANT_WEBHOOK
+    echo
 
 }
 
