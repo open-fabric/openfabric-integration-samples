@@ -21,8 +21,8 @@ export const requireLogin = (req, res, next) => {
   }
   const session = req.session
   if(!session.timeStamp){
-    response401(req,res)
-    return
+    session.timeStamp = Date.now()
+    return next()
   } else {
     if(Math.floor((Date.now() - session.timeStamp)/1000) > 15) {
       response401(req,res)
