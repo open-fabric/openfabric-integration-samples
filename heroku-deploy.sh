@@ -37,6 +37,12 @@ function variablesUpdate() {
         OF_ISSUER_URL=https://issuer.dev.openfabric.co
         ENV=$CURRENT_ENV
     fi
+    if [ "$CURRENT_ENV" == "prod" ]; then 
+        OF_API_URL=https://api.openfabric.co
+        OF_AUTH_URL=https://auth.openfabric.co/oauth2/token
+        OF_ISSUER_URL=https://issuer.openfabric.co
+        ENV=$CURRENT_ENV
+    fi
     export ACCOUNT_CLIENT_ID=$ACCOUNT_CLIENT_ID
     export ACCOUNT_CLIENT_SECRET=$ACCOUNT_CLIENT_SECRET
     export MERCHANT_CLIENT_ID=$MERCHANT_CLIENT_ID
@@ -172,7 +178,7 @@ function networkUp() {
         
     heroku container:login
     cd merchant-integration-sample
-    heroku stack:set container
+    heroku stack:set container -a ${HEROKU_MERCHANT_REPO}
 
     heroku container:push web -a ${HEROKU_MERCHANT_REPO} \
     --arg PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY},PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME},PAYMENT_METHODS=${PAYMENT_METHODS},ENV=${ENV},OF_AUTH_URL=${OF_AUTH_URL},OF_API_URL=${OF_API_URL},MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID},MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET},OF_ISSUER_URL=${OF_ISSUER_URL},ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}
@@ -181,7 +187,7 @@ function networkUp() {
     cd ..
     
     cd account-integration-sample
-    heroku stack:set container
+    heroku stack:set container -a ${HEROKU_ACCOUNT_REPO}
     heroku container:push web -a ${HEROKU_ACCOUNT_REPO}
     heroku container:release web -a ${HEROKU_ACCOUNT_REPO}
     cd ..

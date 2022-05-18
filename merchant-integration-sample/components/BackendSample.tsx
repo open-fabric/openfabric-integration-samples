@@ -55,7 +55,7 @@ const billing_address = {
 };
 
 const currentEnv: Environment =
-  Environment[env as keyof typeof Environment] || Environment.dev;
+Environment[env as keyof typeof Environment] || (env === 'prod' ? Environment.production : Environment.dev);
 const paymentMethods = payment_methods || "";
 const authHost = "/api/orchestrated/of-auth";
 export const BackendSample = () => {
