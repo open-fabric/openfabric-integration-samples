@@ -13,6 +13,19 @@ function networkDown() {
 }
 
 function variablesUpdate() {
+
+    basicAuthCredentials=$(grep 'BASIC_AUTH_CREDENTIALS' .env |  tr '\n' '\0')
+    BASIC_AUTH_CREDENTIALS=${basicAuthCredentials#*=}
+    if [ ! -z "$BASIC_AUTH_CREDENTIALS" ]; then
+        export  BASIC_AUTH_CREDENTIALS=$BASIC_AUTH_CREDENTIALS
+    fi
+
+    sessionSecret=$(grep 'SESSION_SECRET' .env |  tr '\n' '\0')
+    SESSION_SECRET=${sessionSecret#*=}
+    if [ ! -z "$SESSION_SECRET" ]; then
+        export  SESSION_SECRET=$SESSION_SECRET
+    fi
+
     currentEnv=$(grep 'ENV' .env |  tr '\n' '\0')
     CURRENT_ENV=${currentEnv#*=}
 
@@ -22,6 +35,7 @@ function variablesUpdate() {
         OF_ISSUER_URL=https://issuer.dev.openfabric.co
         ENV=$CURRENT_ENV
     fi
+
     export OF_API_URL=$OF_API_URL
     export OF_AUTH_URL=$OF_AUTH_URL
     export OF_ISSUER_URL=$OF_ISSUER_URL

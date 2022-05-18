@@ -11,6 +11,8 @@ services:
       - OF_ISSUER_URL=${OF_ISSUER_URL}
       - ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}
       - MERCHANT_SERVER_URL=${MERCHANT_SERVER_URL}
+      - BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS}
+      - SESSION_SECRET=${SESSION_SECRET}
     ports:
       - "3001:3001"
     container_name: account-integration-sample
@@ -52,6 +54,7 @@ services:
         - MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET}
         - OF_ISSUER_URL=${OF_ISSUER_URL}
         - ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}
+        - BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS}
     ports:
       - "3000:3000"
     container_name: merchant-integration-sample

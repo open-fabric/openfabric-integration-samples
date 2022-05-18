@@ -4,12 +4,13 @@ import { Checkout } from "../services/embedded/checkout";
 import { WebhookFromAccountServer } from "../services/embedded/account-webhook";
 import { getTransactionByRefId } from '../services/embedded/getTransaction'
 import { fetchCardByMerchantRefId } from '../services/embedded/fetchCard';
+import { basicAuthCredentials } from '../lib/variables';
 
 export const EmbeddedCheckout = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  if (process.env.BASIC_AUTH_CREDENTIALS) {
+  if (basicAuthCredentials) {
     await basicAuthMiddleware(req, res);
   }
   const response = await Checkout(req.body);
@@ -38,7 +39,7 @@ export const fetchCard = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  if (process.env.BASIC_AUTH_CREDENTIALS) {
+  if (basicAuthCredentials) {
     await basicAuthMiddleware(req, res);
   }
   const response = await fetchCardByMerchantRefId(req.body.merchant_reference_id);
