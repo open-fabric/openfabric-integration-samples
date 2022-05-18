@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import basicAuthMiddleware from 'nextjs-basic-auth-middleware'
 import { Checkout } from "../services/embedded/checkout";
 import { WebhookFromAccountServer } from "../services/embedded/account-webhook";
 import { getTransactionByRefId } from '../services/embedded/getTransaction'
@@ -8,6 +9,9 @@ export const EmbeddedCheckout = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
+  if (process.env.BASIC_AUTH_CREDENTIALS) {
+    await basicAuthMiddleware(req, res);
+  }
   const response = await Checkout(req.body);
   res.status(200).json(response);
 }
@@ -34,6 +38,9 @@ export const fetchCard = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
+  if (process.env.BASIC_AUTH_CREDENTIALS) {
+    await basicAuthMiddleware(req, res);
+  }
   const response = await fetchCardByMerchantRefId(req.body.merchant_reference_id);
   res.status(200).json(response);
 }
