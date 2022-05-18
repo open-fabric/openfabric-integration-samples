@@ -47,4 +47,4 @@ workflows:
           filters:
             branches:
               only:
-                - release-sandbox
+                - release-prod
