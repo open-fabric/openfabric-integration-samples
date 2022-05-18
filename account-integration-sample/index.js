@@ -5,9 +5,11 @@ import device from "express-device";
 import { fileURLToPath } from "url";
 import routes from "./routes";
 import { errorHandler } from "./utils/errorHandler";
-import { basicAuthCredentials } from "./lib/variables";
-import cookieParser from 'cookie-parser'
-import session from 'express-session'
+import { basicAuthCredentials, sessionSecret } from "./lib/variables";
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import { requireLogin } from "./utils/requireLogin_middleware";
+
 const port = 3001;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -18,35 +20,14 @@ app.use(device.capture());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(session({ secret: process.env.SESSION_SECRET }));
-
-if (basicAuthCredentials) {
-  const basicAuthUser = basicAuthCredentials.split(":")[0];
-  const basicAuthPass = basicAuthCredentials.split(":")[1];
-  app.use(function (req, res, next) {
-    if (!req.session.authStatus || "loggedOut" === req.session.authStatus) {
-      req.session.authStatus = "loggingIn";
-
-      // cause Express to issue 401 status so browser asks for authentication
-      req.user = false;
-      req.remoteUser = false;
-      if (req.headers && req.headers.authorization) {
-        delete req.headers.authorization;
-      }
-    }
-    next();
-  });
-  app.use(
-    express.basicAuth(function (user, pass, callback) {
-      callback(null, user === basicAuthUser && pass === basicAuthPass);
-    }, "Please enter username and password to access this page")
-  );
-  app.use(function (req, res, next) {
-    req.session.authStatus = "loggedIn";
-    next();
-  });
-}
-
+basicAuthCredentials && sessionSecret && app.use(
+  session({
+    secret: sessionSecret,
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+app.use(requireLogin);
 app.get("/logout", function (req, res) {
   delete req.session.authStatus;
   res.redirect("/");

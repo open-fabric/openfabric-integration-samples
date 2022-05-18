@@ -15,8 +15,7 @@ export const of_issuer_url =
   process.env.OF_ISSUER_URL || "https://issuer.dev.openfabric.co";
 export const account_server_url = (process.env.ACCOUNT_SERVER_URL || '').replace('http://account-integration-sample:3001',"http://localhost:3001")
 export const basicAuthCredentials = process.env.BASIC_AUTH_CREDENTIALS
-export const sessionSecret = process.env.SESSION_SECRET  
-
+export const sessionSecret = process.env.SESSION_SECRET
 // for embedded flow
 export const merchant_server_url = process.env.MERCHANT_SERVER_URL || "http://localhost:3000"
 export const merchant_redirect_url = merchant_server_url.replace('http://merchant-integration-sample:3000',"http://localhost:3000")
