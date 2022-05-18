@@ -15,8 +15,10 @@ export const CheckOutUI = catchAsync(async (req, res) => {
     const transInfo = await GetTransactionById({
         transaction_id: id,
     });
-
-    const base_url = req.protocol + "://" + req.get('host') + "/api/orchestrated/";
+    if(transInfo.status !== 'Created') {
+        res.redirect(transInfo.gateway_success_url);
+    }
+    const base_url = req.protocol + "://" + req.get('host') + "/api/orchestrated/mobile/";
     const payload = {
         account_reference_id: transInfo?.account_reference_id,
         base_url,
