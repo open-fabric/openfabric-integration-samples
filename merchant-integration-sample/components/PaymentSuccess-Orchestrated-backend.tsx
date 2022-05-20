@@ -16,7 +16,6 @@ export const PaymentSuccess = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer anymerchanttoken`,
       },
       body: JSON.stringify({ card_fetch_token }), // body data type must match "Content-Type" header
     })
