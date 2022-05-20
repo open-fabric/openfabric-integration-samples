@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import { Environment, OpenFabric } from "@openfabric/merchant-sdk";
 import { CircularProgress } from "@mui/material";
 import { CardDetails } from "./CardDetails";
-import { env } from "../lib/variables";
+import { env, basicAuthCredentials } from "../lib/variables";
 import { PaymentSuccessBase } from "./PaymentSuccessBase";
 import { retrieveDataHook } from "./hooks/retrieveData";
 const currentEnv: Environment =
@@ -12,11 +12,13 @@ export const PaymentSuccess = () => {
   const { paymentInfo } = retrieveDataHook();
 
   const cardHandler = useCallback((card_fetch_token: string) => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    !basicAuthCredentials &&
+      headers.append("Authorization", "Bearer anymerchanttoken");
     fetch(`/api/orchestrated/backend-flow/fetch-card`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: headers,
       body: JSON.stringify({ card_fetch_token }), // body data type must match "Content-Type" header
     })
       .then((response) => response.json())
