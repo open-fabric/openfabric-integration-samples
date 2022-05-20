@@ -48,21 +48,21 @@ function proxyAccountServer() {
     --data-urlencode 'grant_type=client_credentials' | jq -r '.access_token')
     
     # update account endpoint
-    # echo
-    # echo "================================ Publish Sample Account Endpoint ================================"
-    # echo "Call API: PUT $OF_API_URL/a/settings to update account_transaction_url:$URL "
-    # echo
-    # UPDATE_RESULT=$(curl -s --location --request PUT $OF_API_URL/a/settings \
-    #     --header "Authorization: Bearer $ACCESSTOKEN" \
-    #     --header 'Content-Type: application/json' \
-    #     --data-raw '{
-    # "account_transaction_url": "'$URL'",
-    # "auth_config": {"method": "X-API-KEY", "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"}
-    # }' | jq -r '.account_transaction_url')
+    echo
+    echo "================================ Publish Sample Account Endpoint ================================"
+    echo "Call API: PUT $OF_API_URL/a/settings to update account_transaction_url:$URL "
+    echo
+    UPDATE_RESULT=$(curl -s --location --request PUT $OF_API_URL/a/settings \
+        --header "Authorization: Bearer $ACCESSTOKEN" \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+    "account_transaction_url": "'$URL'",
+    "auth_config": {"method": "X-API-KEY", "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"}
+    }' | jq -r '.account_transaction_url')
 
-    # echo
-    # echo "Sample account endpoint: "$UPDATE_RESULT
-    # echo
+    echo
+    echo "Sample account endpoint: "$UPDATE_RESULT
+    echo
 
     echo "================================ Update Merchant Webhook Config ================================"
     merchantClientId=$(grep 'MERCHANT_CLIENT_ID' .env |  tr '\n' '\0')
