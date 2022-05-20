@@ -14,8 +14,6 @@ export const PaymentSuccess = () => {
   const cardHandler = useCallback((card_fetch_token: string) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-    !basicAuthCredentials &&
-      headers.append("Authorization", "Bearer anymerchanttoken");
     fetch(`/api/orchestrated/backend-flow/fetch-card`, {
       method: "POST",
       headers: headers,
