@@ -19,3 +19,4 @@ export const sessionSecret = process.env.SESSION_SECRET
 // for embedded flow
 export const merchant_server_url = process.env.MERCHANT_SERVER_URL || "http://localhost:3000"
 export const merchant_redirect_url = merchant_server_url.replace('http://merchant-integration-sample:3000',"http://localhost:3000")
+export const trusted_api_key = process.env.TRUSTED_API_KEY || 'dwJeahb3jeNThmWPM2fgEs22EMAirjiQ'
