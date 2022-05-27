@@ -1,7 +1,7 @@
 import { catchAsync } from "../../utils/catchAsync";
-
+import { trusted_api_key } from "../../lib/variables";
 export const WebhookCallBack = catchAsync(async (req, res) => {
-  if (req.header("X-Api-Key") === TRUSTED_API_KEY) {
+  if (req.header("X-Api-Key") === trusted_api_key) {
     console.log(
       "Received OF notifications: ",
       JSON.stringify(req.body, null, 2)
@@ -14,7 +14,7 @@ export const WebhookCallBack = catchAsync(async (req, res) => {
     return res.status(200).send({ status: "Success" });
   } else {
     return res
-        .status(401)
-        .send({ status: "Failed", reason: "Unauthenticated" });
+      .status(401)
+      .send({ status: "Failed", reason: "Unauthenticated" });
   }
 });
