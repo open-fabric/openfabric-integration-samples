@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import NextCors from 'nextjs-cors';
-import { Authentication } from '../../../controllers/of-auth';
+import { Webhook } from '../../../../controllers/webhook'
 
 const handler = async (req: NextApiRequest,
    res: NextApiResponse) => {
@@ -10,6 +10,6 @@ const handler = async (req: NextApiRequest,
     origin: '*',
     optionsSuccessStatus: 200,
  });
- return Authentication()(req,res)
+ return Webhook(req,res)
 }
 export default handler

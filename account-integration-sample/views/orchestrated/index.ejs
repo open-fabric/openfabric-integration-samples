@@ -1,125 +1,225 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Home Page</title>
     <style media="screen">
-      .container {
-        font-family: sans-serif;
-        display: flex;
-        flex: 1;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-      }
+        body {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            font-family: sans-serif;
+        }
 
-      .content {
-        flex: 1;
-        display: flex;
-        align-content: space-around;
-        justify-content: center;
-        flex-direction: row;
-        align-items: center;
-      }
+        .container {
+            font-family: sans-serif;
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            width: 600px;
+            height: 600px;
+            border: 1px solid gray;
+        }
 
-      button {
-        display: block;
-        margin: 0 auto;
-        padding: 0.6em 0.8em;
-        /* Font-size is the root value that determines size of spinner parts. 
+        .content {
+            flex: 1;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            flex-direction: row;
+            align-items: center;
+            margin: 16px;
+        }
+
+        button {
+            display: block;
+            margin: 0 auto;
+            padding: 0.6em 0.8em;
+            /* Font-size is the root value that determines size of spinner parts.
             Change this to whatever you want and spinner elements will size to match. */
-        font-size: 20px;
-        font-weight: bold;
-        border-radius: 0.4em;
-        border: none;
-        overflow: hidden;
-        cursor: pointer;
-        position: relative;
-        transition: all 1s;
-        color: white;
-        margin: 20px;
-        padding: 20px;
-      }
-
-      /* focus/disabled styles, you can change this for accessibility */
-      button:focus,
-      button:disabled {
-        outline: none;
-        background: #aaa;
-      }
-
-      /* This is the space for the spinner to appear, applied to the button */
-      .spin {
-        padding-left: 2.5em;
-        display: block;
-      }
-
-      /* position of the spinner when it appears, you might have to change these values */
-      .spin .spinner {
-        left: -15px;
-        top: 15px;
-        width: 2.5em;
-        display: block;
-        position: absolute;
-      }
-
-      /* spinner animation */
-      @keyframes spinner {
-        0% {
-          transform: rotate(0deg);
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 0.4em;
+            border: none;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            transition: all 1s;
+            color: white;
+            margin: 20px;
+            padding: 20px;
         }
 
-        100% {
-          transform: rotate(360deg);
+        div.tab {
+            width: 100%;
+            flex: 1;
+            display: flex;
+            align-content: space-around;
+            justify-content: start;
+            flex-direction: row;
+            align-items: center;
         }
-      }
 
-      /* The actual spinner element is a pseudo-element */
-      .spin .spinner::before {
-        content: "";
-        width: 1.5em; /* Size of the spinner */
-        height: 1.5em; /* Change as desired */
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        border-radius: 50%;
-        border: solid 0.35em white; /* Thickness/color of spinner track */
-        border-bottom-color: transparent; /* Color of variant spinner piece */
-        animation: 0.8s linear infinite spinner; /* speed of spinner */
-        transform: translate(-50%, -50%);
-        will-change: transform;
-      }
+        div.tablinks {
+            background-color: lightgray;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 12px;
+            color: white;
+            width: 50%;
+            text-align: center;
+        }
 
-      /* optional, but it will affect the size if changed */
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
+        div.selected {
+            background-color: white;
+            color: black;
+        }
+
+
+        /* focus/disabled styles, you can change this for accessibility */
+        button:focus,
+        button:disabled {
+            outline: none;
+            background: #aaa;
+        }
+
+        /* This is the space for the spinner to appear, applied to the button */
+        .spin {
+            padding-left: 2.5em;
+            display: block;
+        }
+
+        /* position of the spinner when it appears, you might have to change these values */
+        .spin .spinner {
+            left: -15px;
+            top: 15px;
+            width: 2.5em;
+            display: block;
+            position: absolute;
+        }
+
+        /* spinner animation */
+        @keyframes spinner {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* The actual spinner element is a pseudo-element */
+        .spin .spinner::before {
+            content: "";
+            width: 1.5em; /* Size of the spinner */
+            height: 1.5em; /* Change as desired */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 50%;
+            border: solid 0.35em white; /* Thickness/color of spinner track */
+            border-bottom-color: transparent; /* Color of variant spinner piece */
+            animation: 0.8s linear infinite spinner; /* speed of spinner */
+            transform: translate(-50%, -50%);
+            will-change: transform;
+        }
+
+        /* optional, but it will affect the size if changed */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        .tab {
+            display: flex;
+            flex-direction: row;
+        }
+
+        #qr {
+            border: 1px solid lightgray;
+            border-radius: 16px;
+            margin-left: 32px;
+        }
     </style>
-  </head>
-  <body>
-    <div class="container">
-      <h2>OpenFabric - Account Integration Sample</h2>
-      <div class="content">
+    <script>
+        window.onlo = selectTab('app_tab')
+        var timerId;
+        function selectTab(id) {
+            if(id === 'app_tab') {
+                if(!timerId) {
+                    timerId = setInterval(() => {
+                    const url = `${window.location.origin}/api/orchestrated/transactions${window.location.search}`;
+                    var headers = new Headers();
+                    headers.append("Accept", "application/json");
+                    const params = {
+                        method: "GET",
+                        headers: headers,
+                    };
+                    fetch(url, params).then((response) => {
+                        return response.json();
+                    })
+                    .then((json) => {
+                        if(json.status !== 'Created') {
+                            window.location.href =  json.gateway_success_url
+                        }
+                    });
+                }, 4000);
+                }
+                
+            } else {
+                timerId && window.clearInterval(timerId)
+                timerId = null
+            }
+            Array.from(document.getElementsByClassName("tablinks") ?? []).forEach((t) => t.classList.remove("selected"));
+            const sel = document.getElementById(id);
+            sel && sel.classList && sel.classList.add("selected");
+            Array.from(document.getElementsByClassName("content") ?? []).forEach((t) => t.style.display = t.id === `${id}_content` ? 'flex' : 'none');
+        }
+        
+    </script>
+<body>
+<h2>OpenFabric - Account Integration Sample</h2>
+<div class="container">
+
+    <div class="tab">
+        <div id="app_tab" class="tablinks selected" onclick="selectTab('app_tab')">Pay using App</div>
+        <div id="browser_tab" class="tablinks" onclick="selectTab('browser_tab')">Pay in Browser</div>
+    </div>
+
+    <div id="browser_tab_content" class="content" style="display: none">
+
         <%- include('button', {
-            id,
-            account_reference_id,
-            title: "Approve Transaction",
-            color: "dodgerblue",
-            status: "Approved",
-            btnId: "approveBtn",
-            path: "/api/orchestrated/approve"
+        id,
+        account_reference_id,
+        title: "Approve Transaction",
+        color: "dodgerblue",
+        status: "Approved",
+        btnId: "approveBtn",
+        path: "/api/orchestrated/approve"
         }) %>
         <%- include('button', {
-            id,
-            account_reference_id,
-            title: "Cancel Transaction",
-            color: "red",
-            status: "Failed",
-            reason: "User trigger failed",
-            btnId: "cancelBtn",
-            path: "/api/orchestrated/cancel"}) %>
-      </div>
+        id,
+        account_reference_id,
+        title: "Cancel Transaction",
+        color: "red",
+        status: "Failed",
+        reason: "User trigger failed",
+        btnId: "cancelBtn",
+        path: "/api/orchestrated/cancel"}) %>
+
     </div>
-  </body>
+
+    <div id="app_tab_content" class="content">
+        <% if ( typeof qrSRC != "undefined" ) { %>
+        <h3>Open the Account app to scan!</h3>
+        <img id="qr" alt="QR Code Image" src="<%= qrSRC %>"/>
+        <% } %>
+    </div>
+</div>
+</body>
 </html>

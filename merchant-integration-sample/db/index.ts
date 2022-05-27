@@ -7,7 +7,13 @@ export const addNewTransaction  = (trans: any) => {
 }
 
 export const readTransaction = (merchant_reference_id: string) => {
- return db.getData(`/transactions/${merchant_reference_id}`)
+  try {
+    return db.getData(`/transactions/${merchant_reference_id}`)
+  } catch(err) {
+    console.log('====== ERR readTransaction ', err)
+    return null
+  }
+  
 }
 
 export const updateTransaction = (trans: any) => {

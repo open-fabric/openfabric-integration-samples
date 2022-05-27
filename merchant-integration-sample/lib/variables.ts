@@ -6,7 +6,7 @@ export const payment_methods = process.env.NEXT_PUBLIC_PAYMENT_METHODS || "";
 export const payment_gateway_publish_key =
   process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLISH_KEY || "";
 export const payment_gateway_name = process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_NAME
-
+export const basicAuthCredentials = process.env.BASIC_AUTH_CREDENTIALS
 // BE only
 export const account_api_url =
   process.env.ACCOUNT_SERVER_URL || 'http://localhost:3001';

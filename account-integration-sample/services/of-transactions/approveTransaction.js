@@ -8,6 +8,8 @@ export const ApproveTransaction = async ({ account_reference_id }) => {
     `${of_api_url}/t/transactions`,
     {
       account_reference_id,
+      approved_amount: 220,
+      approved_currency: 'SGD',
       status: "Approved",
     },
     {

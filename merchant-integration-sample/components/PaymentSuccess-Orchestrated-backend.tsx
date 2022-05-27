@@ -2,20 +2,21 @@ import React, { useCallback, useEffect } from "react";
 import { Environment, OpenFabric } from "@openfabric/merchant-sdk";
 import { CircularProgress } from "@mui/material";
 import { CardDetails } from "./CardDetails";
-import { env } from "../lib/variables";
+import { env, basicAuthCredentials } from "../lib/variables";
 import { PaymentSuccessBase } from "./PaymentSuccessBase";
+import { retrieveDataHook } from "./hooks/retrieveData";
 const currentEnv: Environment =
   Environment[env as keyof typeof Environment] || Environment.dev;
 export const PaymentSuccess = () => {
   const [cardDetails, setCardDetails] = React.useState<Object | null>(null);
+  const { paymentInfo } = retrieveDataHook();
 
   const cardHandler = useCallback((card_fetch_token: string) => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
     fetch(`/api/orchestrated/backend-flow/fetch-card`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer anymerchanttoken`,
-      },
+      headers: headers,
       body: JSON.stringify({ card_fetch_token }), // body data type must match "Content-Type" header
     })
       .then((response) => response.json())
@@ -32,11 +33,11 @@ export const PaymentSuccess = () => {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    const token = queryParams.get("of_card_token");
-    if (token != null) {
+    const token = queryParams.get("txn_card_token") || (paymentInfo && paymentInfo.data && paymentInfo.data.txn_card_token);
+    if (token != null ) {
       cardHandler(token);
     }
-  }, [cardHandler]);
+  }, [cardHandler, paymentInfo]);
 
   return (
     <PaymentSuccessBase>
