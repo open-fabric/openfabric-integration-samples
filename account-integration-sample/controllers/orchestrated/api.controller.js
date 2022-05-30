@@ -7,18 +7,21 @@ export const CreateTransaction = catchAsync(async (req, res) => {
 });
 
 export const ApproveTransaction = catchAsync(async (req, res) => {
-  const id = req.body.id;
+  const id = req.body?.id;
+  const approved_amount = req.body?.approved_amount
+  const approved_currency = req.body?.approved_currency
   if (!id) {
     throw Error("Missing of id in request");
   }
   await transactionService.ApproveTransaction({
     account_reference_id: req.body.account_reference_id,
+    approved_amount: approved_amount,
+    approved_currency: approved_currency
   });
   const transInfo = await transactionService.GetTransactionById({
     transaction_id: id,
   });
-  
-  res.redirect(transInfo.gateway_success_url);
+  return res.status(200).send(transInfo)
 });
 
 export const mobileApproveTransaction = catchAsync(async (req, res) => {

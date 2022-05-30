@@ -17,6 +17,7 @@ export const CheckOutUI = catchAsync(async (req, res) => {
     });
     if(transInfo.status !== 'Created') {
         res.redirect(transInfo.gateway_success_url);
+        return
     }
     const base_url = req.protocol + "://" + req.get('host') + "/api/orchestrated/mobile/";
     const payload = {
@@ -29,6 +30,8 @@ export const CheckOutUI = catchAsync(async (req, res) => {
         res.render("orchestrated/index", {
             account_reference_id: transInfo?.account_reference_id,
             id,
+            currency: transInfo?.currency,
+            amount: transInfo?.amount,
             qrSRC,
         });
     });

@@ -88,14 +88,14 @@
 
         /* This is the space for the spinner to appear, applied to the button */
         .spin {
-            padding-left: 2.5em;
+            padding-left: 20%;
             display: block;
         }
 
         /* position of the spinner when it appears, you might have to change these values */
         .spin .spinner {
-            left: -15px;
-            top: 15px;
+            left: -10px;
+            top: 30px;
             width: 2.5em;
             display: block;
             position: absolute;
@@ -145,9 +145,10 @@
             border-radius: 16px;
             margin-left: 32px;
         }
+        
     </style>
     <script>
-        window.onlo = selectTab('app_tab')
+        window.onload = selectTab('app_tab')
         var timerId;
         function selectTab(id) {
             if(id === 'app_tab') {
@@ -180,7 +181,52 @@
             sel && sel.classList && sel.classList.add("selected");
             Array.from(document.getElementsByClassName("content") ?? []).forEach((t) => t.style.display = t.id === `${id}_content` ? 'flex' : 'none');
         }
-        
+        function approveBtn_onClick() {
+            do{
+                var approvedAmount = parseFloat(prompt("Please enter approved amount", "<%= amount %>"), "<%= amount %>");
+            }
+            while(isNaN(approvedAmount) || approvedAmount < 0.01);
+
+            do{
+                var approvedCurrency = prompt("Please enter approved currency", "<%= currency %>");
+                console.log('=== approvedCurrency', approvedCurrency)
+            }
+            while(!approvedCurrency);
+           return apiSubmit("/api/orchestrated/approve", {
+            id: "<%= id %>",
+            account_reference_id: "<%= account_reference_id %>",
+            approved_amount: approvedAmount || "<%= amount %>",
+            approved_currency:  approvedCurrency || currency
+           }).then((json) => {
+               location.reload();
+            });
+            
+        }
+
+         function cancelBtn_onClick() {
+           return apiSubmit("/api/orchestrated/cancel", {
+             id: "<%= id %>",
+            account_reference_id: "<%= account_reference_id %>",
+             reason: "User trigger failed"
+           }).then((json) => {
+            location.reload();
+            });
+         }
+
+        function apiSubmit(url, body) {
+            var headers = new Headers();
+            headers.append("Content-Type", "application/json");
+            headers.append("Accept", "application/json");
+            const params = {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(body),
+            };
+           return fetch(url, params)
+            .then((response) => {
+            return response.json();
+            })
+        }
     </script>
 <body>
 <h2>OpenFabric - Account Integration Sample</h2>
@@ -210,10 +256,9 @@
         status: "Failed",
         reason: "User trigger failed",
         btnId: "cancelBtn",
-        path: "/api/orchestrated/cancel"}) %>
-
+        path: "/api/orchestrated/cancel"
+    }) %>
     </div>
-
     <div id="app_tab_content" class="content">
         <% if ( typeof qrSRC != "undefined" ) { %>
         <h3>Open the Account app to scan!</h3>
