@@ -87,8 +87,6 @@ export const BackendSample = () => {
     if (!accessToken) {
       return;
     }
-    const merchant_reference_id = `MT${Date.now()}`;
-
     const openFabric = OpenFabric(
       accessToken,
       `${window.location.origin}/orchestrated/backend-sample/payment-success?merchant_ref=${merchant_reference_id}`,
