@@ -9,8 +9,6 @@ import { FailedHook } from "./HandleFailedHook";
 import {
   payment_methods,
   env,
-  payment_gateway_name,
-  payment_gateway_publish_key,
 } from "../lib/variables";
 import { OrderSummary } from "./OrderSummary";
 import { OrderSummaryDataHook } from "./hooks/orderSummaryData";
@@ -47,8 +45,8 @@ export const PGSample = () => {
     merchant_reference_id,
     onAmountChange,
     onCurrencyChange,
-  } = OrderSummaryDataHook({flow: 'pg'});
-  
+  } = OrderSummaryDataHook({ flow: "pg" });
+
   React.useEffect(() => {
     fetch(authHost)
       .then((response) => response.json())
@@ -65,15 +63,15 @@ export const PGSample = () => {
       `${window.location.origin}/orchestrated/pg-sample/payment-failed?merchant_ref=${merchant_reference_id}`
     )
       .setDebug(true)
-      .setEnvironment(currentEnv);
-    openFabric.setPaymentMethods([paymentMethods]);
+      .setEnvironment(currentEnv)
+      .setPaymentMethods([paymentMethods]);
     openFabric.createOrder(order);
     openFabric.initialize().then(() => {
       setLoading(false);
     });
     openFabricRef.current = openFabric;
   }, [accessToken]);
-
+  
   useEffect(() => {
     openFabricRef &&
       openFabricRef.current &&
@@ -88,10 +86,10 @@ export const PGSample = () => {
       body: JSON.stringify(openFabricRef.current.transactionRequest),
     }).then((response) => {
       openFabricRef.current.startFlow().then((result: any) => {
-        if(!result) {
-          setLoading(false)
-        } 
-      })
+        if (!result) {
+          setLoading(false);
+        }
+      });
     });
   };
 
