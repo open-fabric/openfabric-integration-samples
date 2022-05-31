@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 // @ts-ignore
 import { OpenFabric, Environment } from "@openfabric/merchant-sdk";
-import { faker } from "@faker-js/faker";
 import { FailedHook } from "./HandleFailedHook";
 import { payment_methods, env } from "../lib/variables";
 import { OrderSummaryDataHook } from "./hooks/orderSummaryData";
@@ -21,39 +19,6 @@ const styles = {
     alignItems: "center",
     padding: "20px",
   },
-};
-
-const customer_info = {
-  mobile_number: faker.phone.phoneNumber("!##-!##-####"),
-  first_name: faker.name.firstName(),
-  email: faker.internet.email(),
-};
-const item = {
-  item_id: "P100-1222",
-  name: "iPhone",
-  variation_name: "Black, 128GB",
-  description: "string",
-  quantity: 1,
-  amount: 1,
-  price: 2300,
-  original_price: 2000,
-  tax_amount_percent: 3,
-  categories: ["phone"],
-};
-
-const address_line_1 = faker.address.streetAddress();
-const post_code = faker.address.zipCode("###");
-const shipping_address = {
-  country_code: "sg",
-  address_line_1,
-  post_code,
-  self_pickup: true,
-};
-
-const billing_address = {
-  country_code: "sg",
-  address_line_1,
-  post_code,
 };
 
 const currentEnv: Environment =
