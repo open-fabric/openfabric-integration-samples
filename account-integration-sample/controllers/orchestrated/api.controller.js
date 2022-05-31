@@ -65,7 +65,7 @@ export const CancelTransaction = catchAsync(async (req, res) => {
   const transInfo = await transactionService.GetTransactionById({
     transaction_id: id,
   });
-  res.redirect(transInfo.gateway_fail_url);
+  return res.status(200).send(transInfo);
 });
 
 export const getTransactionById = catchAsync(async (req, res) => {
