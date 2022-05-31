@@ -118,22 +118,14 @@ function proxyAccountServer() {
     MERCHANT_METADATA=$(curl -s --location --request GET $OF_API_URL/m/auth/metadata?payment_methods=$PAYMENT_METHODS \
         --header "Authorization: Bearer $MERCHANT_ACCESSTOKEN" \
         --header 'Content-Type: application/json' | jq -r '.[0]')
-    echo "MERCHANT_METADATA ${MERCHANT_METADATA}"
 
     ACCOUNT_MERCHANT_ID=$(echo $MERCHANT_METADATA | jq -r '.account_merchant_id')
     ACCOUNT_ID=$(echo $MERCHANT_METADATA | jq -r '.account_id')
 
-    echo "ACCOUNT_MERCHANT_ID ${ACCOUNT_MERCHANT_ID}"
-    echo "ACCOUNT_ID ${ACCOUNT_ID}"
-
     MERCHANT_API_CREDENTIAL=$(curl -s --location --request GET $OF_API_URL/a/merchants/api-credentials?account_merchant_id=$ACCOUNT_MERCHANT_ID \
         --header "Authorization: Bearer $ACCESSTOKEN" \
         --header 'Content-Type: application/json')
-    echo "MERCHANT_API_CREDENTIAL ${MERCHANT_API_CREDENTIAL}"
-    MERCHANT_ID=$(echo $MERCHANT_API_CREDENTIAL | jq -r '.merchant_id')
-
-    echo "MERCHANT_ID ${MERCHANT_ID}"
-    
+    MERCHANT_ID=$(echo $MERCHANT_API_CREDENTIAL | jq -r '.merchant_id')    
     CREATE_MERCHANT_WEBHOOK=$(curl -s --location --request POST $OF_API_URL/n/subscriptions \
             --header "Authorization: Bearer $ACCESSTOKEN" \
             --header 'Content-Type: application/json' \
