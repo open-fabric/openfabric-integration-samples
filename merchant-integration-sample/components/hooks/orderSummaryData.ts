@@ -3,7 +3,6 @@ import { faker } from "@faker-js/faker";
 import { payment_gateway_name, payment_gateway_publish_key } from "../../lib/variables";
 export const OrderSummaryDataHook = (props?:any) => {
   const flow = props.flow
-  const merchant_reference_id = `MT${Date.now()}`;
   const customer_info = {
     mobile_number: faker.phone.phoneNumber("!##-!##-####"),
     first_name: faker.name.firstName(),
@@ -39,6 +38,7 @@ export const OrderSummaryDataHook = (props?:any) => {
     post_code,
   };
   const shipping_amount = 0;
+  const [merchant_reference_id, _] = useState(`MT${Date.now()}`)
   const [order, setOrder] = useState({
     customer_info,
     amount: item.amount + shipping_amount,
