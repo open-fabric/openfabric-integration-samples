@@ -189,7 +189,6 @@
 
             do{
                 var approvedCurrency = prompt("Please enter approved currency", "<%= currency %>");
-                console.log('=== approvedCurrency', approvedCurrency)
             }
             while(!approvedCurrency);
            return apiSubmit("/api/orchestrated/approve", {

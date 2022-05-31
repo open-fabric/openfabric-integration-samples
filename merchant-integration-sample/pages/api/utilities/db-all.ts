@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import NextCors from 'nextjs-cors';
-import { ClearDb } from '../../../controllers/db-clear';
+import { AllDbController } from '../../../controllers/db-all';
 
 const handler = async (req: NextApiRequest,
    res: NextApiResponse) => {
@@ -10,6 +10,6 @@ const handler = async (req: NextApiRequest,
       origin: '*',
       optionsSuccessStatus: 200,
    });
- return ClearDb(req,res)
+ return AllDbController(req,res)
 }
 export default handler

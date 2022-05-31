@@ -1,9 +1,10 @@
 import { JsonDB } from 'node-json-db';
 import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
-const db = new JsonDB(new Config("merchantsTransaction", true, true, '/'));
+const db = new JsonDB(new Config("merchantsTransaction", true, true, '/', true));
 
 export const addNewTransaction  = (trans: any) => {
   db.push(`/transactions/${trans.merchant_reference_id}`,trans);
+  db.reload()
 }
 
 export const readTransaction = (merchant_reference_id: string) => {
@@ -17,8 +18,11 @@ export const readTransaction = (merchant_reference_id: string) => {
 }
 
 export const updateTransaction = (trans: any) => {
-  db.push(`/transactions/${trans.merchant_reference_id}`, trans);
+ return db.push(`/transactions/${trans.merchant_reference_id}`, trans);
 };
 export const clearTransactions = () => {
-  db.delete('/transactions')
+ return db.resetData({})
+}
+export const AllDb = () => {
+  return db.getData('/transactions')
 }
