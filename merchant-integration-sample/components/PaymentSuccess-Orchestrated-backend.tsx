@@ -35,7 +35,7 @@ export const PaymentSuccess = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const token = queryParams.get("txn_card_token") || (paymentInfo && paymentInfo.data && paymentInfo.data.txn_card_token);
     if (token != null ) {
-      cardHandler(token);
+      !cardDetails && cardHandler(token);
     }
   }, [cardHandler, paymentInfo]);
 

@@ -27,8 +27,7 @@
         btn<%= btnId %>.classList.add("spin");
         btn<%= btnId %>.disabled = true;
         btn<%= btnId %>.style.opacity = 0.6
-        const form =  document.getElementById("transactions-form-<%= status %>");
-        form && form.submit()
+        <%= btnId %>_onClick &&  <%= btnId %>_onClick()
       },
       false
     );

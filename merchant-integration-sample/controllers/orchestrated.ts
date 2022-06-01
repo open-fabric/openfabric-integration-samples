@@ -17,5 +17,5 @@ export const TransactionByRefId = async (
   res: NextApiResponse
 ) => {
   const response = getTransactionByRefId(req.query['id'] as string);
-  res.status(200).json(response);
+  res.status(200).json(response || {});
 }

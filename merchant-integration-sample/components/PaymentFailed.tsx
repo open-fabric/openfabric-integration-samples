@@ -1,6 +1,9 @@
 import React from "react";
+import { retrieveDataHook } from "./hooks/retrieveData";
 import { RestartBtns } from "./RestartBtns";
 export const PaymentFailed = () => {
+  const { paymentInfo } = retrieveDataHook();
+
   return (
     <div style={{
       marginTop: 128,

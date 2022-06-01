@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 // @ts-ignore
 import { OpenFabric, Environment } from "@openfabric/merchant-sdk";
-import { faker } from "@faker-js/faker";
 import { FailedHook } from "./HandleFailedHook";
 import { payment_methods, env } from "../lib/variables";
+import { OrderSummaryDataHook } from "./hooks/orderSummaryData";
+import { OrderSummary } from "./OrderSummary";
 
 const styles = {
   root: {
@@ -19,39 +19,6 @@ const styles = {
     alignItems: "center",
     padding: "20px",
   },
-};
-
-const customer_info = {
-  mobile_number: faker.phone.phoneNumber("!##-!##-####"),
-  first_name: faker.name.firstName(),
-  email: faker.internet.email(),
-};
-const item = {
-  item_id: "P100-1222",
-  name: "iPhone",
-  variation_name: "Black, 128GB",
-  description: "string",
-  quantity: 1,
-  amount: 1,
-  price: 2300,
-  original_price: 2000,
-  tax_amount_percent: 3,
-  categories: ["phone"],
-};
-
-const address_line_1 = faker.address.streetAddress();
-const post_code = faker.address.zipCode("###");
-const shipping_address = {
-  country_code: "sg",
-  address_line_1,
-  post_code,
-  self_pickup: true,
-};
-
-const billing_address = {
-  country_code: "sg",
-  address_line_1,
-  post_code,
 };
 
 const currentEnv: Environment =
@@ -66,6 +33,15 @@ export const BackendSample = () => {
   const payBtn = useRef(null);
   const openFabricRef = useRef<any>();
   const [loading, setLoading] = useState(true);
+  const {
+    amount,
+    currency,
+    order,
+    merchant_reference_id,
+    onAmountChange,
+    onCurrencyChange,
+  } = OrderSummaryDataHook({flow: 'backend'});
+
   React.useEffect(() => {
     fetch(authHost)
       .then((response) => response.json())
@@ -76,8 +52,6 @@ export const BackendSample = () => {
     if (!accessToken) {
       return;
     }
-    const merchant_reference_id = `MT${Date.now()}`;
-
     const openFabric = OpenFabric(
       accessToken,
       `${window.location.origin}/orchestrated/backend-sample/payment-success?merchant_ref=${merchant_reference_id}`,
@@ -87,25 +61,18 @@ export const BackendSample = () => {
       .setEnvironment(currentEnv)
       .setPaymentMethods([paymentMethods]);
 
-    openFabric.createOrder({
-      customer_info,
-      amount: 230,
-      currency: "SGD",
-      merchant_reference_id,
-      transaction_details: {
-        shipping_address,
-        billing_address,
-        items: [item],
-        tax_amount_percent: 10,
-        shipping_amount: 10,
-        original_amount: 130,
-      },
-    });
+    openFabric.createOrder(order);
     openFabric.initialize().then(() => {
       setLoading(false);
     });
     openFabricRef.current = openFabric;
   }, [accessToken]);
+
+  useEffect(() => {
+    openFabricRef &&
+      openFabricRef.current &&
+      openFabricRef.current.createOrder(order);
+  }, [order]);
 
   const onPayClick = () => {
     setLoading(true);
@@ -134,85 +101,13 @@ export const BackendSample = () => {
           </Typography>
           <div>
             <div>
-              <div>
-                <TextField
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  style={{ margin: "10px", textAlign: "left" }}
-                  required
-                  id="example2-address"
-                  label="Address"
-                  autoComplete="address-line1"
-                />
-                <TextField
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  style={{ margin: "10px", textAlign: "left" }}
-                  required
-                  id="example2-city"
-                  label="City"
-                  autoComplete="address-level2"
-                />
-              </div>
-              <div>
-                <TextField
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  style={{ margin: "10px", textAlign: "left" }}
-                  required
-                  id="example2-state"
-                  label="State"
-                  autoComplete="address-level1"
-                />
-                <TextField
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  style={{ margin: "10px", textAlign: "left" }}
-                  required
-                  id="example2-zip"
-                  label="ZIP"
-                  autoComplete="postal-code"
-                />
-              </div>
-              <div>
-                <TextField
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  style={{ margin: "10px", textAlign: "left" }}
-                  required
-                  id="cardnumber"
-                  name="cardnumber"
-                  label="Card number"
-                />
-              </div>
-              <div>
-                <TextField
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  style={{ margin: "10px", textAlign: "left" }}
-                  required
-                  id="exp-date"
-                  name="exp-date"
-                  label="Expiration"
-                />
-                <TextField
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  style={{ margin: "10px", textAlign: "left" }}
-                  required
-                  id="cvc"
-                  name="cvc"
-                  label="CVC"
-                />
-              </div>
-
+            <OrderSummary
+                amount={amount}
+                currency={currency}
+                order={order}
+                onAmountChange={onAmountChange}
+                onCurrencyChange={onCurrencyChange}
+              />
               <div
                 style={{
                   marginTop: "20px",
@@ -224,7 +119,7 @@ export const BackendSample = () => {
                 <Button
                   variant="contained"
                   style={{ width: "160px", height: "36px", fontSize: "14px" }}
-                  disabled={loading}
+                  disabled={loading || !order.currency || !order.amount}
                   ref={payBtn}
                   onClick={onPayClick}
                 >
