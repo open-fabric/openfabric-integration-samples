@@ -26,6 +26,10 @@ const defaultRoutes = [
     route: apiRoute.Embedded,
   },
   {
+    path: "/api/unilateral",
+    route: apiRoute.Unilateral,
+  },
+  {
     path: "/embedded",
     route: uiRoute.EmbeddedCheckout,
   },
