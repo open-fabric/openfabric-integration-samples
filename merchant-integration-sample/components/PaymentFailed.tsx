@@ -10,7 +10,7 @@ export const PaymentFailed = () => {
     if (isMobile) {
       window.location.href = `openfabric://cancelled/${window.location.search}`;
     }
-  })
+  }, [])
 
   return (
     <div style={{

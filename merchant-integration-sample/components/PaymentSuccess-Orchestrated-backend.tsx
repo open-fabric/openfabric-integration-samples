@@ -1,13 +1,9 @@
 import React, { useCallback, useEffect } from "react";
-import { Environment, OpenFabric } from "@openfabric/merchant-sdk";
 import { CircularProgress } from "@mui/material";
 import { CardDetails } from "./CardDetails";
-import { env, basicAuthCredentials } from "../lib/variables";
 import { PaymentSuccessBase } from "./PaymentSuccessBase";
 import { retrieveDataHook } from "./hooks/retrieveData";
-import {isMobile} from "react-device-detect";
-const currentEnv: Environment =
-  Environment[env as keyof typeof Environment] || Environment.dev;
+
 export const PaymentSuccess = () => {
   const [cardDetails, setCardDetails] = React.useState<Object | null>(null);
   const { paymentInfo } = retrieveDataHook();
@@ -37,9 +33,6 @@ export const PaymentSuccess = () => {
     const token = queryParams.get("txn_card_token") || (paymentInfo && paymentInfo.data && paymentInfo.data.txn_card_token);
     if (token != null ) {
       !cardDetails && cardHandler(token);
-    }
-    if (isMobile) {
-      window.location.href = `openfabric://approved/${window.location.search}`;
     }
   }, [cardHandler, paymentInfo]);
 
