@@ -8,7 +8,7 @@ export const PaymentFailed = () => {
 
   useEffect(() => {
     if (isMobile) {
-      window.location.href = `openfabric://cancelled/${window.location.search}`;
+      window.location.href = `ofmerchant://cancelled/${window.location.search}`;
     }
   }, [])
 

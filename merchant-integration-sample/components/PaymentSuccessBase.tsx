@@ -13,7 +13,7 @@ export const PaymentSuccessBase: FunctionComponent = (props) => {
     amount && setOfAmount(amount);
 
     if (isMobile) {
-      window.location.href = `openfabric://approved/${window.location.search}`;
+      window.location.href = `ofmerchant://approved/${window.location.search}`;
     }
   }, []);
   return (
