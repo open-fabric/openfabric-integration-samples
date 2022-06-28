@@ -1,8 +1,16 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { retrieveDataHook } from "./hooks/retrieveData";
 import { RestartBtns } from "./RestartBtns";
+import {isMobile} from "react-device-detect";
+
 export const PaymentFailed = () => {
   const { paymentInfo } = retrieveDataHook();
+
+  useEffect(() => {
+    if (isMobile) {
+      window.location.href = `openfabric://cancelled/${window.location.search}`;
+    }
+  })
 
   return (
     <div style={{

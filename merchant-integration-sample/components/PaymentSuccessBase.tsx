@@ -1,5 +1,6 @@
-import React, { FunctionComponent, useEffect } from "react";
-import { RestartBtns } from "./RestartBtns";
+import React, {FunctionComponent, useEffect} from "react";
+import {RestartBtns} from "./RestartBtns";
+import {isMobile} from 'react-device-detect';
 
 export const PaymentSuccessBase: FunctionComponent = (props) => {
   const [ofAmount, setOfAmount] = React.useState<string>();
@@ -10,6 +11,10 @@ export const PaymentSuccessBase: FunctionComponent = (props) => {
     const currency = queryParams.get("txn_app_ccy");
     currency && setOfcurrency(currency);
     amount && setOfAmount(amount);
+
+    if (isMobile) {
+      window.location.href = `openfabric://approved/${window.location.search}`;
+    }
   }, []);
   return (
     <div

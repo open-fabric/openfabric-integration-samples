@@ -5,6 +5,7 @@ import { CardDetails } from "./CardDetails";
 import { env, basicAuthCredentials } from "../lib/variables";
 import { PaymentSuccessBase } from "./PaymentSuccessBase";
 import { retrieveDataHook } from "./hooks/retrieveData";
+import {isMobile} from "react-device-detect";
 const currentEnv: Environment =
   Environment[env as keyof typeof Environment] || Environment.dev;
 export const PaymentSuccess = () => {
@@ -36,6 +37,9 @@ export const PaymentSuccess = () => {
     const token = queryParams.get("txn_card_token") || (paymentInfo && paymentInfo.data && paymentInfo.data.txn_card_token);
     if (token != null ) {
       !cardDetails && cardHandler(token);
+    }
+    if (isMobile) {
+      window.location.href = `openfabric://approved/${window.location.search}`;
     }
   }, [cardHandler, paymentInfo]);
 
