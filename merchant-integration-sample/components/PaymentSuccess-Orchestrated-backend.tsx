@@ -1,12 +1,9 @@
 import React, { useCallback, useEffect } from "react";
-import { Environment, OpenFabric } from "@openfabric/merchant-sdk";
 import { CircularProgress } from "@mui/material";
 import { CardDetails } from "./CardDetails";
-import { env, basicAuthCredentials } from "../lib/variables";
 import { PaymentSuccessBase } from "./PaymentSuccessBase";
 import { retrieveDataHook } from "./hooks/retrieveData";
-const currentEnv: Environment =
-  Environment[env as keyof typeof Environment] || Environment.dev;
+
 export const PaymentSuccess = () => {
   const [cardDetails, setCardDetails] = React.useState<Object | null>(null);
   const { paymentInfo } = retrieveDataHook();

@@ -145,33 +145,34 @@
             border-radius: 16px;
             margin-left: 32px;
         }
-        
+
     </style>
     <script>
         window.onload = selectTab('app_tab')
         var timerId;
+
         function selectTab(id) {
-            if(id === 'app_tab') {
-                if(!timerId) {
+            if (id === 'app_tab') {
+                if (!timerId) {
                     timerId = setInterval(() => {
-                    const url = `${window.location.origin}/api/orchestrated/transactions${window.location.search}`;
-                    var headers = new Headers();
-                    headers.append("Accept", "application/json");
-                    const params = {
-                        method: "GET",
-                        headers: headers,
-                    };
-                    fetch(url, params).then((response) => {
-                        return response.json();
-                    })
-                    .then((json) => {
-                        if(json.status !== 'Created') {
-                            window.location.href =  json.gateway_success_url
-                        }
-                    });
-                }, 4000);
+                        const url = `${window.location.origin}/api/orchestrated/transactions${window.location.search}`;
+                        var headers = new Headers();
+                        headers.append("Accept", "application/json");
+                        const params = {
+                            method: "GET",
+                            headers: headers,
+                        };
+                        fetch(url, params).then((response) => {
+                            return response.json();
+                        })
+                            .then((json) => {
+                                if (json.status !== 'Created') {
+                                    window.location.href = json.gateway_success_url
+                                }
+                            });
+                    }, 4000);
                 }
-                
+
             } else {
                 timerId && window.clearInterval(timerId)
                 timerId = null
@@ -181,36 +182,37 @@
             sel && sel.classList && sel.classList.add("selected");
             Array.from(document.getElementsByClassName("content") ?? []).forEach((t) => t.style.display = t.id === `${id}_content` ? 'flex' : 'none');
         }
+
         function approveBtn_onClick() {
-            do{
+            do {
                 var approvedAmount = parseFloat(prompt("Please enter approved amount", "<%= amount %>"), "<%= amount %>");
             }
-            while(isNaN(approvedAmount) || approvedAmount < 0.01);
+            while (isNaN(approvedAmount) || approvedAmount < 0.01);
 
-            do{
+            do {
                 var approvedCurrency = prompt("Please enter approved currency", "<%= currency %>");
             }
-            while(!approvedCurrency);
-           return apiSubmit("/api/orchestrated/approve", {
-            id: "<%= id %>",
-            account_reference_id: "<%= account_reference_id %>",
-            approved_amount: approvedAmount || "<%= amount %>",
-            approved_currency:  approvedCurrency || currency
-           }).then((json) => {
-               location.reload();
+            while (!approvedCurrency);
+            return apiSubmit("/api/orchestrated/approve", {
+                id: "<%= id %>",
+                account_reference_id: "<%= account_reference_id %>",
+                approved_amount: approvedAmount || "<%= amount %>",
+                approved_currency: approvedCurrency || currency
+            }).then((json) => {
+                location.reload();
             });
-            
+
         }
 
-         function cancelBtn_onClick() {
-           return apiSubmit("/api/orchestrated/cancel", {
-             id: "<%= id %>",
-            account_reference_id: "<%= account_reference_id %>",
-             reason: "User trigger failed"
-           }).then((json) => {
-            location.reload();
+        function cancelBtn_onClick() {
+            return apiSubmit("/api/orchestrated/cancel", {
+                id: "<%= id %>",
+                account_reference_id: "<%= account_reference_id %>",
+                reason: "User trigger failed"
+            }).then((json) => {
+                location.reload();
             });
-         }
+        }
 
         function apiSubmit(url, body) {
             var headers = new Headers();
@@ -221,10 +223,10 @@
                 headers: headers,
                 body: JSON.stringify(body),
             };
-           return fetch(url, params)
-            .then((response) => {
-            return response.json();
-            })
+            return fetch(url, params)
+                .then((response) => {
+                    return response.json();
+                })
         }
     </script>
 <body>
@@ -256,12 +258,17 @@
         reason: "User trigger failed",
         btnId: "cancelBtn",
         path: "/api/orchestrated/cancel"
-    }) %>
+        }) %>
     </div>
     <div id="app_tab_content" class="content">
         <% if ( typeof qrSRC != "undefined" ) { %>
-        <h3>Open the Account app to scan!</h3>
-        <img id="qr" alt="QR Code Image" src="<%= qrSRC %>"/>
+            <h3>Open the Account app to scan!</h3>
+            <img id="qr" alt="QR Code Image" src="<%= qrSRC %>"/>
+        <% } %>
+        <% if ( typeof deeplink != "undefined" ) { %>
+        <script>
+            window.location = "<%= deeplink %>";
+        </script>
         <% } %>
     </div>
 </div>
