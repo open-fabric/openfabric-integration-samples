@@ -38,5 +38,5 @@ const nextConfig = {
     ];
   },
 };
-const withTM = require("next-transpile-modules")(["@openfabric/merchant-sdk"]);
+const withTM = require("next-transpile-modules")(["@open-fabric/slice-merchant-sdk"]);
 module.exports = withTM(nextConfig);

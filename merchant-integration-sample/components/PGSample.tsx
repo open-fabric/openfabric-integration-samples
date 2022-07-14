@@ -3,13 +3,13 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-// @ts-ignore
-import { OpenFabric, Environment } from "@openfabric/merchant-sdk";
-import { FailedHook } from "./HandleFailedHook";
 import {
-  payment_methods,
-  env,
-} from "../lib/variables";
+  OpenFabric,
+  Environment,
+  FlowType,
+} from "@open-fabric/slice-merchant-sdk";
+import { FailedHook } from "./HandleFailedHook";
+import { payment_methods, env } from "../lib/variables";
 import { OrderSummary } from "./OrderSummary";
 import { OrderSummaryDataHook } from "./hooks/orderSummaryData";
 
@@ -57,39 +57,30 @@ export const PGSample = () => {
     if (!accessToken) {
       return;
     }
-    const openFabric = OpenFabric(
-      accessToken,
-      `${window.location.origin}/orchestrated/pg-sample/payment-success?merchant_ref=${merchant_reference_id}`,
-      `${window.location.origin}/orchestrated/pg-sample/payment-failed?merchant_ref=${merchant_reference_id}`
-    )
-      .setDebug(true)
-      .setEnvironment(currentEnv)
-      .setPaymentMethods([paymentMethods]);
-    openFabric.createOrder(order);
+    const sdkConfig = {
+      access_token: accessToken,
+      merchant_result_url: `${window.location.origin}/orchestrated/pg-sample/payment-success?merchant_ref=${merchant_reference_id}`,
+      merchant_cancel_url: `${window.location.origin}/orchestrated/pg-sample/payment-failed?merchant_ref=${merchant_reference_id}`,
+      payment_methods: [paymentMethods],
+      enviroment: currentEnv,
+      flow_type: FlowType.redirect,
+      debug: true,
+    };
+    const openFabric = OpenFabric(sdkConfig);
+    openFabricRef.current = openFabric;
     openFabric.initialize().then(() => {
       setLoading(false);
     });
-    openFabricRef.current = openFabric;
   }, [accessToken]);
-  
-  useEffect(() => {
-    openFabricRef &&
-      openFabricRef.current &&
-      openFabricRef.current.createOrder(order);
-  }, [order]);
 
   const onPayClick = () => {
     setLoading(true);
     fetch("/api/orchestrated/checkout", {
       method: "POST",
       headers: new Headers({ "Content-Type": "application/json" }),
-      body: JSON.stringify(openFabricRef.current.transactionRequest),
+      body: JSON.stringify(order),
     }).then((response) => {
-      openFabricRef.current.startFlow().then((result: any) => {
-        if (!result) {
-          setLoading(false);
-        }
-      });
+      openFabricRef.current.createOrder(order);
     });
   };
 

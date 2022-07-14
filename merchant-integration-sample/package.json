@@ -17,7 +17,7 @@
     "@faker-js/faker": "^6.0.0",
     "@mui/material": "^5.5.1",
     "@mui/styles": "^5.5.1",
-    "@openfabric/merchant-sdk": "^0.0.72",
+    "@open-fabric/slice-merchant-sdk": "0.0.72-f8e1e55",
     "axios": "^0.26.1",
     "cors": "^2.8.5",
     "faker": "^6.6.6",
