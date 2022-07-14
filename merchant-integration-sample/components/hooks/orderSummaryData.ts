@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
-import { payment_gateway_name, payment_gateway_publish_key } from "../../lib/variables";
-export const OrderSummaryDataHook = (props?:any) => {
-  const flow = props.flow
+import {
+  payment_gateway_name,
+  payment_gateway_publish_key,
+} from "../../lib/variables";
+export const OrderSummaryDataHook = (props?: any) => {
+  const flow = props.flow;
   const customer_info = {
     mobile_number: faker.phone.phoneNumber("!##-!##-####"),
     first_name: faker.name.firstName(),
@@ -22,7 +25,7 @@ export const OrderSummaryDataHook = (props?:any) => {
     discount_amount: 0,
     amount: 1028.97,
   };
-  
+
   const address_line_1 = faker.address.streetAddress();
   const post_code = faker.address.zipCode("###");
   const shipping_address = {
@@ -31,14 +34,14 @@ export const OrderSummaryDataHook = (props?:any) => {
     post_code,
     self_pickup: true,
   };
-  
+
   const billing_address = {
     country_code: "sg",
     address_line_1,
     post_code,
   };
   const shipping_amount = 0;
-  const [merchant_reference_id, _] = useState(`MT${Date.now()}`)
+  const [merchant_reference_id, _] = useState(`MT${Date.now()}`);
   const [order, setOrder] = useState({
     customer_info,
     amount: item.amount + shipping_amount,
@@ -52,10 +55,10 @@ export const OrderSummaryDataHook = (props?:any) => {
       shipping_amount: shipping_amount,
       original_amount: item.amount,
     },
-    ...(flow === 'pg' && {
+    ...(flow === "pg" && {
       pg_name: payment_gateway_name,
-      pg_publishable_key: payment_gateway_publish_key
-    })
+      pg_publishable_key: payment_gateway_publish_key,
+    }),
   });
   const [amount, setAmount] = useState(order.amount);
   const [currency, setCurrency] = useState(order.currency);
@@ -85,5 +88,38 @@ export const OrderSummaryDataHook = (props?:any) => {
     const newCurrency = e.target.value;
     setCurrency(newCurrency);
   };
-  return {amount, currency, order, onAmountChange, onCurrencyChange, merchant_reference_id}
-}
+
+  const onOrderChange = (input: { propName: string; value: any }) => {
+    if (input.propName === "amount") {
+      onAmountChange({ target: { value: `${input.value}` } });
+      return
+    }
+    if(input.propName === 'currency') {
+      onCurrencyChange({ target: { value: `${input.value}` } });
+      return
+    }
+    if(input.propName === 'pg_publishable_key') {
+    
+      if(!input.value) {
+        const updatedOrder = { ...order, [input.propName]: input.value };
+        delete updatedOrder['pg_publishable_key']
+        setOrder(updatedOrder)
+        return
+      }
+    }
+    if(Object.keys(order).includes(input.propName)) {
+      const updatedOrder = { ...order, [input.propName]: input.value };
+      setOrder(updatedOrder)
+    }
+    return
+  };
+  return {
+    amount,
+    currency,
+    order,
+    onAmountChange,
+    onCurrencyChange,
+    merchant_reference_id,
+    onOrderChange
+  };
+};
