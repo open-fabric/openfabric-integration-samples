@@ -38,6 +38,7 @@ export const PGSample = () => {
   const payBtn = useRef(null);
   const openFabricRef = useRef<any>();
   const [loading, setLoading] = useState(true);
+  const [flow, _] = useState("pg");
   const {
     amount,
     currency,
@@ -45,7 +46,8 @@ export const PGSample = () => {
     merchant_reference_id,
     onAmountChange,
     onCurrencyChange,
-  } = OrderSummaryDataHook({ flow: "pg" });
+    onOrderChange
+  } = OrderSummaryDataHook({ flow: flow });
 
   React.useEffect(() => {
     fetch(authHost)
@@ -105,8 +107,10 @@ export const PGSample = () => {
                 amount={amount}
                 currency={currency}
                 order={order}
+                flow={flow}
                 onAmountChange={onAmountChange}
                 onCurrencyChange={onCurrencyChange}
+                onOrderChange={onOrderChange}
               />
               <div
                 style={{
