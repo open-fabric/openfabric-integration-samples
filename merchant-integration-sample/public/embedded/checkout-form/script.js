@@ -35,6 +35,12 @@ function submitMerchantTransaction(e, form) {
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Accept", "application/json");
+  const pgParam = pgKey ? {
+    name: pgName,
+    publishable_key: pgKey
+  } : {
+    name: pgName
+  }
   const params = {
     method: "POST",
     headers: myHeaders,
@@ -53,10 +59,7 @@ function submitMerchantTransaction(e, form) {
           to: "Friday, Oct 5, 2022",
         },
       ],
-      pg_token_provider_config: !isPGFlow ? undefined : {
-        name: pgName,
-        publishable_key: pgKey
-      } 
+      pg_token_provider_config: !isPGFlow ? undefined : pgParam 
     }),
   };
   fetch(url, params)
@@ -64,7 +67,6 @@ function submitMerchantTransaction(e, form) {
       return response.json();
     })
     .then((value) => {
-      console.log('=== url', value)
       if (value.redirect_url) {
         window.location.href = value.redirect_url;
       }

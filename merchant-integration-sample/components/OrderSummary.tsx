@@ -1,7 +1,16 @@
 import { TextField, Typography } from "@mui/material";
+import { PGInput } from "./PGInput";
 
 export const OrderSummary = (props: any) => {
-  const { order, amount, currency, onAmountChange, onCurrencyChange } = props;
+  const {
+    order,
+    amount,
+    currency,
+    onAmountChange,
+    onCurrencyChange,
+    flow,
+    onOrderChange,
+  } = props;
   return (
     <div id="order-content">
       <Typography variant="subtitle1" gutterBottom>
@@ -123,6 +132,7 @@ export const OrderSummary = (props: any) => {
           </div>
         </div>
       </div>
+      {flow === "pg" && <PGInput order={order} onOrderChange={onOrderChange} />}
     </div>
   );
 };

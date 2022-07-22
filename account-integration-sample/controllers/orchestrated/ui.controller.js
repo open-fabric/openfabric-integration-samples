@@ -33,6 +33,7 @@ export const CheckOutUI = catchAsync(async (req, res) => {
             currency: transInfo?.currency,
             amount: transInfo?.amount,
             qrSRC,
+            deeplink
         });
     });
 

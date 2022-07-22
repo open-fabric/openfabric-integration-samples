@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import { CircularProgress } from "@mui/material";
 import { PaymentSuccessBase } from "../../../components/PaymentSuccessBase";
 import { retrieveDataHook } from "../../../components/hooks/retrieveData";
-import { JsonDisplay } from "../../../components/JsonDisplay";
-import Divider from '@mui/material/Divider';
 
 const PaymentSuccess = () => {
   const [pgToken, setPGToken] = React.useState<string | null>(null);
