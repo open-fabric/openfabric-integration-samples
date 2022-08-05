@@ -1,5 +1,6 @@
+import axios from "axios";
+import { of_issuer_url } from "../../lib/variables.js";
 import { GetAccessToken } from "../../services/auth.js";
-import * as dbService from "../../services/db/index.js";
 import { catchAsync } from "../../utils/catchAsync";
 import * as transactionService from "../../services/of-transactions";
 
@@ -9,33 +10,28 @@ export const CreateTransaction = catchAsync(async (req, res) => {
         account_reference_id: `ACC-REF-${Date.now()}`,
     };
 
-    dbService.addNewTransaction(transaction);
-
-    const response = await transactionService.createEmbeddedTransaction({
+    const embeddedTransaction = await transactionService.createEmbeddedTransaction({
         transaction,
     });
+
+    const accessToken = await GetAccessToken("resources/cards.read");
+    const response = await FetchCard(embeddedTransaction.card_fetch_token, accessToken.access_token);
 
     return res.status(200).json(response);
 });
 
-export const CardAccessTokenWithRefId = catchAsync(
-    async (req, res) => {
-        const account_reference_id = req.body.account_reference_id;
-        const transInfo = dbService.readTransaction(account_reference_id);
-        if (
-            !transInfo ||
-            transInfo.status !== "Approved"
-        ) {
-            return res.status(500).json({
-                message: `There is not relevant info related to ${account_reference_id}`,
-            });
+export const FetchCard = async (card_fetch_token, access_token) => {
+    const result = await axios.post(
+        `${of_issuer_url}/i/fetchCard`,
+        {
+            card_fetch_token,
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+                "Content-Type": "application/json",
+            },
         }
-        if (
-            transInfo &&
-            transInfo.status === "Approved"
-        ) {
-            const accessToken = await GetAccessToken("resources/cards.read");
-            return res.status(200).json(accessToken);
-        }
-    }
-);
+    );
+    return result.data;
+};
