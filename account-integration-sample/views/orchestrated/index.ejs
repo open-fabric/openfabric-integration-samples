@@ -19,7 +19,7 @@
             justify-content: center;
             flex-direction: column;
             align-items: center;
-            width: 600px;
+            width: 640px;
             height: 600px;
             border: 1px solid gray;
         }
@@ -40,7 +40,7 @@
             padding: 0.6em 0.8em;
             /* Font-size is the root value that determines size of spinner parts.
             Change this to whatever you want and spinner elements will size to match. */
-            font-size: 20px;
+            font-size: 16px;
             font-weight: bold;
             border-radius: 0.4em;
             border: none;
@@ -204,6 +204,26 @@
 
         }
 
+        function preAuthBtn_onClick() {
+            do {
+                var approvedAmount = parseFloat(prompt("Please enter approved amount", "<%= amount %>"), "<%= amount %>");
+            }
+            while (isNaN(approvedAmount) || approvedAmount < 0.01);
+
+            do {
+                var approvedCurrency = prompt("Please enter approved currency", "<%= currency %>");
+            }
+            while (!approvedCurrency);
+            return apiSubmit("/api/orchestrated/pre-auth", {
+                id: "<%= id %>",
+                account_reference_id: "<%= account_reference_id %>",
+                approved_amount: approvedAmount || "<%= amount %>",
+                approved_currency: approvedCurrency || currency
+            }).then((json) => {
+                location.reload();
+            });
+        }
+
         function cancelBtn_onClick() {
             return apiSubmit("/api/orchestrated/cancel", {
                 id: "<%= id %>",
@@ -248,6 +268,15 @@
         status: "Approved",
         btnId: "approveBtn",
         path: "/api/orchestrated/approve"
+        }) %>
+        <%- include('button', {
+        id,
+        account_reference_id,
+        title: "Delayed Payment",
+        color: "dodgerblue",
+        status: "PreAuth",
+        btnId: "preAuthBtn",
+        path: "/api/orchestrated/pre-auth"
         }) %>
         <%- include('button', {
         id,
