@@ -8,7 +8,6 @@ router.route("/mobile/approve").post(orchestratedController.mobileApproveTransac
 router.route("/mobile/cancel").post(orchestratedController.mobileCancelTransaction);
 
 router.route("/approve").post(orchestratedController.ApproveTransaction);
-router.route("/pre-auth").post(orchestratedController.PreAuthTransaction);
 router.route("/cancel").post(orchestratedController.CancelTransaction);
 
 export const Orchestrated = router;

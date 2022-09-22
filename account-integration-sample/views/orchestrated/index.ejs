@@ -205,23 +205,22 @@
         }
 
         function preAuthBtn_onClick() {
-            do {
-                var approvedAmount = parseFloat(prompt("Please enter approved amount", "<%= amount %>"), "<%= amount %>");
-            }
-            while (isNaN(approvedAmount) || approvedAmount < 0.01);
+            timerId && window.clearInterval(timerId)
+            timerId = null
 
-            do {
-                var approvedCurrency = prompt("Please enter approved currency", "<%= currency %>");
-            }
-            while (!approvedCurrency);
-            return apiSubmit("/api/orchestrated/pre-auth", {
-                id: "<%= id %>",
-                account_reference_id: "<%= account_reference_id %>",
-                approved_amount: approvedAmount || "<%= amount %>",
-                approved_currency: approvedCurrency || currency
-            }).then((json) => {
-                location.reload();
-            });
+            const url = `${window.location.origin}/api/orchestrated/transactions${window.location.search}`;
+            var headers = new Headers();
+            headers.append("Accept", "application/json");
+            const params = {
+                method: "GET",
+                headers: headers,
+            };
+            fetch(url, params).then((response) => {
+                return response.json();
+            })
+                .then((json) => {
+                    window.location.href = json.merchant_redirect_success_url
+                });
         }
 
         function cancelBtn_onClick() {
@@ -272,7 +271,7 @@
         <%- include('button', {
         id,
         account_reference_id,
-        title: "Delayed Payment",
+        title: "Request Review",
         color: "dodgerblue",
         status: "PreAuth",
         btnId: "preAuthBtn",
