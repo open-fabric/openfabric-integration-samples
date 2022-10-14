@@ -115,7 +115,7 @@
 </div>
 
 <script type="module" src="https://unpkg.com/faker@5.5.3/dist/faker.min.js"></script>
-<script type="module" src="https://unpkg.com/@openfabric/merchant-sdk@0.0.71/dist/index.umd.min.js"></script>
+<script type="module" src="https://unpkg.com/@openfabric/merchant-sdk@1.0.0/dist/index.umd.min.js"></script>
 
 
 <script type="module">
@@ -171,7 +171,7 @@
                     `${window.location.origin}/orchestrated/pg-sample/payment-success`,
                     `${window.location.origin}/orchestrated/pg-sample/payment-failed`
                 )
-                    .setDebug(true)
+                    .setDebug(false)
                     .setEnvironment(currentEnv)
                     .setPaymentMethods([paymentMethod]);
 

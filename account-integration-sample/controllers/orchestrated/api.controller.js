@@ -24,6 +24,7 @@ export const ApproveTransaction = catchAsync(async (req, res) => {
   return res.status(200).send(transInfo)
 });
 
+
 export const mobileApproveTransaction = catchAsync(async (req, res) => {
   const id = req.body.id;
   if (!id) {
