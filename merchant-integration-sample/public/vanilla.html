@@ -116,11 +116,8 @@
 
 <script type="module" src="https://unpkg.com/faker@5.5.3/dist/faker.min.js"></script>
 <script type="module" src="https://unpkg.com/@openfabric/merchant-sdk@1.0.0/dist/index.umd.min.js"></script>
-
-
 <script type="module">
     const authHost = `${window.location.origin}/api/orchestrated/of-auth`;
-    const paymentMethod = "{PAYMENT_METHODS}";
     const currentEnv = "{ENV}"
 
     const { OpenFabric } = OpenFabricMerchantSDK;
@@ -160,27 +157,23 @@
             post_code,
         };
 
-        const merchant_reference_id = `MT${Date.now()}`
+        const partner_reference_id = `MT${Date.now()}`
 
         fetch(authHost)
             .then(response => response.json())
             .then(({ access_token }) => {
-
                 const openFabric = OpenFabric(
                     access_token,
                     `${window.location.origin}/orchestrated/pg-sample/payment-success`,
                     `${window.location.origin}/orchestrated/pg-sample/payment-failed`
-                )
-                    .setDebug(false)
-                    .setEnvironment(currentEnv)
-                    .setPaymentMethods([paymentMethod]);
+                ).setEnvironment(currentEnv);
 
                 openFabric.createOrder(
                     {
                         customer_info,
                         amount: 2300,
                         currency: "SGD",
-                        merchant_reference_id,
+                        partner_reference_id,
                         transaction_details: {
                             shipping_address,
                             billing_address,

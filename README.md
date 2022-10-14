@@ -19,7 +19,6 @@ ACCOUNT_CLIENT_ID=<your account client id credential>
 ACCOUNT_CLIENT_SECRET=<your account client secret credential>
 MERCHANT_CLIENT_ID=<your merchant client id credential, must be the merchant of your account>
 MERCHANT_CLIENT_SECRET=<your merchant client secret credential, must be the merchant of your account >
-PAYMENT_METHODS=<your account slug>
 ```
 
 **Note:**

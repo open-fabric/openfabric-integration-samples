@@ -28,7 +28,7 @@ services:
     container_name: ngrok-account-server
     depends_on:
       - account-integration-sample
-  
+
   ngrok-merchant:
     image: wernight/ngrok
     ports:
@@ -46,7 +46,6 @@ services:
       args:
         - PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY}
         - PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}
-        - PAYMENT_METHODS=${PAYMENT_METHODS}
         - ENV=${ENV}
         - OF_AUTH_URL=${OF_AUTH_URL}
         - OF_API_URL=${OF_API_URL}

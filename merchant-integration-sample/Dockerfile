@@ -13,7 +13,6 @@ COPY . .
 ARG ENV
 ARG PAYMENT_GATEWAY_PUBLISH_KEY
 ARG PAYMENT_GATEWAY_NAME
-ARG PAYMENT_METHODS
 ARG OF_AUTH_URL
 ARG OF_API_URL
 ARG MERCHANT_CLIENT_ID
@@ -25,7 +24,6 @@ RUN cat >> .env
 RUN echo "NEXT_PUBLIC_ENV=${ENV}" >> ./.env
 RUN echo "NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY}" >> ./.env
 RUN echo "NEXT_PUBLIC_PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}" >> ./.env
-RUN echo "NEXT_PUBLIC_PAYMENT_METHODS=${PAYMENT_METHODS}" >> ./.env
 RUN echo "NEXT_PUBLIC_OF_AUTH_URL=${OF_AUTH_URL}" >> ./.env
 RUN echo "NEXT_PUBLIC_OF_API_URL=${OF_API_URL}" >> ./.env
 
@@ -35,12 +33,10 @@ RUN echo "OF_ISSUER_URL=${OF_ISSUER_URL}" >> ./.env
 RUN echo "ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}" >> ./.env
 RUN echo "BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS}" >> ./.env
 
-RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/vanilla.html
 RUN sed -i -e "s/{PAYMENT_GATEWAY_PUBLISH_KEY}/$PAYMENT_GATEWAY_PUBLISH_KEY/g" ./public/vanilla.html
 RUN sed -i -e "s/{PAYMENT_GATEWAY_NAME}/$PAYMENT_GATEWAY_NAME/g" ./public/vanilla.html
 RUN sed -i -e "s/{ENV}/$ENV/g" ./public/vanilla.html
 
-RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/dynamic-schema.html
 RUN sed -i -e "s/{PAYMENT_GATEWAY_PUBLISH_KEY}/$PAYMENT_GATEWAY_PUBLISH_KEY/g" ./public/dynamic-schema.html
 RUN sed -i -e "s/{PAYMENT_GATEWAY_NAME}/$PAYMENT_GATEWAY_NAME/g" ./public/dynamic-schema.html
 RUN sed -i -e "s/{ENV}/$ENV/g" ./public/dynamic-schema.html
@@ -58,9 +54,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/vanilla.html
 RUN sed -i -e "s/{ENV}/$ENV/g" ./public/vanilla.html
-RUN sed -i -e "s/{PAYMENT_METHODS}/$PAYMENT_METHODS/g" ./public/dynamic-schema.html
 RUN sed -i -e "s/{ENV}/$ENV/g" ./public/dynamic-schema.html
 RUN chmod 777 ./
 USER nextjs

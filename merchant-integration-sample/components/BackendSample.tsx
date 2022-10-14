@@ -6,7 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 // @ts-ignore
 import { OpenFabric, Environment } from "@openfabric/merchant-sdk";
 import { FailedHook } from "./HandleFailedHook";
-import { payment_methods, env } from "../lib/variables";
+import { env } from "../lib/variables";
 import { OrderSummaryDataHook } from "./hooks/orderSummaryData";
 import { OrderSummary } from "./OrderSummary";
 
@@ -23,7 +23,6 @@ const styles = {
 
 const currentEnv: Environment =
 Environment[env as keyof typeof Environment] || (env === 'prod' ? Environment.production : "dev");
-const paymentMethods = payment_methods || "";
 const authHost = "/api/orchestrated/of-auth";
 export const BackendSample = () => {
   FailedHook({
@@ -37,7 +36,7 @@ export const BackendSample = () => {
     amount,
     currency,
     order,
-    merchant_reference_id,
+    partner_reference_id,
     onAmountChange,
     onCurrencyChange,
   } = OrderSummaryDataHook({flow: 'backend'});
@@ -54,12 +53,11 @@ export const BackendSample = () => {
     }
     const openFabric = OpenFabric(
       accessToken,
-      `${window.location.origin}/orchestrated/backend-sample/payment-success?merchant_ref=${merchant_reference_id}`,
-      `${window.location.origin}/orchestrated/backend-sample/payment-failed?merchant_ref=${merchant_reference_id}`
+      `${window.location.origin}/orchestrated/backend-sample/payment-success?merchant_ref=${partner_reference_id}`,
+      `${window.location.origin}/orchestrated/backend-sample/payment-failed?merchant_ref=${partner_reference_id}`
     )
       .setDebug(true)
-      .setEnvironment(currentEnv)
-      .setPaymentMethods([paymentMethods]);
+      .setEnvironment(currentEnv);
 
     openFabric.createOrder(order);
     openFabric.initialize().then(() => {

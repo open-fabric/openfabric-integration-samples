@@ -7,7 +7,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { OpenFabric, Environment } from "@openfabric/merchant-sdk";
 import { FailedHook } from "./HandleFailedHook";
 import {
-  payment_methods,
   env,
 } from "../lib/variables";
 import { OrderSummary } from "./OrderSummary";
@@ -29,7 +28,6 @@ const envString = env || "sandbox";
 const currentEnv: Environment =
   Environment[envString as keyof typeof Environment] ||
   (envString === "prod" ? Environment.production : "dev");
-const paymentMethods = payment_methods || "";
 export const PGSample = () => {
   FailedHook({
     failedUrl: `/orchestrated/pg-sample/payment-failed`,
@@ -43,7 +41,7 @@ export const PGSample = () => {
     amount,
     currency,
     order,
-    merchant_reference_id,
+    partner_reference_id,
     onAmountChange,
     onCurrencyChange,
     onOrderChange
@@ -61,12 +59,11 @@ export const PGSample = () => {
     }
     const openFabric = OpenFabric(
       accessToken,
-      `${window.location.origin}/orchestrated/pg-sample/payment-success?merchant_ref=${merchant_reference_id}`,
-      `${window.location.origin}/orchestrated/pg-sample/payment-failed?merchant_ref=${merchant_reference_id}`
+      `${window.location.origin}/orchestrated/pg-sample/payment-success?merchant_ref=${partner_reference_id}`,
+      `${window.location.origin}/orchestrated/pg-sample/payment-failed?merchant_ref=${partner_reference_id}`
     )
       .setDebug(true)
-      .setEnvironment(currentEnv)
-      .setPaymentMethods([paymentMethods]);
+      .setEnvironment(currentEnv);
     openFabric.createOrder(order);
     openFabric.initialize().then(() => {
       setLoading(false);
