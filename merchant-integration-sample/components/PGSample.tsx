@@ -28,7 +28,7 @@ const authHost = "/api/orchestrated/of-auth";
 const envString = env || "sandbox";
 const currentEnv: Environment =
   Environment[envString as keyof typeof Environment] ||
-  (envString === "prod" ? Environment.production : Environment.dev);
+  (envString === "prod" ? Environment.production : "dev");
 const paymentMethods = payment_methods || "";
 export const PGSample = () => {
   FailedHook({
@@ -73,7 +73,7 @@ export const PGSample = () => {
     });
     openFabricRef.current = openFabric;
   }, [accessToken]);
-  
+
   useEffect(() => {
     openFabricRef &&
       openFabricRef.current &&

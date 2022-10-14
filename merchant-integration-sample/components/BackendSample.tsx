@@ -22,7 +22,7 @@ const styles = {
 };
 
 const currentEnv: Environment =
-Environment[env as keyof typeof Environment] || (env === 'prod' ? Environment.production : Environment.dev);
+Environment[env as keyof typeof Environment] || (env === 'prod' ? Environment.production : "dev");
 const paymentMethods = payment_methods || "";
 const authHost = "/api/orchestrated/of-auth";
 export const BackendSample = () => {

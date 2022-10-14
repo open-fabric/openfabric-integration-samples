@@ -479,10 +479,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@openfabric/merchant-sdk@^0.0.73":
-  version "0.0.73"
-  resolved "https://registry.yarnpkg.com/@openfabric/merchant-sdk/-/merchant-sdk-0.0.73.tgz#977ed46b1aeeb14f5051697a6934d3ebccf8de9e"
-  integrity sha512-mvfiuVAd0QNft5vXBp4IIlj/EgS0e9QeC+EVXQSt+R3Z4zCxyU8j4TRJJz5qAVcY/Ud8B1WJEsXO4ciL1lVQ4Q==
+"@openfabric/merchant-sdk@^1.0.0":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@openfabric/merchant-sdk/-/merchant-sdk-1.0.1.tgz#591f45230483cc6b1d5e22ab34e30a86b2f7147c"
+  integrity sha512-4R/ntmECUFD8jTrFsvsgiQHknmWKJ7chXUmlYdL6ywo9JUn1dRr3HjKDenkwTejN/GEK5gd8kbzsMwTV3/KEXw==
 
 "@popperjs/core@^2.11.4":
   version "2.11.4"
