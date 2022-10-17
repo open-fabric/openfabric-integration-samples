@@ -22,18 +22,15 @@ function variablesUpdate() {
 
     accountClientId=$(grep 'ACCOUNT_CLIENT_ID' .env |  tr '\n' '\0')
     ACCOUNT_CLIENT_ID=${accountClientId#*=}
-    
+
     accountClientSecret=$(grep 'ACCOUNT_CLIENT_SECRET' .env |  tr '\n' '\0')
     ACCOUNT_CLIENT_SECRET=${accountClientSecret#*=}
-    
+
     merchantClientId=$(grep 'MERCHANT_CLIENT_ID' .env |  tr '\n' '\0')
     MERCHANT_CLIENT_ID=${merchantClientId#*=}
-    
+
     merchantClientSecret=$(grep 'MERCHANT_CLIENT_SECRET' .env |  tr '\n' '\0')
     MERCHANT_CLIENT_SECRET=${merchantClientSecret#*=}
-
-    paymentMethods=$(grep 'PAYMENT_METHODS' .env |  tr '\n' '\0')
-    PAYMENT_METHODS=${paymentMethods#*=}
 
     paymentGatewayPublishKey=$(grep 'PAYMENT_GATEWAY_PUBLISH_KEY' .env |  tr '\n' '\0')
     PAYMENT_GATEWAY_PUBLISH_KEY=${paymentGatewayPublishKey#*=}
@@ -43,13 +40,13 @@ function variablesUpdate() {
 
     currentEnv=$(grep 'ENV' .env |  tr '\n' '\0')
     CURRENT_ENV=${currentEnv#*=}
-    if [ "$CURRENT_ENV" == "dev" ]; then 
+    if [ "$CURRENT_ENV" == "dev" ]; then
         OF_API_URL=https://api.dev.openfabric.co
         OF_AUTH_URL=https://auth.dev.openfabric.co/oauth2/token
         OF_ISSUER_URL=https://issuer.dev.openfabric.co
         ENV=$CURRENT_ENV
     fi
-    if [ "$CURRENT_ENV" == "prod" ]; then 
+    if [ "$CURRENT_ENV" == "prod" ]; then
         OF_API_URL=https://api.openfabric.co
         OF_AUTH_URL=https://auth.openfabric.co/oauth2/token
         OF_ISSUER_URL=https://issuer.openfabric.co
@@ -59,7 +56,6 @@ function variablesUpdate() {
     export ACCOUNT_CLIENT_SECRET=$ACCOUNT_CLIENT_SECRET
     export MERCHANT_CLIENT_ID=$MERCHANT_CLIENT_ID
     export MERCHANT_CLIENT_SECRET=$MERCHANT_CLIENT_SECRET
-    export PAYMENT_METHODS=$PAYMENT_METHODS
     export PAYMENT_GATEWAY_PUBLISH_KEY=$PAYMENT_GATEWAY_PUBLISH_KEY
     export PAYMENT_GATEWAY_NAME=$PAYMENT_GATEWAY_NAME
     export OF_API_URL=$OF_API_URL
@@ -79,7 +75,7 @@ function proxyAccountServer() {
         --header "Authorization: Basic $BASE_64" \
     --data-urlencode 'grant_type=client_credentials' | jq -r '.access_token')
     # update account endpoint
-    echo 
+    echo
     echo "================================ Publish Sample Account Endpoint ================================"
     echo
     UPDATE_RESULT=$(curl --silent --location --request PUT $OF_API_URL/a/settings \
@@ -97,12 +93,9 @@ function proxyAccountServer() {
     echo "================================ Update Merchant Webhook Config ================================"
     merchantClientId=$(grep 'MERCHANT_CLIENT_ID' .env |  tr '\n' '\0')
     MERCHANT_CLIENT_ID=${merchantClientId#*=}
-    
+
     merchantClientSecret=$(grep 'MERCHANT_CLIENT_SECRET' .env |  tr '\n' '\0')
     MERCHANT_CLIENT_SECRET=${merchantClientSecret#*=}
-
-    paymentMethods=$(grep 'PAYMENT_METHODS' .env |  tr '\n' '\0')
-    PAYMENT_METHODS=${paymentMethods#*=}
 
     MERCHANT_BASE_64=$(echo $MERCHANT_CLIENT_ID:$MERCHANT_CLIENT_SECRET | tr -d '\n' | base64 | tr -d '\n')
 
@@ -115,7 +108,7 @@ function proxyAccountServer() {
         --header "Authorization: Basic $MERCHANT_BASE_64" \
     --data-urlencode 'grant_type=client_credentials' | jq -r '.access_token')
     echo
-    MERCHANT_METADATA=$(curl -s --location --request GET $OF_API_URL/m/auth/metadata?payment_methods=$PAYMENT_METHODS \
+    MERCHANT_METADATA=$(curl -s --location --request GET $OF_API_URL/v1/tenants/partners/metadata \
         --header "Authorization: Bearer $MERCHANT_ACCESSTOKEN" \
         --header 'Content-Type: application/json' | jq -r '.[0]')
 
@@ -125,7 +118,7 @@ function proxyAccountServer() {
     MERCHANT_API_CREDENTIAL=$(curl -s --location --request GET $OF_API_URL/a/merchants/api-credentials?account_merchant_id=$ACCOUNT_MERCHANT_ID \
         --header "Authorization: Bearer $ACCESSTOKEN" \
         --header 'Content-Type: application/json')
-    MERCHANT_ID=$(echo $MERCHANT_API_CREDENTIAL | jq -r '.merchant_id')    
+    MERCHANT_ID=$(echo $MERCHANT_API_CREDENTIAL | jq -r '.merchant_id')
     CREATE_MERCHANT_WEBHOOK=$(curl -s --location --request POST $OF_API_URL/n/subscriptions \
             --header "Authorization: Bearer $ACCESSTOKEN" \
             --header 'Content-Type: application/json' \
@@ -179,17 +172,17 @@ function networkUp() {
     ACCOUNT_DOMAIN=$(heroku domains --app ${HEROKU_ACCOUNT_REPO} -j | jq -r '.[0].hostname')
     echo "ACCOUNT_DOMAIN ${ACCOUNT_DOMAIN}"
     export ACCOUNT_SERVER_URL=https://${ACCOUNT_DOMAIN}
-        
+
     heroku container:login
     cd merchant-integration-sample
     heroku stack:set container -a ${HEROKU_MERCHANT_REPO}
 
     heroku container:push web -a ${HEROKU_MERCHANT_REPO} \
-    --arg PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY},PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME},PAYMENT_METHODS=${PAYMENT_METHODS},ENV=${ENV},OF_AUTH_URL=${OF_AUTH_URL},OF_API_URL=${OF_API_URL},MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID},MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET},OF_ISSUER_URL=${OF_ISSUER_URL},ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}
-    heroku config:set --app ${HEROKU_MERCHANT_REPO} PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY} PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME} PAYMENT_METHODS=${PAYMENT_METHODS} ENV=${ENV} OF_AUTH_URL=${OF_AUTH_URL} OF_API_URL=${OF_API_URL} MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} OF_ISSUER_URL=${OF_ISSUER_URL} ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL} BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS}
+    --arg PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY},PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME},ENV=${ENV},OF_AUTH_URL=${OF_AUTH_URL},OF_API_URL=${OF_API_URL},MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID},MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET},OF_ISSUER_URL=${OF_ISSUER_URL},ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}
+    heroku config:set --app ${HEROKU_MERCHANT_REPO} PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY} PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME} ENV=${ENV} OF_AUTH_URL=${OF_AUTH_URL} OF_API_URL=${OF_API_URL} MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} OF_ISSUER_URL=${OF_ISSUER_URL} ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL} BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS}
     heroku container:release web -a ${HEROKU_MERCHANT_REPO}
     cd ..
-    
+
     cd account-integration-sample
     heroku stack:set container -a ${HEROKU_ACCOUNT_REPO}
     heroku container:push web -a ${HEROKU_ACCOUNT_REPO}
@@ -212,7 +205,7 @@ function networkUp() {
 function herokuEnv() {
     herokuMerchantRepo=$(grep 'HEROKU_MERCHANT_REPO' .env |  tr '\n' '\0')
     HEROKU_MERCHANT_REPO=${herokuMerchantRepo#*=}
-    
+
     herokuAccountRepo=$(grep 'HEROKU_ACCOUNT_REPO' .env |  tr '\n' '\0')
     HEROKU_ACCOUNT_REPO=${herokuAccountRepo#*=}
 
@@ -226,11 +219,11 @@ function herokuEnv() {
     HEROKU_OPEN_BROWSER=${herokuOpenBrowser#*=}
 
     if [ -z "$HEROKU_MERCHANT_REPO" ]; then
-        echo "Enter HEROKU_MERCHANT_APP: "  
+        echo "Enter HEROKU_MERCHANT_APP: "
         read HEROKU_MERCHANT_REPO
     fi
     if [ -z "$HEROKU_ACCOUNT_REPO" ]; then
-        echo "Enter HEROKU_ACCOUNT_APP: "  
+        echo "Enter HEROKU_ACCOUNT_APP: "
         read HEROKU_ACCOUNT_REPO
     fi
 }

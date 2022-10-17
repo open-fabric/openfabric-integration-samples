@@ -29,7 +29,7 @@ function variablesUpdate() {
     currentEnv=$(grep 'ENV' .env |  tr '\n' '\0')
     CURRENT_ENV=${currentEnv#*=}
 
-    if [ "$CURRENT_ENV" == "dev" ]; then 
+    if [ "$CURRENT_ENV" == "dev" ]; then
         OF_API_URL=https://api.dev.openfabric.co
         OF_AUTH_URL=https://auth.dev.openfabric.co/oauth2/token
         OF_ISSUER_URL=https://issuer.dev.openfabric.co
@@ -47,20 +47,20 @@ function variablesUpdate() {
 function proxyAccountServer() {
     URL=$(curl -s $(docker port ngrok-account-server 4040)/api/tunnels/command_line | jq -r '.public_url')
     URL+="/api/orchestrated/transactions"
-    
+
     accountClientId=$(grep 'ACCOUNT_CLIENT_ID' .env |  tr '\n' '\0')
     ACCOUNT_CLIENT_ID=${accountClientId#*=}
-    
+
     accountClientSecret=$(grep 'ACCOUNT_CLIENT_SECRET' .env |  tr '\n' '\0')
     ACCOUNT_CLIENT_SECRET=${accountClientSecret#*=}
-    
+
     BASE_64=$(echo $ACCOUNT_CLIENT_ID:$ACCOUNT_CLIENT_SECRET | tr -d '\n' | base64 | tr -d '\n')
     #get account access token
     ACCESSTOKEN=$(curl -s --location --request POST $OF_AUTH_URL \
         --header 'Content-Type: application/x-www-form-urlencoded' \
         --header "Authorization: Basic $BASE_64" \
     --data-urlencode 'grant_type=client_credentials' | jq -r '.access_token')
-    
+
     # update account endpoint
     echo
     echo "================================ Publish Sample Account Endpoint ================================"
@@ -81,12 +81,9 @@ function proxyAccountServer() {
     echo "================================ Update Merchant Webhook Config ================================"
     merchantClientId=$(grep 'MERCHANT_CLIENT_ID' .env |  tr '\n' '\0')
     MERCHANT_CLIENT_ID=${merchantClientId#*=}
-    
+
     merchantClientSecret=$(grep 'MERCHANT_CLIENT_SECRET' .env |  tr '\n' '\0')
     MERCHANT_CLIENT_SECRET=${merchantClientSecret#*=}
-
-    paymentMethods=$(grep 'PAYMENT_METHODS' .env |  tr '\n' '\0')
-    PAYMENT_METHODS=${paymentMethods#*=}
 
     MERCHANT_BASE_64=$(echo $MERCHANT_CLIENT_ID:$MERCHANT_CLIENT_SECRET | tr -d '\n' | base64 | tr -d '\n')
 
@@ -100,7 +97,7 @@ function proxyAccountServer() {
         --header "Authorization: Basic $MERCHANT_BASE_64" \
     --data-urlencode 'grant_type=client_credentials' | jq -r '.access_token')
     echo
-    MERCHANT_METADATA=$(curl -s --location --request GET $OF_API_URL/m/auth/metadata?payment_methods=$PAYMENT_METHODS \
+    MERCHANT_METADATA=$(curl -s --location --request GET $OF_API_URL/v1/tenants/partners/metadata \
         --header "Authorization: Bearer $MERCHANT_ACCESSTOKEN" \
         --header 'Content-Type: application/json' | jq -r '.[0]')
 
@@ -111,7 +108,7 @@ function proxyAccountServer() {
         --header "Authorization: Bearer $ACCESSTOKEN" \
         --header 'Content-Type: application/json')
     MERCHANT_ID=$(echo $MERCHANT_API_CREDENTIAL | jq -r '.merchant_id')
-    
+
     CREATE_MERCHANT_WEBHOOK=$(curl -s --location --request POST $OF_API_URL/n/subscriptions \
             --header "Authorization: Bearer $ACCESSTOKEN" \
             --header 'Content-Type: application/json' \
@@ -146,13 +143,13 @@ printHelp() {
 function networkUp() {
     variablesUpdate
     networkDown
-    
+
     docker-compose up --force-recreate -d 2>&1
     if [ $? -ne 0 ]; then
         echo "ERROR !!!! Unable to start network"
         exit 1
     fi
-    
+
     sleep 1
     echo "Sleeping 3s to allow ngrok docker to complete booting"
     sleep 2

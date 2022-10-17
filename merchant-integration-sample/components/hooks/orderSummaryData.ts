@@ -41,12 +41,12 @@ export const OrderSummaryDataHook = (props?: any) => {
     post_code,
   };
   const shipping_amount = 0;
-  const [merchant_reference_id, _] = useState(`MT${Date.now()}`);
+  const [partner_reference_id] = useState(`MT${Date.now()}`);
   const [order, setOrder] = useState({
     customer_info,
     amount: item.amount + shipping_amount,
     currency: "SGD",
-    merchant_reference_id,
+    partner_reference_id,
     transaction_details: {
       shipping_address,
       billing_address,
@@ -99,7 +99,7 @@ export const OrderSummaryDataHook = (props?: any) => {
       return
     }
     if(input.propName === 'pg_publishable_key') {
-    
+
       if(!input.value) {
         const updatedOrder = { ...order, [input.propName]: input.value };
         delete updatedOrder['pg_publishable_key']
@@ -119,7 +119,7 @@ export const OrderSummaryDataHook = (props?: any) => {
     order,
     onAmountChange,
     onCurrencyChange,
-    merchant_reference_id,
+    partner_reference_id,
     onOrderChange
   };
 };
