@@ -8,13 +8,17 @@ const nextConfig = {
     return [
       {
         source: "/",
-        destination: "/orchestrated/pg-sample",
+        destination: "/index.html",
         permanent: false,
       },
     ];
   },
   rewrites: async () => {
     return [
+      {
+        source: "/orchestrated/pg-sample",
+        destination: "/orchestrated/pg-sample",
+      },
       {
         source: "/orchestrated/vanilla",
         destination: "/vanilla.html",
