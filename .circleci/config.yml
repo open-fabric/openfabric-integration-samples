@@ -22,16 +22,21 @@ jobs:
           aws-secret-access-key: AWS_DEFAULT_REGION
           override-installed: true
           version: 2.8.4
-      # - run:
-      #     command: |
-      #       sudo curl "https://s3.us-west-2.amazonaws.com/lightsailctl/latest/linux-arm64/lightsailctl" -o "/usr/local/bin/lightsailctl"
-      #       sudo chmod +x /usr/local/bin/lightsailctl
       - run:
           command: |
+            sudo curl "https://s3.us-west-2.amazonaws.com/lightsailctl/latest/linux-arm64/lightsailctl" -o "/usr/local/bin/lightsailctl"
+            sudo chmod +x /usr/local/bin/lightsailctl
+      - run:
+          command: |
+            which aws
             aws --version
             aws lightsail --version
+      - run:
+          command: |
             docker build ./nginx/ -t openfabric-integration-samples-nginx:latest
             docker images
+      - run:
+          command: |
             aws lightsail push-container-image --region ap-southeast-1 --service-name account-merchant-sample --label openfabric-sample-reverse-proxy --image openfabric-integration-samples-nginx:latest
       
 workflows:
