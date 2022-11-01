@@ -14,10 +14,10 @@ jobs:
           aws-access-key-id: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_DEFAULT_REGION
           aws-secret-access-key: AWS_DEFAULT_REGION
-      - run:
-          command: |
-            curl "https://s3.us-west-2.amazonaws.com/lightsailctl/latest/linux-arm64/lightsailctl" -o "/usr/local/bin/lightsailctl"
-            sudo chmod +x /usr/local/bin/lightsailctl
+      # - run:
+      #     command: |
+      #       curl "https://s3.us-west-2.amazonaws.com/lightsailctl/latest/linux-arm64/lightsailctl" -o "/usr/local/bin/lightsailctl"
+      #       sudo chmod +x /usr/local/bin/lightsailctl
       - run:
           command: |
             aws --version
