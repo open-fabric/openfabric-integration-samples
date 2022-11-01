@@ -39,6 +39,7 @@ jobs:
             docker images
       - run:
           command: |
+            aws --version
             aws lightsail push-container-image --region ap-southeast-1 --service-name account-merchant-sample --label openfabric-sample-reverse-proxy --image openfabric-integration-samples-nginx:latest
             aws lightsail push-container-image --region ap-southeast-1 --service-name account-merchant-sample --label merchant-integration --image merchant-integration-sample:latest
             aws lightsail push-container-image --region ap-southeast-1 --service-name account-merchant-sample --label account-integration --image account-integration-sample:latest
