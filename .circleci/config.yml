@@ -1,4 +1,11 @@
 version: 2.1
+
+executors:
+  docker_build:
+    machine:
+      docker_layer_caching: true
+      image: ubuntu-2004:202010-01
+
 orbs:
   node: circleci/node@5.0
   aws-cli: circleci/aws-cli@3.1.3
@@ -6,8 +13,7 @@ orbs:
 
 jobs:
   deploy-tenant-merchant-sample:
-    docker:
-      - image: 'cimg/python:3.9.1'
+    executor: docker_build
     steps:
       - checkout
       - aws-cli/setup:
