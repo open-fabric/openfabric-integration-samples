@@ -33,30 +33,32 @@ jobs:
             aws lightsail --version
       - run:
           command: |
-            echo ${ACCOUNT_CLIENT_ID}
-            echo ${ACCOUNT_CLIENT_SECRET}
-            echo ${MERCHANT_CLIENT_SECRET}
-            echo ${PAYMENT_GATEWAY_PUBLISH_KEY}
-            docker build ./nginx/ -t openfabric-integration-samples-nginx:latest
-            docker build ./merchant-integration-sample/ \
-              -t openfabric-integration-samples-merchant:latest \
-              --build-arg ACCOUNT_CLIENT_ID=${ACCOUNT_CLIENT_ID} \
-              --build-arg ACCOUNT_CLIENT_SECRET=${ACCOUNT_CLIENT_SECRET} \
-              --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
-              --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \
-              --build-arg PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY} \
-              --build-arg PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME} \
-              --build-arg ENV=$ENV \
-              --build-arg MERCHANT_SERVER_URL=${MERCHANT_SERVER_URL} \
-              --build-arg OF_ISSUER_URL=${OF_ISSUER_URL} \
-              --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
-              --build-arg OF_API_URL=${OF_API_URL} \
-              --build-arg ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}
-            docker build ./account-integration-sample/ -t openfabric-integration-samples-account:latest
-            docker images
-      - run:
-          command: |
-            bash script/deploy.sh
+            printenv
+            echo "$ACCOUNT_CLIENT_ID"
+            echo ACCOUNT_CLIENT_ID
+            echo ACCOUNT_CLIENT_SECRET
+            echo MERCHANT_CLIENT_SECRET
+            echo PAYMENT_GATEWAY_PUBLISH_KEY
+      #       docker build ./nginx/ -t openfabric-integration-samples-nginx:latest
+      #       docker build ./merchant-integration-sample/ \
+      #         -t openfabric-integration-samples-merchant:latest \
+      #         --build-arg ACCOUNT_CLIENT_ID=${ACCOUNT_CLIENT_ID} \
+      #         --build-arg ACCOUNT_CLIENT_SECRET=${ACCOUNT_CLIENT_SECRET} \
+      #         --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
+      #         --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \
+      #         --build-arg PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY} \
+      #         --build-arg PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME} \
+      #         --build-arg ENV=$ENV \
+      #         --build-arg MERCHANT_SERVER_URL=${MERCHANT_SERVER_URL} \
+      #         --build-arg OF_ISSUER_URL=${OF_ISSUER_URL} \
+      #         --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
+      #         --build-arg OF_API_URL=${OF_API_URL} \
+      #         --build-arg ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}
+      #       docker build ./account-integration-sample/ -t openfabric-integration-samples-account:latest
+      #       docker images
+      # - run:
+      #     command: |
+      #       bash script/deploy.sh
       
 workflows:
   dev-deploy:
