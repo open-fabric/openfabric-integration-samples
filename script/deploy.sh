@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # accountClientId=$(grep 'ACCOUNT_CLIENT_ID' .env |  tr '\n' '\0')
 # ACCOUNT_CLIENT_ID=${accountClientId#*=}
