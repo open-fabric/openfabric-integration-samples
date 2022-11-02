@@ -56,7 +56,7 @@ jobs:
             docker images
       - run:
           command: |
-            sh script/deploy.sh
+            bash script/deploy.sh
       
 workflows:
   dev-deploy:
