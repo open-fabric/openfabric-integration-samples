@@ -33,7 +33,7 @@
     "healthCheck": {
       "healthyThreshold": 2,
       "intervalSeconds": 300,
-      "path": "/",
+      "path": "/index",
       "successCodes": "200-499",
       "timeoutSeconds": 2,
       "unhealthyThreshold": 2
