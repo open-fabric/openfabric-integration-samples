@@ -33,16 +33,7 @@ jobs:
             aws lightsail --version
       - run:
           command: |
-            docker build ./nginx/ -t openfabric-integration-samples-nginx:latest
-            docker build ./merchant-integration-sample/ -t merchant-integration-sample:latest --build-arg ENV=dev --build-arg PAYMENT_GATEWAY_NAME=xendit --build-arg PAYMENT_GATEWAY_PUBLISH_KEY=xnd_public_development_AZVI4iAxXD6fCgKzxhy1Rvr5obpIvKcJXNnXldhfjhJbWB7RDhwzakaf2dF3tQM
-            docker build ./account-integration-sample/ -t account-integration-sample:latest
-            docker images
-      - run:
-          command: |
-            aws --version
-            aws lightsail push-container-image --region ap-southeast-1 --service-name account-merchant-sample --label openfabric-sample-reverse-proxy --image openfabric-integration-samples-nginx:latest
-            aws lightsail push-container-image --region ap-southeast-1 --service-name account-merchant-sample --label merchant-integration --image merchant-integration-sample:latest
-            aws lightsail push-container-image --region ap-southeast-1 --service-name account-merchant-sample --label account-integration --image account-integration-sample:latest
+            sh script/deploy.sh
       
 workflows:
   dev-deploy:
