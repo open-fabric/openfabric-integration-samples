@@ -3,7 +3,7 @@ version: 2.1
 executors:
   docker_build:
     machine:
-      docker_layer_caching: true
+      docker_layer_caching: false
       image: ubuntu-2004:202010-01
 
 orbs:
@@ -35,10 +35,6 @@ jobs:
           command: |
             printenv
             echo "$ACCOUNT_CLIENT_ID"
-            echo ACCOUNT_CLIENT_ID
-            echo ACCOUNT_CLIENT_SECRET
-            echo MERCHANT_CLIENT_SECRET
-            echo PAYMENT_GATEWAY_PUBLISH_KEY
       #       docker build ./nginx/ -t openfabric-integration-samples-nginx:latest
       #       docker build ./merchant-integration-sample/ \
       #         -t openfabric-integration-samples-merchant:latest \
