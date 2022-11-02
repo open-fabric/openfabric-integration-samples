@@ -33,6 +33,10 @@ jobs:
             aws lightsail --version
       - run:
           command: |
+            echo ${ACCOUNT_CLIENT_ID}
+            echo ${ACCOUNT_CLIENT_SECRET}
+            echo ${MERCHANT_CLIENT_SECRET}
+            echo ${PAYMENT_GATEWAY_PUBLISH_KEY}
             docker build ./nginx/ -t openfabric-integration-samples-nginx:latest
             docker build ./merchant-integration-sample/ \
               -t openfabric-integration-samples-merchant:latest \
@@ -50,9 +54,9 @@ jobs:
               --build-arg ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}
             docker build ./account-integration-sample/ -t openfabric-integration-samples-account:latest
             docker images
-      - run:
-          command: |
-            sh script/deploy.sh
+      # - run:
+      #     command: |
+      #       sh script/deploy.sh
       
 workflows:
   dev-deploy:
