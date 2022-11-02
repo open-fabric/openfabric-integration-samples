@@ -56,7 +56,7 @@
 # docker images
 
 # REGEX to separate image name after deploy
-REGEX='Refer to this image as \"(.*)\" in deployments.'
+REGEX='Refer to this image as \"(.*)\" in deployments'
 
 # push images to aws lightsail and parse image name
 for name in "NGINX" "MERCHANT" "ACCOUNT"
