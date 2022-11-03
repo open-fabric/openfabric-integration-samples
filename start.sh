@@ -1,11 +1,11 @@
 
 
-OF_API_URL=https://api.sandbox.openfabric.co
-OF_AUTH_URL=https://auth.sandbox.openfabric.co/oauth2/token
-OF_ISSUER_URL=https://issuer.sandbox.openfabric.co
-ACCOUNT_SERVER_URL=http://account-integration-sample:3001
-MERCHANT_SERVER_URL=http://merchant-integration-sample:3000
-ENV=sandbox
+OF_API_URL=https://api.dev.openfabric.co
+OF_AUTH_URL=https://auth.dev.openfabric.co/oauth2/token
+OF_ISSUER_URL=https://issuer.dev.openfabric.co
+ACCOUNT_SERVER_URL=https://of-test-1.samples.dev.openfabric.co
+MERCHANT_SERVER_URL=https://merchant-1.samples.dev.openfabric.co
+ENV=dev
 SKIP_PROXY=0
 function networkDown() {
     docker-compose down --rmi local

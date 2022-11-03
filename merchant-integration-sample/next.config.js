@@ -16,6 +16,10 @@ const nextConfig = {
   rewrites: async () => {
     return [
       {
+        source: "/index",
+        destination: "/index.html",
+      },
+      {
         source: "/orchestrated/vanilla",
         destination: "/vanilla.html",
       },

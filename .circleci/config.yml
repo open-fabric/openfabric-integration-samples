@@ -1,50 +1,65 @@
 version: 2.1
+
+executors:
+  docker_build:
+    machine:
+      docker_layer_caching: true
+      image: ubuntu-2004:202010-01
+
 orbs:
   node: circleci/node@5.0
-  heroku: circleci/heroku@1.2.6
+  aws-cli: circleci/aws-cli@3.1.3
   slack: circleci/slack@4.4.4
+
 jobs:
-  deploy-heroku-sample:
-    executor: heroku/default
+  deploy-tenant-merchant-sample:
+    executor: docker_build
     steps:
       - checkout
-      - heroku/install
-      - heroku/check-authentication:
-          print-whoami: true
-      - setup_remote_docker:
-          version: 20.10.11
-      - run: 
-          name: Run heroku-deploy.sh
+      - aws-cli/setup:
+          aws-access-key-id: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_DEFAULT_REGION
+          aws-secret-access-key: AWS_DEFAULT_REGION
+          override-installed: true
+          version: 2.8.4
+      - run:
           command: |
-                echo $ENV | base64 --decode > ./.env
-                chmod +x ./heroku-deploy.sh
-                ./heroku-deploy.sh
+            sudo curl "https://s3.us-west-2.amazonaws.com/lightsailctl/latest/linux-amd64/lightsailctl" -o "/usr/local/bin/lightsailctl"
+            sudo chmod +x /usr/local/bin/lightsailctl
+      - run:
+          command: |
+            which aws
+            aws --version
+            aws lightsail --version
+      - run:
+          command: |
+            docker build ./nginx/ -t openfabric-integration-samples-nginx:latest
+            docker build ./merchant-integration-sample/ \
+              -t openfabric-integration-samples-merchant:latest \
+              --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
+              --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \
+              --build-arg PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY} \
+              --build-arg PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME} \
+              --build-arg ENV=$ENV \
+              --build-arg MERCHANT_SERVER_URL=${MERCHANT_SERVER_URL} \
+              --build-arg OF_ISSUER_URL=${OF_ISSUER_URL} \
+              --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
+              --build-arg OF_API_URL=${OF_API_URL} \
+              --build-arg ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}
+            docker build ./account-integration-sample/ -t openfabric-integration-samples-account:latest
+            docker images
+      - run:
+          command: |
+            bash script/deploy.sh
       
 workflows:
   dev-deploy:
     jobs:
-      - deploy-heroku-sample:
+      - deploy-tenant-merchant-sample:
           context:
+            - dev-aws-creds
             - dev-heroku-sample
           filters:
             branches:
               only:
                 - main
-  sandbox-deploy:
-    jobs:
-      - deploy-heroku-sample:
-          context:
-            - sandbox-heroku-sample
-          filters:
-            branches:
-              only:
-                - release-sandbox
-  prod-deploy:
-    jobs:
-      - deploy-heroku-sample:
-          context:
-            - prod-heroku-sample
-          filters:
-            branches:
-              only:
-                - release-production

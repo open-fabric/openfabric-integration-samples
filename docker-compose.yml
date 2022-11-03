@@ -1,5 +1,13 @@
 version: "3"
 services:
+  nginx:
+    build: nginx
+    restart: always
+    ports:
+      - 80:80
+    environment:
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
+      
   account-integration-sample:
     build: ./account-integration-sample
     environment:
