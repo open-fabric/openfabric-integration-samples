@@ -3,7 +3,7 @@ version: 2.1
 executors:
   docker_build:
     machine:
-      docker_layer_caching: true
+      docker_layer_caching: false
       image: ubuntu-2004:202010-01
 
 orbs:
@@ -33,6 +33,8 @@ jobs:
             aws lightsail --version
       - run:
           command: |
+            envsubst '$MERCHANT_DOMAIN,$ACCOUNT_DOMAIN' < ./nginx/nginx.template.conf > nginx/nginx.conf
+            cat ./nginx/nginx.conf
             docker build ./nginx/ -t openfabric-integration-samples-nginx:latest
             docker build ./merchant-integration-sample/ \
               -t openfabric-integration-samples-merchant:latest \
@@ -63,3 +65,14 @@ workflows:
             branches:
               only:
                 - main
+                - chore/update-samples-cicd-for-sandbox
+  sandbox-deploy:
+    jobs:
+      - deploy-tenant-merchant-sample:
+          context:
+            - dev-aws-creds
+            - sandbox-heroku-sample
+          filters:
+            branches:
+              only:
+                - release-sandbox
