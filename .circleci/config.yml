@@ -65,7 +65,6 @@ workflows:
             branches:
               only:
                 - main
-                - chore/update-samples-cicd-for-sandbox
   sandbox-deploy:
     jobs:
       - deploy-tenant-merchant-sample:
