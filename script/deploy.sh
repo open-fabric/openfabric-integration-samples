@@ -3,6 +3,11 @@
 # REGEX to separate image name after deploy
 REGEX='Refer to this image as \"(.*)\" in deployments'
 
+echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
+echo "CONTAINER_SERVICE_NAME: ${CONTAINER_SERVICE_NAME}"
+echo "MERCHANT_SERVER_URL: ${MERCHANT_SERVER_URL}"
+echo "ACCOUNT_SERVER_URL: ${ACCOUNT_SERVER_URL}"
+
 # push images to aws lightsail and parse image name
 for name in "NGINX" "MERCHANT" "ACCOUNT"
 do
@@ -10,7 +15,7 @@ do
   lower_case_name=$(echo "${name}" | tr '[:upper:]' '[:lower:]')
   echo $lower_case_name
 
-  DESCRIPTION=$(aws lightsail push-container-image --region ap-southeast-1 --service-name account-merchant-sample --label openfabric-integration-samples-${lower_case_name} --image openfabric-integration-samples-${lower_case_name}:latest)
+  DESCRIPTION=$(aws lightsail push-container-image --region ${AWS_DEFAULT_REGION} --service-name ${CONTAINER_SERVICE_NAME} --label openfabric-integration-samples-${lower_case_name} --image openfabric-integration-samples-${lower_case_name}:latest)
   echo $DESCRIPTION
 
   if [[ $DESCRIPTION =~ $REGEX ]]
@@ -22,6 +27,6 @@ do
   export $name"_IMAGE_NAME"="$IMAGE_NAME"
 done
 
-envsubst '$NGINX_IMAGE_NAME,$MERCHANT_IMAGE_NAME,$ACCOUNT_IMAGE_NAME' < ./script/deploy-template.json > "containers.json"
+envsubst '$NGINX_IMAGE_NAME,$MERCHANT_IMAGE_NAME,$ACCOUNT_IMAGE_NAME,$CONTAINER_SERVICE_NAME,$MERCHANT_SERVER_URL,$ACCOUNT_SERVER_URL' < ./script/deploy-template.json > "containers.json"
 
-aws lightsail create-container-service-deployment --region ap-southeast-1 --cli-input-json file://containers.json
+aws lightsail create-container-service-deployment --region ${AWS_DEFAULT_REGION} --cli-input-json file://containers.json

@@ -33,6 +33,8 @@ jobs:
             aws lightsail --version
       - run:
           command: |
+            envsubst '$MERCHANT_DOMAIN,$ACCOUNT_DOMAIN' < ./nginx/nginx.template.conf > nginx/nginx.conf
+            cat ./nginx/nginx.conf
             docker build ./nginx/ -t openfabric-integration-samples-nginx:latest
             docker build ./merchant-integration-sample/ \
               -t openfabric-integration-samples-merchant:latest \
@@ -63,3 +65,13 @@ workflows:
             branches:
               only:
                 - main
+  sandbox-deploy:
+    jobs:
+      - deploy-tenant-merchant-sample:
+          context:
+            - dev-aws-creds
+            - sandbox-heroku-sample
+          filters:
+            branches:
+              only:
+                - release-sandbox

@@ -1,5 +1,5 @@
 {
-  "serviceName": "account-merchant-sample",
+  "serviceName": "$CONTAINER_SERVICE_NAME",
   "containers": {
     "nginx-proxy": {
       "image": "$NGINX_IMAGE_NAME",
@@ -16,8 +16,8 @@
         "3001": "HTTP"
       },
       "environment": {
-        "MERCHANT_SERVER_URL": "https://merchant-1.samples.dev.openfabric.co",
-        "ACCOUNT_SERVER_URL": "https://of-test-1.samples.dev.openfabric.co"
+        "MERCHANT_SERVER_URL": "$MERCHANT_SERVER_URL",
+        "ACCOUNT_SERVER_URL": "$ACCOUNT_SERVER_URL"
       }
     },
     "merchant-integration-sample": {
