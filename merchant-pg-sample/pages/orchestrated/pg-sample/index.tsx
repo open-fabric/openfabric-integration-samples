@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -6,7 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 // @ts-ignore
 import { OpenFabric, Environment } from "@openfabric/merchant-sdk";
 import { getTransactionOrder } from "../../../order";
-import { TextField } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 
 const styles = {
   root: {
@@ -32,10 +32,10 @@ const PGPage = () => {
   // order change hook (amount, currency, pg_name, publishable_key change)
   const onOrderChange = (input: { propName: string; value: any }) => {
     let updatedOrder: any = {
-      ...order
+      ...order,
+      [input.propName]: input.value
     }
 
-    updatedOrder[input.propName] = input.value
     setOrder(updatedOrder)
   };
 
@@ -234,19 +234,63 @@ const PGPage = () => {
                     marginLeft: "20px",
                     marginTop: "20px",
                     color: "grey",
+                    fontSize: "12px",
+                    fontFamily:
+                      '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+                  }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>PG Flow</InputLabel>
+                    <Select
+                      label="PG flow"
+                      type={"string"}
+                      value={order.pg_flow}
+                      onChange={e => {
+                        onOrderChange(
+                          {
+                            propName: "pg_flow",
+                            value: e.target.value
+                          }
+                        )
+                      }}
+                    >
+                      <MenuItem value="tokenization">tokenization</MenuItem>
+                      <MenuItem value="charge">charge</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    flex: "1",
+                    marginLeft: "20px",
+                    marginTop: "20px",
+                    color: "grey",
                     fontSize: "14px",
                     fontFamily:
                       '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
                   }}
                 >
                   <div id="left" style={{ flex: "1" }}>
+                    {/* {order?.pg_flow &&
+                      <select
+                        value={order.pg_flow}
+                        label="PG flow"
+                        onChange={e => {
+                          onOrderChange(
+                            {
+                              propName: "pg_flow",
+                              value: e.target.value
+                            }
+                          )
+                        }}
+                      >
+                        <option value="tokenization">tokenization</option>
+                        <option value="charge">charge</option>
+                      </select>} */}
+
                     <TextField
                       label="PG Name"
-                      InputProps={{
-                        style: {
-                          fontSize: "12px",
-                        },
-                      }}
                       inputProps={{
                         style: {
                           fontSize: "12px",
@@ -273,11 +317,6 @@ const PGPage = () => {
                     <div style={{ paddingTop: "20px" }}>
                       <TextField
                         label="PG Publishable key - (optional)"
-                        InputProps={{
-                          style: {
-                            fontSize: "12px",
-                          },
-                        }}
                         inputProps={{
                           style: {
                             fontSize: "12px",
