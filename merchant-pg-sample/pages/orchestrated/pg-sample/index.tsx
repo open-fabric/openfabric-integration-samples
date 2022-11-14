@@ -6,7 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 // @ts-ignore
 import { OpenFabric, Environment } from "@openfabric/merchant-sdk";
 import { getTransactionOrder } from "../../../order";
-import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { MenuItem, TextField } from "@mui/material";
 
 const styles = {
   root: {
@@ -238,25 +238,39 @@ const PGPage = () => {
                     fontFamily:
                       '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
                   }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>PG Flow</InputLabel>
-                    <Select
-                      label="PG flow"
-                      type={"string"}
-                      value={order.pg_flow}
-                      onChange={e => {
-                        onOrderChange(
-                          {
-                            propName: "pg_flow",
-                            value: e.target.value
-                          }
-                        )
-                      }}
-                    >
-                      <MenuItem value="tokenization">tokenization</MenuItem>
-                      <MenuItem value="charge">charge</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <TextField
+                    select
+                    label="PG flow"
+                    className="pg-selection"
+                    type={"string"}
+                    SelectProps={{
+                      style: {
+                        fontSize: "12px",
+                      },
+                    }}
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontSize: "12px",
+                      },
+                    }}
+                    value={order.pg_flow}
+                    onChange={e => {
+                      onOrderChange(
+                        {
+                          propName: "pg_flow",
+                          value: e.target.value
+                        }
+                      )
+                    }}
+                    helperText="Please select your pg flow"
+                  >
+                    {['tokenization', 'charge'].map((option) => (
+                      <MenuItem style={{ fontSize: "12px", padding: "5px 5px" }} key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </div>
 
                 <div
@@ -272,23 +286,6 @@ const PGPage = () => {
                   }}
                 >
                   <div id="left" style={{ flex: "1" }}>
-                    {/* {order?.pg_flow &&
-                      <select
-                        value={order.pg_flow}
-                        label="PG flow"
-                        onChange={e => {
-                          onOrderChange(
-                            {
-                              propName: "pg_flow",
-                              value: e.target.value
-                            }
-                          )
-                        }}
-                      >
-                        <option value="tokenization">tokenization</option>
-                        <option value="charge">charge</option>
-                      </select>} */}
-
                     <TextField
                       label="PG Name"
                       inputProps={{
