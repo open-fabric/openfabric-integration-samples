@@ -36,6 +36,10 @@ const PGPage = () => {
       [input.propName]: input.value
     }
 
+    if (updatedOrder.pg_flow !== "tokenization") {
+      delete updatedOrder.pg_publishable_key
+    }
+
     setOrder(updatedOrder)
   };
 
@@ -329,6 +333,8 @@ const PGPage = () => {
                         type={"string"}
                         fullWidth
                         multiline
+                        disabled={order.pg_flow != "tokenization"}
+                        
                         value={order.pg_publishable_key}
                         onChange={e => {
                           onOrderChange(
