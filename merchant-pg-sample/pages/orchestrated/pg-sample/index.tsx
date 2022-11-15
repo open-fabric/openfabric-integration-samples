@@ -36,10 +36,6 @@ const PGPage = () => {
       [input.propName]: input.value
     }
 
-    if (updatedOrder.pg_flow !== "tokenization") {
-      delete updatedOrder.pg_publishable_key
-    }
-
     setOrder(updatedOrder)
   };
 
@@ -243,13 +239,11 @@ const PGPage = () => {
                       '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
                   }}>
                   <TextField
-                    select
-                    label="PG flow"
-                    className="pg-selection"
-                    type={"string"}
-                    SelectProps={{
+                    label="PG Flow"
+                    inputProps={{
                       style: {
                         fontSize: "12px",
+                        padding: "5px 5px",
                       },
                     }}
                     InputLabelProps={{
@@ -258,25 +252,38 @@ const PGPage = () => {
                         fontSize: "12px",
                       },
                     }}
+                    type={"string"}
                     value={order.pg_flow}
+                    contentEditable={false}
+                    disabled={true}
+                  />
+                  <TextField
+                    style={{ marginLeft: "70px" }}
+                    label="PG Name"
+                    inputProps={{
+                      style: {
+                        fontSize: "12px",
+                        padding: "5px 5px",
+                      },
+                    }}
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontSize: "12px",
+                      },
+                    }}
+                    type={"string"}
+                    value={order.pg_name}
                     onChange={e => {
                       onOrderChange(
                         {
-                          propName: "pg_flow",
+                          propName: "pg_name",
                           value: e.target.value
                         }
                       )
                     }}
-                    helperText="Please select your pg flow"
-                  >
-                    {['tokenization', 'charge'].map((option) => (
-                      <MenuItem style={{ fontSize: "12px", padding: "5px 5px" }} key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </TextField>
+                  />
                 </div>
-
                 <div
                   style={{
                     display: "flex",
@@ -290,31 +297,7 @@ const PGPage = () => {
                   }}
                 >
                   <div id="left" style={{ flex: "1" }}>
-                    <TextField
-                      label="PG Name"
-                      inputProps={{
-                        style: {
-                          fontSize: "12px",
-                          padding: "5px 5px",
-                        },
-                      }}
-                      InputLabelProps={{
-                        shrink: true,
-                        style: {
-                          fontSize: "12px",
-                        },
-                      }}
-                      type={"string"}
-                      value={order.pg_name}
-                      onChange={e => {
-                        onOrderChange(
-                          {
-                            propName: "pg_name",
-                            value: e.target.value
-                          }
-                        )
-                      }}
-                    />
+
                     <div style={{ paddingTop: "20px" }}>
                       <TextField
                         label="PG Publishable key - (optional)"
@@ -333,8 +316,6 @@ const PGPage = () => {
                         type={"string"}
                         fullWidth
                         multiline
-                        disabled={order.pg_flow != "tokenization"}
-                        
                         value={order.pg_publishable_key}
                         onChange={e => {
                           onOrderChange(
