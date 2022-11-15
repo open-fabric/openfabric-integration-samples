@@ -1,0 +1,44 @@
+{
+  "serviceName": "$CONTAINER_SERVICE_NAME",
+  "containers": {
+    "nginx-proxy": {
+      "image": "$NGINX_IMAGE_NAME",
+      "ports": {
+        "80": "HTTP"
+      },
+      "environment": {
+        "NGINX_ENVSUBST_OUTPUT_DIR": "/etc/nginx"
+      }
+    },
+    "account-integration-sample": {
+      "image": "$ACCOUNT_IMAGE_NAME",
+      "ports": {
+        "3001": "HTTP"
+      },
+      "environment": {
+        "ACCOUNT_CLIENT_ID": "$ACCOUNT_CLIENT_ID",
+        "ACCOUNT_CLIENT_SECRET": "$ACCOUNT_CLIENT_SECRET",
+        "MERCHANT_SERVER_URL": "$MERCHANT_SERVER_URL",
+        "ACCOUNT_SERVER_URL": "$ACCOUNT_SERVER_URL"
+      }
+    },
+    "merchant-integration-sample": {
+      "image": "$MERCHANT_IMAGE_NAME",
+      "ports": {
+        "3000": "HTTP"
+      }
+    }
+  },
+  "publicEndpoint": {
+    "containerName": "nginx-proxy",
+    "containerPort": 80,
+    "healthCheck": {
+      "healthyThreshold": 2,
+      "intervalSeconds": 300,
+      "path": "/index",
+      "successCodes": "200-499",
+      "timeoutSeconds": 2,
+      "unhealthyThreshold": 2
+    }
+  }
+}
