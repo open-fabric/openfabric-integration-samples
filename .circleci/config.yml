@@ -69,7 +69,7 @@ workflows:
     jobs:
       - deploy-tenant-merchant-sample:
           context:
-            - dev-aws-creds
+            - sandbox-aws-creds
             - sandbox-heroku-sample
           filters:
             branches:
