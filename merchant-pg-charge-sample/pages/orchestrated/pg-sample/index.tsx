@@ -284,52 +284,6 @@ const PGPage = () => {
                     }}
                   />
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flex: "1",
-                    marginLeft: "20px",
-                    marginTop: "20px",
-                    color: "grey",
-                    fontSize: "14px",
-                    fontFamily:
-                      '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-                  }}
-                >
-                  <div id="left" style={{ flex: "1" }}>
-
-                    <div style={{ paddingTop: "20px" }}>
-                      <TextField
-                        label="PG Publishable key - (optional)"
-                        inputProps={{
-                          style: {
-                            fontSize: "12px",
-                            padding: "5px 5px",
-                          },
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
-                          style: {
-                            fontSize: "12px",
-                          },
-                        }}
-                        type={"string"}
-                        fullWidth
-                        multiline
-                        value={order.pg_publishable_key}
-                        onChange={e => {
-                          onOrderChange(
-                            {
-                              propName: "pg_publishable_key",
-                              value: e.target.value
-                            }
-                          )
-                        }}
-                      />
-                    </div>
-                    <div></div>
-                  </div>
-                </div>
               </div>
               <div
                 style={{
@@ -372,7 +326,6 @@ const getTransactionOrder = (): any => {
     partner_redirect_success_url: `https://merchant-1.samples.dev.openfabric.co/orchestrated/pg-sample/payment-success?merchant_ref=${partnerRefId}`,
     partner_redirect_fail_url: `https://merchant-1.samples.dev.openfabric.co/orchestrated/pg-sample/payment-failed?merchant_ref=${partnerRefId}`,
     pg_name: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_NAME || "xendit",
-    pg_publishable_key: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLISH_KEY || "xnd_public_development_AZVI4iAxXD6fCgKzxhy1Rvr5obpIvKcJXNnXldhfjhJbWB7RDhwzakaf2dF3tQM",
     pg_flow: "charge",
     customer_info: {
       mobile_number: "+6587654321",
