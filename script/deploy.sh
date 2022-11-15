@@ -27,6 +27,6 @@ do
   export $name"_IMAGE_NAME"="$IMAGE_NAME"
 done
 
-envsubst '$NGINX_IMAGE_NAME,$MERCHANT_IMAGE_NAME,$ACCOUNT_IMAGE_NAME,$CONTAINER_SERVICE_NAME,$MERCHANT_SERVER_URL,$ACCOUNT_SERVER_URL' < ./script/deploy-template.json > "containers.json"
+envsubst '$NGINX_IMAGE_NAME,$MERCHANT_IMAGE_NAME,$ACCOUNT_IMAGE_NAME,$CONTAINER_SERVICE_NAME,$MERCHANT_SERVER_URL,$ACCOUNT_SERVER_URL,$ACCOUNT_CLIENT_ID,$ACCOUNT_CLIENT_SECRET' < ./script/deploy-template.json > "containers.json"
 
 aws lightsail create-container-service-deployment --region ${AWS_DEFAULT_REGION} --cli-input-json file://containers.json
