@@ -16,6 +16,9 @@
         "3001": "HTTP"
       },
       "environment": {
+        "OF_AUTH_URL": "$OF_AUTH_URL",
+        "OF_ISSUER_URL": "$OF_ISSUER_URL",
+        "OF_API_URL": "$OF_API_URL",
         "ACCOUNT_CLIENT_ID": "$ACCOUNT_CLIENT_ID",
         "ACCOUNT_CLIENT_SECRET": "$ACCOUNT_CLIENT_SECRET",
         "MERCHANT_SERVER_URL": "$MERCHANT_SERVER_URL",
