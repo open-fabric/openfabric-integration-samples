@@ -8,7 +8,7 @@ const nextConfig = {
     return [
       {
         source: "/",
-        destination: "/orchestrated/pg-sample",
+        destination: "/demo/sdk-pg-charge",
         permanent: false,
       },
     ];
@@ -16,8 +16,8 @@ const nextConfig = {
   rewrites: async () => {
     return [
       {
-        source: "/vanilla",
-        destination: "/vanilla.html",
+        source: "/sdk-pg-charge",
+        destination: "/sdk-pg-charge.html",
       }
     ];
   },

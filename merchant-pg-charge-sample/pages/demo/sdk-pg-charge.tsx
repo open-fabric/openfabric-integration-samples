@@ -84,7 +84,7 @@ const PGPage = () => {
       <div style={styles.root}>
         <Paper elevation={3} style={{ padding: "20px" }}>
           <Typography variant="h5" gutterBottom>
-            Payment Gateway Experience
+            ACME PAY
           </Typography>
           <div>
             <div>
@@ -143,85 +143,69 @@ const PGPage = () => {
                       '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
                   }}
                 >
-                  <div id="left" style={{ flex: "1" }}>
-                    <div>Original amount:</div>
-                    <div>Shipping amount:</div>
-                    <div>Tax amount percent:</div>
-                    <hr style={{ borderTop: "1px dashed #bbb" }}></hr>
-                    <div></div>
-                    <div></div>
-                  </div>
-                  <div id="right" style={{ flex: "1" }}>
-                    <div>{order.transaction_details.original_amount}</div>
-                    <div>{order.transaction_details.shipping_amount}</div>
-                    <div>{order.transaction_details.tax_amount_percent} %</div>
-                    <hr style={{ borderTop: "1px dashed #bbb" }}></hr>
-                    <div style={{ display: "flex" }}>
-                      <TextField
-                        InputProps={{
-                          style: {
-                            fontSize: "12px",
-                          },
-                        }}
-                        inputProps={{
-                          style: {
-                            fontSize: "12px",
-                            padding: "5px 5px",
-                          },
-                        }}
-                        InputLabelProps={{
-                          style: {
-                            fontSize: "12px",
-                          },
-                        }}
-                        type={"number"}
-                        size="small"
-                        label="Amount"
-                        value={order.amount}
-                        onChange={e => {
-                          const newAmount = parseFloat(e.target.value);
-                          onOrderChange(
-                            {
-                              propName: "amount",
-                              value: isNaN(newAmount) ? 0 : newAmount
-                            }
-                          )
-                        }}
-                      />
+                  <TextField
+                    InputProps={{
+                      style: {
+                        fontSize: "12px",
+                      },
+                    }}
+                    inputProps={{
+                      style: {
+                        fontSize: "12px",
+                        padding: "5px 5px",
+                      },
+                    }}
+                    InputLabelProps={{
+                      style: {
+                        fontSize: "12px",
+                      },
+                    }}
+                    type={"number"}
+                    size="small"
+                    label="Amount"
+                    value={order.amount}
+                    onChange={e => {
+                      const newAmount = parseFloat(e.target.value);
+                      onOrderChange(
+                        {
+                          propName: "amount",
+                          value: isNaN(newAmount) ? 0 : newAmount
+                        }
+                      )
+                    }}
+                  />
 
-                      <TextField
-                        style={{ marginLeft: "20px" }}
-                        InputProps={{
-                          style: {
-                            fontSize: "12px",
-                          },
-                        }}
-                        inputProps={{
-                          style: {
-                            fontSize: "12px",
-                            padding: "5px 5px",
-                          },
-                        }}
-                        InputLabelProps={{
-                          style: {
-                            fontSize: "12px",
-                          },
-                        }}
-                        type={"text"}
-                        size="small"
-                        label="Currency"
-                        value={order.currency}
-                        onChange={e => {
-                          onOrderChange(
-                            {
-                              propName: "currency",
-                              value: e.target.value
-                            }
-                          )
-                        }}
-                      />
-                    </div>
-                  </div>
+                  <TextField
+                    style={{ marginLeft: "50px" }}
+                    InputProps={{
+                      style: {
+                        fontSize: "12px",
+                      },
+                    }}
+                    inputProps={{
+                      style: {
+                        fontSize: "12px",
+                        padding: "5px 5px",
+                      },
+                    }}
+                    InputLabelProps={{
+                      style: {
+                        fontSize: "12px",
+                      },
+                    }}
+                    type={"text"}
+                    size="small"
+                    label="Currency"
+                    value={order.currency}
+                    onChange={e => {
+                      onOrderChange(
+                        {
+                          propName: "currency",
+                          value: e.target.value
+                        }
+                      )
+                    }}
+                  />
                 </div>
                 <Typography variant="body1" gutterBottom style={{ color: "grey" }}>
                   PG info
@@ -258,7 +242,7 @@ const PGPage = () => {
                     disabled={true}
                   />
                   <TextField
-                    style={{ marginLeft: "70px" }}
+                    style={{ marginLeft: "50px" }}
                     label="PG Name"
                     inputProps={{
                       style: {
@@ -306,7 +290,7 @@ const PGPage = () => {
                       color="secondary"
                     />
                   )}
-                  {!loading && "Buy Now"}
+                  {!loading && "Pay with ACME PAY"}
                 </Button>
               </div>
             </div>
@@ -320,64 +304,46 @@ const PGPage = () => {
 // dummy data for the order
 const getTransactionOrder = (): any => {
   const partnerRefId = uuidv4();
+  const address_line_1 = "30th Street corner 11th Avenue Bonifacio Global City, Lane P, Taguig, 1634 Metro Manila";
+  const post_code = "1634";
 
   return {
     partner_reference_id: partnerRefId,
-    partner_redirect_success_url: `https://merchant-1.samples.dev.openfabric.co/orchestrated/pg-sample/payment-success?merchant_ref=${partnerRefId}`,
-    partner_redirect_fail_url: `https://merchant-1.samples.dev.openfabric.co/orchestrated/pg-sample/payment-failed?merchant_ref=${partnerRefId}`,
+    partner_redirect_success_url: `https://merchant-1.samples.dev.openfabric.co/demo/sdk-pg-charge-success?merchant_ref=${partnerRefId}`,
+    partner_redirect_fail_url: `https://merchant-1.samples.dev.openfabric.co/demo/sdk-pg-charge-failed?merchant_ref=${partnerRefId}`,
     pg_name: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_NAME || "xendit",
     pg_flow: "charge",
     customer_info: {
-      mobile_number: "+6587654321",
-      first_name: "BNPL",
-      last_name: "Developer",
-      email: "developer@bnpl1.com"
+      mobile_number: "+632 8855 8800",
+      first_name: "John",
+      email: "john.doe@gmail.com",
     },
-    amount: 50000,
+    amount: 2100.50,
     currency: "PHP",
     transaction_details: {
       shipping_address: {
-        country: "Singapore",
-        country_code: "SG",
-        address_line_1: "80 Robinson Road",
-        address_line_2: "#09-01",
-        address_line_3: "#09-01",
-        post_code: "068898"
+        country_code: "ph",
+        address_line_1,
+        post_code,
       },
       billing_address: {
-        country: "Singapore",
-        country_code: "SG",
-        address_line_1: "80 Robinson Road",
-        address_line_2: "#09-01",
-        address_line_3: "#09-01",
-        post_code: "068898"
+        country_code: "ph",
+        address_line_1,
+        post_code,
       },
       items: [
         {
-          item_id: "P100",
+          item_id: "P100-1222",
           name: "iPhone",
-          price: 11020,
-          quantity: 1,
           variation_name: "Black, 128GB",
-          original_price: 12020,
-          categories: [
-            "Electronics"
-          ]
-        },
-        {
-          item_id: "P101",
-          name: "iPhone SE case",
-          price: 1000,
+          description: "string",
           quantity: 1,
-          variation_name: "White",
-          categories: [
-            "Accessories"
-          ]
+          amount: 1,
+          price: 2100.50,
+          original_price: 2300,
+          categories: ["phone"],
         }
-      ],
-      tax_amount_percent: 3,
-      shipping_amount: 1020,
-      original_amount: 13020
+      ]
     }
   }
 }
