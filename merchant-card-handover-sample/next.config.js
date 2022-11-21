@@ -8,7 +8,7 @@ const nextConfig = {
     return [
       {
         source: "/",
-        destination: "/orchestrated",
+        destination: "/demo/sdk-card",
         permanent: false,
       },
     ];
@@ -16,12 +16,16 @@ const nextConfig = {
   rewrites: async () => {
     return [
       {
-        source: "/vanilla",
-        destination: "/vanilla.html",
+        source: "/sdk-card",
+        destination: "/sdk-card.html",
       },
       {
-        source: "/card-handover-success",
-        destination: "/card-handover-success.html",
+        source: "/sdk-card-success",
+        destination: "/sdk-card-success.html",
+      },
+      {
+        source: "/sdk-card-failed",
+        destination: "/sdk-card-failed.html",
       }
     ];
   },

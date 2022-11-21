@@ -7,6 +7,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { OpenFabric, Environment } from "@openfabric/merchant-sdk";
 import { TextField } from "@mui/material";
 import { v4 as uuidv4 } from "uuid"
+import { useRouter } from "next/router";
 
 const styles = {
   root: {
@@ -29,6 +30,7 @@ const OrderPage = () => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState<any>(null);
+
   // order change hook (amount, currency, pg_name, publishable_key change)
   const onOrderChange = (input: { propName: string; value: any }) => {
     let updatedOrder: any = {
@@ -42,6 +44,7 @@ const OrderPage = () => {
   // get of access token
   React.useEffect(() => {
     setOrder(getTransactionOrder(window.location.origin))
+
     fetch("/api/of-auth")
       .then((response) => response.json())
       .then(({ access_token }) => setAccessToken(access_token));
@@ -58,8 +61,8 @@ const OrderPage = () => {
     // initialize Open Fabric's SDK
     const openFabric = OpenFabric(
       accessToken,
-      `${window.location.origin}/demo/sdk-pg-tokenization-success?merchant_ref=${order.partner_reference_id}`,
-      `${window.location.origin}/demo/sdk-pg-tokenization-failed?merchant_ref=${order.partner_reference_id}`
+      `${window.location.origin}/demo/sdk-card-success?merchant_ref=${order.partner_reference_id}`,
+      `${window.location.origin}/demo/sdk-card-failed?merchant_ref=${order.partner_reference_id}`
     )
       .setDebug(true)
       .setEnvironment(currentEnv);
@@ -210,119 +213,6 @@ const OrderPage = () => {
                     />
                   </div>
                 )}
-
-                <Typography variant="body1" gutterBottom style={{ color: "grey", marginTop: "20px" }}>
-                  PG info
-                </Typography>
-                <hr style={{ borderTop: "1px dashed #bbb" }}></hr>
-                <div style={{ marginTop: "20px" }}></div>
-                {order && (
-                  <div>
-                    <div
-                      style={{
-                        display: "flex",
-                        flex: "1",
-                        marginLeft: "20px",
-                        marginTop: "20px",
-                        color: "grey",
-                        fontSize: "12px",
-                        fontFamily:
-                          '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-                      }}>
-                      <TextField
-                        label="PG Flow"
-                        inputProps={{
-                          style: {
-                            fontSize: "12px",
-                            padding: "5px 5px",
-                          },
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
-                          style: {
-                            fontSize: "12px",
-                          },
-                        }}
-                        type={"string"}
-                        value={order.pg_flow}
-                        contentEditable={false}
-                        disabled={true}
-                      />
-                      <TextField
-                        style={{ marginLeft: "50px" }}
-                        label="PG Name"
-                        inputProps={{
-                          style: {
-                            fontSize: "12px",
-                            padding: "5px 5px",
-                          },
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
-                          style: {
-                            fontSize: "12px",
-                          },
-                        }}
-                        type={"string"}
-                        value={order.pg_name}
-                        onChange={e => {
-                          onOrderChange(
-                            {
-                              propName: "pg_name",
-                              value: e.target.value
-                            }
-                          )
-                        }}
-                      />
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        flex: "1",
-                        marginLeft: "20px",
-                        marginTop: "20px",
-                        color: "grey",
-                        fontSize: "14px",
-                        fontFamily:
-                          '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-                      }}
-                    >
-                      <div id="left" style={{ flex: "1" }}>
-
-                        <div style={{ paddingTop: "20px" }}>
-                          <TextField
-                            label="PG Publishable key - (optional)"
-                            inputProps={{
-                              style: {
-                                fontSize: "12px",
-                                padding: "5px 5px",
-                              },
-                            }}
-                            InputLabelProps={{
-                              shrink: true,
-                              style: {
-                                fontSize: "12px",
-                              },
-                            }}
-                            type={"string"}
-                            fullWidth
-                            multiline
-                            value={order.pg_publishable_key}
-                            onChange={e => {
-                              onOrderChange(
-                                {
-                                  propName: "pg_publishable_key",
-                                  value: e.target.value
-                                }
-                              )
-                            }}
-                          />
-                        </div>
-                        <div></div>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
               <div
                 style={{
@@ -351,24 +241,21 @@ const OrderPage = () => {
             </div>
           </div>
         </Paper>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }
 
 // dummy data for the order
-const getTransactionOrder = (baseUrl: string): any => {
+const getTransactionOrder = (basePath: string): any => {
   const partnerRefId = uuidv4();
   const address_line_1 = "30th Street corner 11th Avenue Bonifacio Global City, Lane P, Taguig, 1634 Metro Manila";
   const post_code = "1634";
 
   return {
     partner_reference_id: partnerRefId,
-    partner_redirect_success_url: `${baseUrl}/demo/sdk-pg-tokenization-success?merchant_ref=${partnerRefId}`,
-    partner_redirect_fail_url: `${baseUrl}/demo/sdk-pg-tokenization-failed?merchant_ref=${partnerRefId}`,
-    pg_name: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_NAME || "xendit",
-    pg_publishable_key: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLISH_KEY || "xnd_public_development_AZVI4iAxXD6fCgKzxhy1Rvr5obpIvKcJXNnXldhfjhJbWB7RDhwzakaf2dF3tQM",
-    pg_flow: "tokenization",
+    partner_redirect_success_url: `${basePath}/demo/sdk-card-success?merchant_ref=${partnerRefId}`,
+    partner_redirect_fail_url: `${basePath}/demo/sdk-card-failed?merchant_ref=${partnerRefId}`,
     customer_info: {
       mobile_number: "+632 8855 8800",
       first_name: "John",

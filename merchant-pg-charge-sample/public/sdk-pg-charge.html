@@ -125,8 +125,8 @@
           const postCode = "1634";
           const order = {
             partner_reference_id: partnerRefId,
-            partner_redirect_success_url: `http://localhost:3000/sdk-pg-charge-success?merchant_ref=${partnerRefId}`,
-            partner_redirect_fail_url: `http://localhost:3000/sdk-pg-charge-failed?merchant_ref=${partnerRefId}`,
+            partner_redirect_success_url: `${window.location.origin}/sdk-pg-charge-success?merchant_ref=${partnerRefId}`,
+            partner_redirect_fail_url: `${window.location.origin}/sdk-pg-charge-failed?merchant_ref=${partnerRefId}`,
             pg_name: "xendit",
             pg_flow: "charge",
             customer_info: {

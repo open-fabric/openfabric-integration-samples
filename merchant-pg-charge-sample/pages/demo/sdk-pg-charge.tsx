@@ -24,11 +24,11 @@ const envString = 'dev'
 const currentEnv: Environment =
   Environment[envString as keyof typeof Environment] || "dev";
 
-const PGPage = () => {
+const OrderPage = () => {
   // initialize state
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [order, setOrder] = useState(getTransactionOrder());
+  const [order, setOrder] = useState<any>(null);
   // order change hook (amount, currency, pg_name, publishable_key change)
   const onOrderChange = (input: { propName: string; value: any }) => {
     let updatedOrder: any = {
@@ -41,6 +41,7 @@ const PGPage = () => {
 
   // get of access token
   React.useEffect(() => {
+    setOrder(getTransactionOrder(window.location.origin));
     fetch("/api/of-auth")
       .then((response) => response.json())
       .then(({ access_token }) => setAccessToken(access_token));
@@ -57,8 +58,8 @@ const PGPage = () => {
     // initialize Open Fabric's SDK
     const openFabric = OpenFabric(
       accessToken,
-      `${window.location.origin}/orchestrated/pg-sample/payment-success?merchant_ref=${order.partner_reference_id}`,
-      `${window.location.origin}/orchestrated/pg-sample/payment-failed?merchant_ref=${order.partner_reference_id}`
+      `${window.location.origin}/demo/sdk-pg-charge-success?merchant_ref=${order.partner_reference_id}`,
+      `${window.location.origin}/demo/sdk-pg-charge-failed?merchant_ref=${order.partner_reference_id}`
     )
       .setDebug(true)
       .setEnvironment(currentEnv);
@@ -96,7 +97,7 @@ const PGPage = () => {
                   Items
                 </Typography>
                 <hr style={{ borderTop: "1px dashed #bbb" }}></hr>
-                {order.transaction_details.items.map((item: any) => (
+                {order && order.transaction_details.items.map((item: any) => (
                   <div
                     style={{
                       marginLeft: "20px",
@@ -131,145 +132,149 @@ const PGPage = () => {
                 <Typography variant="body1" gutterBottom style={{ color: "grey" }}>
                   Fee
                 </Typography>
-                <hr style={{ borderTop: "1px dashed #bbb"}}></hr>
-                <div style={{marginTop: "20px"}}></div>
-                <div
-                  style={{
-                    display: "flex",
-                    flex: "1",
-                    marginLeft: "20px",
-                    color: "grey",
-                    fontSize: "14px",
-                    fontFamily:
-                      '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-                  }}
-                >
-                  <TextField
-                    InputProps={{
-                      style: {
-                        fontSize: "12px",
-                      },
+                <hr style={{ borderTop: "1px dashed #bbb" }}></hr>
+                <div style={{ marginTop: "20px" }}></div>
+                {order && (
+                  <div
+                    style={{
+                      display: "flex",
+                      flex: "1",
+                      marginLeft: "20px",
+                      color: "grey",
+                      fontSize: "14px",
+                      fontFamily:
+                        '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
                     }}
-                    inputProps={{
-                      style: {
-                        fontSize: "12px",
-                        padding: "5px 5px",
-                      },
-                    }}
-                    InputLabelProps={{
-                      style: {
-                        fontSize: "12px",
-                      },
-                    }}
-                    type={"number"}
-                    size="small"
-                    label="Amount"
-                    value={order.amount}
-                    onChange={e => {
-                      const newAmount = parseFloat(e.target.value);
-                      onOrderChange(
-                        {
-                          propName: "amount",
-                          value: isNaN(newAmount) ? 0 : newAmount
-                        }
-                      )
-                    }}
-                  />
+                  >
+                    <TextField
+                      InputProps={{
+                        style: {
+                          fontSize: "12px",
+                        },
+                      }}
+                      inputProps={{
+                        style: {
+                          fontSize: "12px",
+                          padding: "5px 5px",
+                        },
+                      }}
+                      InputLabelProps={{
+                        style: {
+                          fontSize: "12px",
+                        },
+                      }}
+                      type={"number"}
+                      size="small"
+                      label="Amount"
+                      value={order.amount}
+                      onChange={e => {
+                        const newAmount = parseFloat(e.target.value);
+                        onOrderChange(
+                          {
+                            propName: "amount",
+                            value: isNaN(newAmount) ? 0 : newAmount
+                          }
+                        )
+                      }}
+                    />
 
-                  <TextField
-                    style={{ marginLeft: "50px" }}
-                    InputProps={{
-                      style: {
-                        fontSize: "12px",
-                      },
-                    }}
-                    inputProps={{
-                      style: {
-                        fontSize: "12px",
-                        padding: "5px 5px",
-                      },
-                    }}
-                    InputLabelProps={{
-                      style: {
-                        fontSize: "12px",
-                      },
-                    }}
-                    type={"text"}
-                    size="small"
-                    label="Currency"
-                    value={order.currency}
-                    onChange={e => {
-                      onOrderChange(
-                        {
-                          propName: "currency",
-                          value: e.target.value
-                        }
-                      )
-                    }}
-                  />
-                </div>
+                    <TextField
+                      style={{ marginLeft: "50px" }}
+                      InputProps={{
+                        style: {
+                          fontSize: "12px",
+                        },
+                      }}
+                      inputProps={{
+                        style: {
+                          fontSize: "12px",
+                          padding: "5px 5px",
+                        },
+                      }}
+                      InputLabelProps={{
+                        style: {
+                          fontSize: "12px",
+                        },
+                      }}
+                      type={"text"}
+                      size="small"
+                      label="Currency"
+                      value={order.currency}
+                      onChange={e => {
+                        onOrderChange(
+                          {
+                            propName: "currency",
+                            value: e.target.value
+                          }
+                        )
+                      }}
+                    />
+                  </div>
+                )}
                 <Typography variant="body1" gutterBottom style={{ color: "grey", marginTop: "20px" }}>
                   PG info
                 </Typography>
                 <hr style={{ borderTop: "1px dashed #bbb" }}></hr>
-                <div style={{marginTop: "20px"}}></div>
-                <div
-                  style={{
-                    display: "flex",
-                    flex: "1",
-                    marginLeft: "20px",
-                    marginTop: "20px",
-                    color: "grey",
-                    fontSize: "12px",
-                    fontFamily:
-                      '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-                  }}>
-                  <TextField
-                    label="PG Flow"
-                    inputProps={{
-                      style: {
-                        fontSize: "12px",
-                        padding: "5px 5px",
-                      },
-                    }}
-                    InputLabelProps={{
-                      shrink: true,
-                      style: {
-                        fontSize: "12px",
-                      },
-                    }}
-                    type={"string"}
-                    value={order.pg_flow}
-                    contentEditable={false}
-                    disabled={true}
-                  />
-                  <TextField
-                    style={{ marginLeft: "50px" }}
-                    label="PG Name"
-                    inputProps={{
-                      style: {
-                        fontSize: "12px",
-                        padding: "5px 5px",
-                      },
-                    }}
-                    InputLabelProps={{
-                      shrink: true,
-                      style: {
-                        fontSize: "12px",
-                      },
-                    }}
-                    type={"string"}
-                    value={order.pg_name}
-                    onChange={e => {
-                      onOrderChange(
-                        {
-                          propName: "pg_name",
-                          value: e.target.value
-                        }
-                      )
-                    }}
-                  />
-                </div>
+                <div style={{ marginTop: "20px" }}></div>
+                {order && (
+                  <div
+                    style={{
+                      display: "flex",
+                      flex: "1",
+                      marginLeft: "20px",
+                      marginTop: "20px",
+                      color: "grey",
+                      fontSize: "12px",
+                      fontFamily:
+                        '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+                    }}>
+                    <TextField
+                      label="PG Flow"
+                      inputProps={{
+                        style: {
+                          fontSize: "12px",
+                          padding: "5px 5px",
+                        },
+                      }}
+                      InputLabelProps={{
+                        shrink: true,
+                        style: {
+                          fontSize: "12px",
+                        },
+                      }}
+                      type={"string"}
+                      value={order.pg_flow}
+                      contentEditable={false}
+                      disabled={true}
+                    />
+                    <TextField
+                      style={{ marginLeft: "50px" }}
+                      label="PG Name"
+                      inputProps={{
+                        style: {
+                          fontSize: "12px",
+                          padding: "5px 5px",
+                        },
+                      }}
+                      InputLabelProps={{
+                        shrink: true,
+                        style: {
+                          fontSize: "12px",
+                        },
+                      }}
+                      type={"string"}
+                      value={order.pg_name}
+                      onChange={e => {
+                        onOrderChange(
+                          {
+                            propName: "pg_name",
+                            value: e.target.value
+                          }
+                        )
+                      }}
+                    />
+                  </div>
+                )}
               </div>
               <div
                 style={{
@@ -304,15 +309,15 @@ const PGPage = () => {
 }
 
 // dummy data for the order
-const getTransactionOrder = (): any => {
+const getTransactionOrder = (baseUrl: string): any => {
   const partnerRefId = uuidv4();
   const address_line_1 = "30th Street corner 11th Avenue Bonifacio Global City, Lane P, Taguig, 1634 Metro Manila";
   const post_code = "1634";
 
   return {
     partner_reference_id: partnerRefId,
-    partner_redirect_success_url: `http://localhost:3000/demo/sdk-pg-charge-success?merchant_ref=${partnerRefId}`,
-    partner_redirect_fail_url: `http://localhost:3000/demo/sdk-pg-charge-failed?merchant_ref=${partnerRefId}`,
+    partner_redirect_success_url: `${baseUrl}/demo/sdk-pg-charge-success?merchant_ref=${partnerRefId}`,
+    partner_redirect_fail_url: `${baseUrl}/demo/sdk-pg-charge-failed?merchant_ref=${partnerRefId}`,
     pg_name: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_NAME || "xendit",
     pg_flow: "charge",
     customer_info: {
@@ -350,4 +355,4 @@ const getTransactionOrder = (): any => {
   }
 }
 
-export default PGPage
+export default OrderPage

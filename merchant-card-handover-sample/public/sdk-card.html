@@ -49,40 +49,6 @@
         <p style="color: grey;">PG info</p>
         <hr style="border-top:1px dashed #bbb">
         <div style="margin-top: 20px;"></div>
-        <div style="display:flex;flex:1;margin-left:20px;margin-top:20px;color:grey;font-size:12px">
-          <div class="grid gap-6 items-end mb-6">
-            <div class="relative">
-              <input type="text" id="pg_flow" disabled="true"
-                class="block px-2.5 pb-1.5 w-full text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" " style="color: grey;font-size: 12px;padding: 5px 5px;" />
-              <label for="pg_flow"
-                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 left-1">
-                PG flow</label>
-            </div>
-          </div>
-          <div class="grid gap-6 items-end mb-6" style="margin-left: 50px;">
-            <div class="relative">
-              <input type="text" id="pg_name" disabled="true"
-                class="block px-2.5 pb-1.5 w-full text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" " style="color: grey;font-size: 12px;padding: 5px 5px;" />
-              <label for="pg_name"
-                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 left-1">
-                PG name</label>
-            </div>
-          </div>
-        </div>
-        <div style="margin-left:20px;margin-top:20px;color:grey;font-size:12px">
-          <div class="grid gap-6 items-end mb-6">
-            <div class="relative">
-              <input type="text" id="pg_publishable_key" disabled="true"
-                class="block px-2.5 pb-1.5 w-full text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" " style="color: grey;font-size: 12px;padding: 5px 5px;" />
-              <label for="pg_publishable_key"
-                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 left-1">
-                PG Publishable key - (optional)</label>
-            </div>
-          </div>
-        </div>
         <div>
           <div>
             <button style="background-color: #004953; color: white;" type="button" class="w-100 btn btn-lg rounded-lg"
@@ -106,8 +72,8 @@
               // initialize Open Fabric's SDK
               const openFabric = OpenFabric(
                 access_token,
-                `${window.location.origin}/sdk-pg-tokenization-success`,
-                `${window.location.origin}/sdk-pg-tokenization-failed`
+                `${window.location.origin}/sdk-pg-charge-success`,
+                `${window.location.origin}/sdk-pg-charge-failed`
               ).setEnvironment(currentEnv);
 
               openFabric.createOrder(order)
@@ -137,11 +103,8 @@
           const postCode = "1634";
           const order = {
             partner_reference_id: partnerRefId,
-            partner_redirect_success_url: `${window.location.origin}/sdk-pg-tokenization-success?merchant_ref=${partnerRefId}`,
-            partner_redirect_fail_url: `${window.location.origin}/sdk-pg-tokenization-failed?merchant_ref=${partnerRefId}`,
-            pg_name: "xendit",
-            pg_publishable_key: 'xnd_public_development_AZVI4iAxXD6fCgKzxhy1Rvr 5obpIvKcJXNnXldhfjhJbWB7RDhwzakaf2dF3tQM',
-            pg_flow: "tokenization",
+            partner_redirect_success_url: `http://localhost:3000/sdk-card-success?merchant_ref=${partnerRefId}`,
+            partner_redirect_fail_url: `http://localhost:3000/sdk-card-failed?merchant_ref=${partnerRefId}`,
             customer_info: {
               mobile_number: "+632 8855 8800",
               first_name: "John",
@@ -192,9 +155,6 @@
           document.getElementById("items").innerHTML = itemsGUI;
           document.getElementById("amount").value = order.amount;
           document.getElementById("currency").value = order.currency;
-          document.getElementById("pg_flow").value = order.pg_flow;
-          document.getElementById("pg_name").value = order.pg_name;
-          document.getElementById("pg_publishable_key").value = order.pg_publishable_key;
 
           initOpenFabric(order);
         });

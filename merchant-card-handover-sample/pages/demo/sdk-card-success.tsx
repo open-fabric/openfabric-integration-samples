@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 const PaymentSuccess = (props: any) => {
   const title = props?.title ?? "Payment Success";
-  const [cardDetails, setCardDetails] = React.useState<any>(null);
+  const [transaction, setTransaction] = useState<any>({});
+  const [cardDetails, setCardDetails] = useState<any>(null);
 
   const cardHandler = useCallback((card_fetch_token: string) => {
     const headers = new Headers();
@@ -23,8 +24,16 @@ const PaymentSuccess = (props: any) => {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    const token = queryParams.get("txn_card_token");
 
+    // get transaction data
+    let transactionData: any = {}
+    queryParams.forEach((value, key) => {
+      transactionData[key] = value
+    });
+    setTransaction(transactionData)
+
+    // fetch card info
+    const token = queryParams.get("txn_card_token");
     token && !cardDetails && cardHandler(token);
   }, []);
 
@@ -51,14 +60,28 @@ const PaymentSuccess = (props: any) => {
         }}
       >
         <h1 style={{ color: "green", marginBottom: 32, textAlign: "center" }}>{title}</h1>
-        {cardDetails && Object.keys(cardDetails).map(key => {
+        <hr style={{ borderTop: "1px dashed #bbb" }}></hr>
+        {transaction && Object.keys(transaction).map(key => {
           return (
-            <div style={{ alignItems: "left", display: "flex", flexDirection: "row" }}>
+            <div style={{ alignItems: "left", display: "flex", flexDirection: "row", overflowWrap: "anywhere" }}>
               <b style={{ flex: "1" }}>{key.replaceAll("_", " ")}:</b>
-              <div style={{ flex: "2" }}>{cardDetails[key]}</div>
+              <div style={{ flex: "2" }}>{transaction[key]}</div>
             </div>
           );
         })}
+        {cardDetails && (
+          <div>
+            <hr style={{ borderTop: "1px dashed red", width: "-webkit-fill-available" }}></hr>
+            {Object.keys(cardDetails).map(key => {
+              return (
+                <div style={{ alignItems: "left", display: "flex", flexDirection: "row" }}>
+                  <b style={{ flex: "1" }}>{key.replaceAll("_", " ")}:</b>
+                  <div style={{ flex: "2" }}>{cardDetails[key]}</div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
