@@ -18,6 +18,10 @@ const nextConfig = {
       {
         source: "/sdk-pg-charge",
         destination: "/sdk-pg-charge.html",
+      },
+      {
+        source: "/sdk-pg-charge-success",
+        destination: "/sdk-pg-charge-success.html",
       }
     ];
   },

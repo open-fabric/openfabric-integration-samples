@@ -111,8 +111,8 @@
           partnerRefId
           const order = {
             partner_reference_id: partnerRefId,
-            partner_redirect_success_url: `https://merchant-1.samples.dev.openfabric.co/sdk-pg-charge-success?merchant_ref=${partnerRefId}`,
-            partner_redirect_fail_url: `https://merchant-1.samples.dev.openfabric.co/sdk-pg-charge-failed?merchant_ref=${partnerRefId}`,
+            partner_redirect_success_url: `http://localhost:3000/sdk-pg-charge-success?merchant_ref=${partnerRefId}`,
+            partner_redirect_fail_url: `http://localhost:3000/sdk-pg-charge-failed?merchant_ref=${partnerRefId}`,
             pg_name: "xendit",
             pg_flow: "charge",
             customer_info: {
@@ -156,8 +156,8 @@
               // initialize Open Fabric's SDK
               const openFabric = OpenFabric(
                 access_token,
-                `${window.location.origin}/orchestrated/pg-sample/payment-success`,
-                `${window.location.origin}/orchestrated/pg-sample/payment-failed`
+                `${window.location.origin}/sdk-pg-charge-success`,
+                `${window.location.origin}/sdk-pg-charge-failed`
               ).setEnvironment(currentEnv);
 
               openFabric.createOrder(order)
@@ -172,7 +172,6 @@
                 if (bnplButton.disabled) {
                   return;
                 }
-                bnplButton.innerHTML = "<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>";
                 openFabric.onclick = null;
                 openFabric.startFlow();
               };

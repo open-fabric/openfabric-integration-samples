@@ -131,7 +131,8 @@ const PGPage = () => {
                 <Typography variant="body1" gutterBottom style={{ color: "grey" }}>
                   Fee
                 </Typography>
-                <hr style={{ borderTop: "1px dashed #bbb" }}></hr>
+                <hr style={{ borderTop: "1px dashed #bbb"}}></hr>
+                <div style={{marginTop: "20px"}}></div>
                 <div
                   style={{
                     display: "flex",
@@ -207,10 +208,11 @@ const PGPage = () => {
                     }}
                   />
                 </div>
-                <Typography variant="body1" gutterBottom style={{ color: "grey" }}>
+                <Typography variant="body1" gutterBottom style={{ color: "grey", marginTop: "20px" }}>
                   PG info
                 </Typography>
                 <hr style={{ borderTop: "1px dashed #bbb" }}></hr>
+                <div style={{marginTop: "20px"}}></div>
                 <div
                   style={{
                     display: "flex",
@@ -279,7 +281,7 @@ const PGPage = () => {
               >
                 <Button
                   variant="contained"
-                  style={{ width: "160px", height: "36px", fontSize: "14px" }}
+                  style={{ height: "45px", width: "-webkit-fill-available", fontSize: "1.25rem", backgroundColor: "#004953", color: "white" }}
                   disabled={loading}
                   onClick={onPayClick}
                 >
@@ -309,8 +311,8 @@ const getTransactionOrder = (): any => {
 
   return {
     partner_reference_id: partnerRefId,
-    partner_redirect_success_url: `https://merchant-1.samples.dev.openfabric.co/demo/sdk-pg-charge-success?merchant_ref=${partnerRefId}`,
-    partner_redirect_fail_url: `https://merchant-1.samples.dev.openfabric.co/demo/sdk-pg-charge-failed?merchant_ref=${partnerRefId}`,
+    partner_redirect_success_url: `http://localhost:3000/demo/sdk-pg-charge-success?merchant_ref=${partnerRefId}`,
+    partner_redirect_fail_url: `http://localhost:3000/demo/sdk-pg-charge-failed?merchant_ref=${partnerRefId}`,
     pg_name: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_NAME || "xendit",
     pg_flow: "charge",
     customer_info: {
