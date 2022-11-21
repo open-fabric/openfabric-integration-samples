@@ -13,6 +13,48 @@
       box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%), 0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
       font-family: "Roboto", "Helvetica", "Arial", sans-serif
     }
+
+    .lds-ring {
+      display: inline-block;
+      position: relative;
+      width: 24px;
+      height: 24px;
+    }
+
+    .lds-ring div {
+      box-sizing: border-box;
+      display: block;
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      margin: 2px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      border-color: #fff transparent transparent transparent;
+    }
+
+    .lds-ring div:nth-child(1) {
+      animation-delay: -0.45s;
+    }
+
+    .lds-ring div:nth-child(2) {
+      animation-delay: -0.3s;
+    }
+
+    .lds-ring div:nth-child(3) {
+      animation-delay: -0.15s;
+    }
+
+    @keyframes lds-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
 
@@ -21,22 +63,11 @@
     <div class="form-shadow" style="padding:20px">
       <h5 style="margin-bottom: 0.35rem;font-size: 1.5rem;">ACME PAY</h5>
       <div>
-        <h6 style="margin-bottom: 0.35rem;font-size: 1rem;">Order summary</h6>
+        <h6 style="margin-bottom: 0.35rem;font-size: 1rem;line-height: 1.75;">Order summary</h6>
         <p style="color: grey;margin-bottom: 0.35rem;">Items</p>
-        <hr style="border-top:1px dashed #bbb">
+        <hr style="border-top:1px dashed #bbb;margin-bottom: 0.35rem;">
         <div style="margin-left:20px;color:grey;">
-          <div style="font-size:14px;font-weight:bold">iPhone</div>
-          <div style="padding-left:50%;letter-spacing:0px;font-size:12px">
-            <div><span style="font-weight:bold;display: inline;">item id</span>: P100-1222</div>
-            <div><span style="font-weight:bold">name</span>: iPhone</div>
-            <div><span style="font-weight:bold">variation name</span>: Black, 128GB</div>
-            <div><span style="font-weight:bold">description</span>: string</div>
-            <div><span style="font-weight:bold">quantity</span>: 1</div>
-            <div><span style="font-weight:bold">amount</span>: 1</div>
-            <div><span style="font-weight:bold">price</span>: 2100.5</div>
-            <div><span style="font-weight:bold">original price</span>: 2300</div>
-            <div><span style="font-weight:bold">categories</span>: phone</div>
-          </div>
+          <div id="items"></div>
         </div>
         <p style="color: grey;">Fee</p>
         <hr style="border-top:1px dashed #bbb">
@@ -44,20 +75,20 @@
         <div style="display:flex;flex:1;margin-left:20px;margin-top:20px;color:grey;font-size:12px">
           <div class="grid gap-6 items-end mb-6">
             <div class="relative">
-              <input value="2100.5" type="text" id="small_outlined" disabled="true"
+              <input type="text" id="amount" disabled="true"
                 class="block px-2.5 pb-1.5 w-full text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" " style="color: grey;font-size: 12px;padding: 5px 5px;" />
-              <label for="small_outlined"
+              <label for="amount"
                 class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 left-1">
                 Amount</label>
             </div>
           </div>
           <div class="grid gap-6 items-end mb-6" style="margin-left: 50px;">
             <div class="relative">
-              <input value="PHP" type="text" id="small_outlined" disabled="true"
+              <input type="text" id="currency" disabled="true"
                 class="block px-2.5 pb-1.5 w-full text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" " style="color: grey;font-size: 12px;padding: 5px 5px;" />
-              <label for="small_outlined"
+              <label for="currency"
                 class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 left-1">
                 Currency</label>
             </div>
@@ -69,20 +100,20 @@
         <div style="display:flex;flex:1;margin-left:20px;margin-top:20px;color:grey;font-size:12px">
           <div class="grid gap-6 items-end mb-6">
             <div class="relative">
-              <input value="charge" type="text" id="small_outlined" disabled="true"
+              <input type="text" id="pg_flow" disabled="true"
                 class="block px-2.5 pb-1.5 w-full text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" " style="color: grey;font-size: 12px;padding: 5px 5px;" />
-              <label for="small_outlined"
+              <label for="pg_flow"
                 class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 left-1">
                 PG flow</label>
             </div>
           </div>
           <div class="grid gap-6 items-end mb-6" style="margin-left: 50px;">
             <div class="relative">
-              <input value="xendit" type="text" id="small_outlined" disabled="true"
+              <input type="text" id="pg_name" disabled="true"
                 class="block px-2.5 pb-1.5 w-full text-sm bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" " style="color: grey;font-size: 12px;padding: 5px 5px;" />
-              <label for="small_outlined"
+              <label for="pg_name"
                 class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 left-1">
                 PG name</label>
             </div>
@@ -103,52 +134,7 @@
         const currentEnv = 'dev'
         const { OpenFabric } = OpenFabricMerchantSDK;
 
-        // dummy data
-        const partnerRefId = `MT${Date.now()}`
-        const address_line_1 = "30th Street corner 11th Avenue Bonifacio Global City, Lane P, Taguig, 1634 Metro Manila";
-        const post_code = "1634";
-        const initOpenFabric = () => {
-          partnerRefId
-          const order = {
-            partner_reference_id: partnerRefId,
-            partner_redirect_success_url: `http://localhost:3000/sdk-pg-charge-success?merchant_ref=${partnerRefId}`,
-            partner_redirect_fail_url: `http://localhost:3000/sdk-pg-charge-failed?merchant_ref=${partnerRefId}`,
-            pg_name: "xendit",
-            pg_flow: "charge",
-            customer_info: {
-              mobile_number: "+632 8855 8800",
-              first_name: "John",
-              email: "john.doe@gmail.com",
-            },
-            amount: 2100.50,
-            currency: "PHP",
-            transaction_details: {
-              shipping_address: {
-                country_code: "ph",
-                address_line_1,
-                post_code,
-              },
-              billing_address: {
-                country_code: "ph",
-                address_line_1,
-                post_code,
-              },
-              items: [
-                {
-                  item_id: "P100-1222",
-                  name: "iPhone",
-                  variation_name: "Black, 128GB",
-                  description: "string",
-                  quantity: 1,
-                  amount: 1,
-                  price: 2100.50,
-                  original_price: 2300,
-                  categories: ["phone"],
-                }
-              ]
-            }
-          }
-
+        const initOpenFabric = (order) => {
           // get access token from server
           fetch(authHost)
             .then(response => response.json())
@@ -172,6 +158,8 @@
                 if (bnplButton.disabled) {
                   return;
                 }
+
+                bnplButton.innerHTML = "<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>";
                 openFabric.onclick = null;
                 openFabric.startFlow();
               };
@@ -179,7 +167,70 @@
         }
 
         document.addEventListener("DOMContentLoaded", function () {
-          initOpenFabric();
+          // dummy data
+          const partnerRefId = `MT${Date.now()}`
+          const addressLine1 = "30th Street corner 11th Avenue Bonifacio Global City, Lane P, Taguig, 1634 Metro Manila";
+          const postCode = "1634";
+          const order = {
+            partner_reference_id: partnerRefId,
+            partner_redirect_success_url: `http://localhost:3000/sdk-pg-charge-success?merchant_ref=${partnerRefId}`,
+            partner_redirect_fail_url: `http://localhost:3000/sdk-pg-charge-failed?merchant_ref=${partnerRefId}`,
+            pg_name: "xendit",
+            pg_flow: "charge",
+            customer_info: {
+              mobile_number: "+632 8855 8800",
+              first_name: "John",
+              email: "john.doe@gmail.com",
+            },
+            amount: 2100.50,
+            currency: "PHP",
+            transaction_details: {
+              shipping_address: {
+                country_code: "ph",
+                address_line_1: addressLine1,
+                post_code: postCode,
+              },
+              billing_address: {
+                country_code: "ph",
+                address_line_1: addressLine1,
+                post_code: postCode,
+              },
+              items: [
+                {
+                  item_id: "P100-1222",
+                  name: "iPhone",
+                  variation_name: "Black, 128GB",
+                  description: "string",
+                  quantity: 1,
+                  amount: 1,
+                  price: 2100.50,
+                  original_price: 2300,
+                  categories: ["phone"],
+                }
+              ]
+            }
+          }
+
+          // initialize GUI
+          let itemsGUI = ''
+          order.transaction_details.items.forEach(item => {
+            itemsGUI += `<div style="font-size:14px;font-weight:bold">${item.name}</div>`
+            itemsGUI += '<div style="padding-left:50%;letter-spacing:0px;font-size:12px">'
+            Object.keys(item).forEach(key => {
+              if (key !== 'name') {
+                itemsGUI += `<div><span style="font-weight:bold;display: inline;">${key}</span>: ${item[key]}</div>`
+              }
+            })
+            itemsGUI += '</div>'
+          })
+
+          document.getElementById("items").innerHTML = itemsGUI;
+          document.getElementById("amount").value = order.amount;
+          document.getElementById("currency").value = order.currency;
+          document.getElementById("pg_flow").value = order.pg_flow;
+          document.getElementById("pg_name").value = order.pg_name;
+
+          initOpenFabric(order);
         });
 
       </script>
