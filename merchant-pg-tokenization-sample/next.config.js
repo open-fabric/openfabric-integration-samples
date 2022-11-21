@@ -8,7 +8,7 @@ const nextConfig = {
     return [
       {
         source: "/",
-        destination: "/orchestrated/pg-sample",
+        destination: "/demo/sdk-pg-tokenization",
         permanent: false,
       },
     ];
@@ -16,8 +16,16 @@ const nextConfig = {
   rewrites: async () => {
     return [
       {
-        source: "/vanilla",
-        destination: "/vanilla.html",
+        source: "/sdk-pg-tokenization",
+        destination: "/sdk-pg-tokenization.html",
+      },
+      {
+        source: "/sdk-pg-tokenization-success",
+        destination: "/sdk-pg-tokenization-success.html",
+      },
+      {
+        source: "/sdk-pg-tokenization-failed",
+        destination: "/sdk-pg-tokenization-failed.html",
       }
     ];
   },

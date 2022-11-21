@@ -1,4 +1,4 @@
-import PaymentSuccess from "./payment-success"
+import PaymentSuccess from "./sdk-pg-tokenization-success"
 
 const PaymentFailedPage = () => {
   return <PaymentSuccess

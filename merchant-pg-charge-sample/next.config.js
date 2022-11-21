@@ -22,6 +22,10 @@ const nextConfig = {
       {
         source: "/sdk-pg-charge-success",
         destination: "/sdk-pg-charge-success.html",
+      },
+      {
+        source: "/sdk-pg-charge-failed",
+        destination: "/sdk-pg-charge-failed.html",
       }
     ];
   },

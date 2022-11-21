@@ -281,7 +281,7 @@ const PGPage = () => {
               >
                 <Button
                   variant="contained"
-                  style={{ height: "45px", width: "-webkit-fill-available", fontSize: "1.25rem", backgroundColor: "#004953", color: "white" }}
+                  style={{ height: "45px", width: "-webkit-fill-available", fontSize: "1.25rem", backgroundColor: "#004953", color: "white", textTransform: "none" }}
                   disabled={loading}
                   onClick={onPayClick}
                 >
