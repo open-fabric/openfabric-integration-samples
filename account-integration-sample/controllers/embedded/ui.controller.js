@@ -23,3 +23,8 @@ export const CheckOutUI = catchAsync(async (req, res) => {
   });
   return;
 });
+
+export const OrderUI = catchAsync(async (req, res) => {
+  res.render("embedded/order", {});
+  return;
+});
