@@ -28,3 +28,13 @@ export const OrderUI = catchAsync(async (req, res) => {
   res.render("embedded/order", {});
   return;
 });
+
+export const checkoutSuccessUI = catchAsync(async (req, res) => {
+  res.render("embedded/checkout-success", {});
+  return;
+});
+
+export const checkoutFailedUI = catchAsync(async (req, res) => {
+  res.render("embedded/checkout-failed", {});
+  return;
+});
