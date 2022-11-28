@@ -75,3 +75,13 @@ workflows:
             branches:
               only:
                 - release-sandbox
+  prod-deploy:
+    jobs:
+      - deploy-tenant-merchant-sample:
+          context:
+            - prod-aws-creds
+            - prod-heroku-sample
+          filters:
+            branches:
+              only:
+                - release-production
