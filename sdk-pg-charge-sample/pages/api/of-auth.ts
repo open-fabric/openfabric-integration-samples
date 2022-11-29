@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import NextCors from 'nextjs-cors';
+import basicAuthMiddleware from 'nextjs-basic-auth-middleware'
 import axios from "axios";
 import qs from "qs";
 
@@ -11,6 +12,11 @@ const handler = async (req: NextApiRequest,
       origin: '*',
       optionsSuccessStatus: 200,
    });
+   
+   if (process.env.BASIC_AUTH_CREDENTIALS) {
+      await basicAuthMiddleware(req, res);
+   }
+
    return Authentication()(req, res)
 }
 

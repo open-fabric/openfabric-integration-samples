@@ -19,6 +19,7 @@
     "@openfabric/merchant-sdk": "^1.0.0",
     "axios": "^0.26.1",
     "next": "12.1.0",
+    "nextjs-basic-auth-middleware": "^0.2.1",
     "next-transpile-modules": "^9.0.0",
     "nextjs-cors": "^2.1.0",
     "qs": "^6.10.3",

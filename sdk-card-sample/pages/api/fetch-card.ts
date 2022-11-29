@@ -1,6 +1,7 @@
 import axios from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import NextCors from 'nextjs-cors';
+import basicAuthMiddleware from 'nextjs-basic-auth-middleware'
 import { Authentication } from './Auth';
 
 const handler = async (req: NextApiRequest,
@@ -21,6 +22,10 @@ const handler = async (req: NextApiRequest,
     return res.status(500).json({
       error: "Missing card_fetch_token in body"
     })
+  }
+
+  if (process.env.BASIC_AUTH_CREDENTIALS) {
+    await basicAuthMiddleware(req, res);
   }
 
   const response = await BackEndFetchCard(req.body.card_fetch_token)
