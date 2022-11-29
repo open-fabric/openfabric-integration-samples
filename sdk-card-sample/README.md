@@ -11,15 +11,17 @@ A sample to demonstrate end to end integration between ****Merchants & Open Farb
 Create **.env** file in root of this folder, according to your input Merchant credential - you can check the .sample.env file for more details
 
 ```shell
+NEXT_PUBLIC_ENV=<environment for nextjs>
 MERCHANT_CLIENT_ID=<your merchant client id credential, must be the merchant of your account>
 MERCHANT_CLIENT_SECRET=<your merchant client secret credential, must be the merchant of your account >
 OF_AUTH_URL=<Open Fabric auth server url>
-CARD_ISSUER_SERVER_URL=<Open Fabric card issuer server url>
+OF_ISSUER_URL=<Open Fabric card issuer server url>
 ```
 
 **Note:**
 
 * Merchant credential could be found in your Open Fabric Portal
+* `{ENV}` in [public/sdk-card.html](./public/sdk-card.html) should be replaced to your expected value
 
 ## Running sample on local
 
@@ -36,7 +38,7 @@ yarn build
 yarn start
 ```
 
-Open <http://localhost:3000> on browser and start your experience
+Open <http://localhost:3002> on browser and start your experience
 
 ## Structure
 
@@ -80,7 +82,7 @@ To fetch card
 
 ``` typescript
 const result = await axios.post(
-    `${process.env.CARD_ISSUER_SERVER_URL}/i/fetchCard`,
+    `${process.env.OF_ISSUER_URL}/i/fetchCard`,
     {
       card_fetch_token,
     },

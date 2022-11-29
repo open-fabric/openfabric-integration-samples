@@ -7,7 +7,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { OpenFabric, Environment } from "@openfabric/merchant-sdk";
 import { TextField } from "@mui/material";
 import { v4 as uuidv4 } from "uuid"
-import { useRouter } from "next/router";
 
 const styles = {
   root: {
@@ -21,7 +20,7 @@ const styles = {
 };
 
 // get env
-const envString = 'dev'
+const envString = process.env.NEXT_PUBLIC_ENV || 'dev'
 const currentEnv: Environment =
   Environment[envString as keyof typeof Environment] || "dev";
 

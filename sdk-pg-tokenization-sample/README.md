@@ -11,16 +11,18 @@ A sample to demonstrate end to end integration between ****Merchants & Open Farb
 Create **.env** file in root of this folder, according to your input Merchant credential - you can check the .sample.env file for more details
 
 ```shell
+NEXT_PUBLIC_ENV=<environment for nextjs>
 MERCHANT_CLIENT_ID=<your merchant client id credential, must be the merchant of your account>
 MERCHANT_CLIENT_SECRET=<your merchant client secret credential, must be the merchant of your account>
 OF_AUTH_URL=<Open Fabric auth server url>
-NEXT_PUBLIC_PAYMENT_GATEWAY_NAME=<Payment gateway name>
-NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLISH_KEY=<Payment gateway API publishable key>
+NEXT_PUBLIC_PAYMENT_GATEWAY_NAME=<Payment gateway name for nextjs>
+NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLISH_KEY=<Payment gateway API publishable key for nextjs>
 ```
 
 **Note:**
 
 * Merchant credential could be found in your Open Fabric Portal
+* `{ENV}, {PAYMENT_GATEWAY_NAME}, {PAYMENT_GATEWAY_PUBLISH_KEY}` in [public/sdk-pg-tokenization.html](./public/sdk-pg-tokenization.html) should be replaced to your expected value
 * NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLISH_KEY could be optional if PG Merchant PG credentials have been registered to Open Fabric.
 
 ## Running sample on local

@@ -20,7 +20,7 @@ const styles = {
 };
 
 // get env
-const envString = 'dev'
+const envString = process.env.NEXT_PUBLIC_ENV || 'dev'
 const currentEnv: Environment =
   Environment[envString as keyof typeof Environment] || "dev";
 

@@ -95,7 +95,7 @@
       <script type="module" src="https://unpkg.com/@openfabric/merchant-sdk@1.0.0/dist/index.umd.min.js"></script>
       <script type="module">
         const authHost = `${window.location.origin}/api/of-auth`;
-        const currentEnv = 'dev'
+        const currentEnv = '{ENV}'
         const { OpenFabric } = OpenFabricMerchantSDK;
 
         const initOpenFabric = (order) => {
@@ -139,8 +139,8 @@
             partner_reference_id: partnerRefId,
             partner_redirect_success_url: `${window.location.origin}/sdk-pg-tokenization-success?merchant_ref=${partnerRefId}`,
             partner_redirect_fail_url: `${window.location.origin}/sdk-pg-tokenization-failed?merchant_ref=${partnerRefId}`,
-            pg_name: "xendit",
-            pg_publishable_key: 'xnd_public_development_AZVI4iAxXD6fCgKzxhy1Rvr5obpIvKcJXNnXldhfjhJbWB7RDhwzakaf2dF3tQM',
+            pg_name: '{PAYMENT_GATEWAY_NAME}',
+            pg_publishable_key: '{PAYMENT_GATEWAY_PUBLISH_KEY}',
             pg_flow: "tokenization",
             customer_info: {
               mobile_number: "+632 8855 8800",
