@@ -170,7 +170,7 @@
             itemsGUI += '<div style="padding-left:50%;letter-spacing:0px;font-size:12px">'
             Object.keys(item).forEach(key => {
               if (key !== 'name') {
-                itemsGUI += `<div><span style="font-weight:bold;display: inline;">${key}</span>: ${item[key]}</div>`
+                itemsGUI += `<div style="width:max-content><span style="font-weight:bold;display: inline;">${key}</span>: ${item[key]}</div>`
               }
             })
             itemsGUI += '</div>'

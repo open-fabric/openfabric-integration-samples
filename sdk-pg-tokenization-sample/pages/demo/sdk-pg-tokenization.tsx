@@ -101,6 +101,7 @@ const OrderPage = () => {
                   <div
                     style={{
                       marginLeft: "20px",
+                      marginRight: "20px",
                       color: "grey",
                       fontFamily:
                         '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
@@ -118,7 +119,7 @@ const OrderPage = () => {
                     >
                       {Object.keys(item).map((k, idx) => {
                         return (
-                          <div>
+                          <div style={{ width: "max-content"}}>
                             <span style={{ fontWeight: "bold" }}>
                               {k.replaceAll("_", " ")}
                             </span>

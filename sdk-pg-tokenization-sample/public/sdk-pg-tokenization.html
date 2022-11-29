@@ -140,7 +140,7 @@
             partner_redirect_success_url: `${window.location.origin}/sdk-pg-tokenization-success?merchant_ref=${partnerRefId}`,
             partner_redirect_fail_url: `${window.location.origin}/sdk-pg-tokenization-failed?merchant_ref=${partnerRefId}`,
             pg_name: "xendit",
-            pg_publishable_key: 'xnd_public_development_AZVI4iAxXD6fCgKzxhy1Rvr 5obpIvKcJXNnXldhfjhJbWB7RDhwzakaf2dF3tQM',
+            pg_publishable_key: 'xnd_public_development_AZVI4iAxXD6fCgKzxhy1Rvr5obpIvKcJXNnXldhfjhJbWB7RDhwzakaf2dF3tQM',
             pg_flow: "tokenization",
             customer_info: {
               mobile_number: "+632 8855 8800",
@@ -183,7 +183,7 @@
             itemsGUI += '<div style="padding-left:50%;letter-spacing:0px;font-size:12px">'
             Object.keys(item).forEach(key => {
               if (key !== 'name') {
-                itemsGUI += `<div><span style="font-weight:bold;display: inline;">${key}</span>: ${item[key]}</div>`
+                itemsGUI += `<div style="width:max-content"><span style="font-weight:bold;display: inline;">${key}</span>: ${item[key]}</div>`
               }
             })
             itemsGUI += '</div>'

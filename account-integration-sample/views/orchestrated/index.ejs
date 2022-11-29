@@ -249,7 +249,7 @@
         }
     </script>
 <body>
-<h2>OpenFabric - Account Integration Sample</h2>
+<h2>ACME PAY</h2>
 <div class="container">
 
     <div class="tab">
@@ -271,7 +271,7 @@
         <%- include('button', {
         id,
         account_reference_id,
-        title: "Request Review",
+        title: "Pending approval",
         color: "dodgerblue",
         status: "PreAuth",
         btnId: "preAuthBtn",
@@ -280,7 +280,7 @@
         <%- include('button', {
         id,
         account_reference_id,
-        title: "Cancel Transaction",
+        title: "Decline transaction",
         color: "red",
         status: "Failed",
         reason: "User trigger failed",
