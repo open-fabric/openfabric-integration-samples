@@ -47,7 +47,8 @@ jobs:
               --build-arg OF_ISSUER_URL=${OF_ISSUER_URL} \
               --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
               --build-arg OF_API_URL=${OF_API_URL} \
-              --build-arg ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL}
+              --build-arg ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL} \
+              --build-arg BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS}
             docker build ./account-integration-sample/ -t openfabric-integration-samples-account:latest
             docker images
       - run:
