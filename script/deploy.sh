@@ -13,9 +13,9 @@ for name in "NGINX" "MERCHANT-HOME" "MERCHANT-SDK-PG-TOKENIZATION" "MERCHANT-SDK
 do
   echo "push $name"
   lower_case_name=$(echo "${name}" | tr '[:upper:]' '[:lower:]')
-  echo $lower_case_name
+  echo "lower case name: $lower_case_name"
 
-  DESCRIPTION=$(aws lightsail push-container-image --region ${AWS_DEFAULT_REGION} --service-name ${CONTAINER_SERVICE_NAME} --label openfabric-integration-samples-${lower_case_name} --image openfabric-integration-samples-${lower_case_name}:latest)
+  DESCRIPTION=$(aws lightsail push-container-image --region ${AWS_DEFAULT_REGION} --service-name ${CONTAINER_SERVICE_NAME} --label samples-${lower_case_name} --image samples-${lower_case_name}:latest)
   echo $DESCRIPTION
 
   if [[ $DESCRIPTION =~ $REGEX ]]

@@ -3,7 +3,7 @@ version: 2.1
 executors:
   docker_build:
     machine:
-      docker_layer_caching: true
+      docker_layer_caching: false
       image: ubuntu-2004:202010-01
 
 orbs:

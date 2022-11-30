@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # deploy nginx
-docker build ./nginx/ -t openfabric-integration-samples-nginx:latest
+docker build ./nginx/ -t samples-nginx:latest
 
 # deploy Open Fabric home page
-docker build ./home-sample/ -t openfabric-integration-samples-merchant-home:latest
+docker build ./home-sample/ -t samples-merchant-home:latest
 
 # deploy sdk-card-sample
 docker build ./sdk-card-sample/ \
-  -t openfabric-integration-samples-merchant-sdk-card:latest \
+  -t samples-merchant-sdk-card:latest \
   --build-arg ENV=$ENV \
   --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
   --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
@@ -18,7 +18,7 @@ docker build ./sdk-card-sample/ \
 
 # deploy sdk-pg-tokenization-sample
 docker build ./sdk-pg-tokenization-sample/ \
-  -t openfabric-integration-samples-merchant-sdk-pg-tokenization:latest \
+  -t samples-merchant-sdk-pg-tokenization:latest \
   --build-arg ENV=$ENV \
   --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
   --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
@@ -29,7 +29,7 @@ docker build ./sdk-pg-tokenization-sample/ \
 
 # deploy sdk-pg-charge-sample
 docker build ./sdk-pg-charge-sample/ \
-  -t openfabric-integration-samples-merchant-sdk-pg-charge:latest \
+  -t samples-merchant-sdk-pg-charge:latest \
   --build-arg ENV=$ENV \
   --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
   --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
@@ -37,6 +37,6 @@ docker build ./sdk-pg-charge-sample/ \
   --build-arg BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS} \
   --build-arg PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}
 
-docker build ./account-integration-sample/ -t openfabric-integration-samples-account:latest
+docker build ./account-integration-sample/ -t samples-account:latest
 
 docker images

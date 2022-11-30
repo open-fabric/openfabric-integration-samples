@@ -10,7 +10,7 @@
         "NGINX_ENVSUBST_OUTPUT_DIR": "/etc/nginx"
       }
     },
-    "account-integration-sample": {
+    "account": {
       "image": "$ACCOUNT_IMAGE_NAME",
       "ports": {
         "4000": "HTTP"
@@ -26,25 +26,25 @@
         "BASIC_AUTH_CREDENTIALS": "$BASIC_AUTH_CREDENTIALS"
       }
     },
-    "merchant-integration-sample-merchant-home": {
+    "merchant-home": {
       "image": "$MERCHANT_HOME_IMAGE_NAME",
       "ports": {
         "3000": "HTTP"
       }
     },
-    "merchant-integration-sample-merchant-sdk-pg-tokenization": {
+    "merchant-sdk-pg-tokenization": {
       "image": "$MERCHANT_SDK_PG_TOKENIZATION_IMAGE_NAME",
       "ports": {
         "3001": "HTTP"
       }
     },
-    "merchant-integration-sample-merchant-sdk-pg-charge": {
+    "merchant-sdk-pg-charge": {
       "image": "$MERCHANT_SDK_PG_CHARGE_IMAGE_NAME",
       "ports": {
         "3002": "HTTP"
       }
     },
-    "merchant-integration-merchant-sample-sdk-card": {
+    "merchant-sdk-card": {
       "image": "$MERCHANT_SDK_CARD_IMAGE_NAME",
       "ports": {
         "3003": "HTTP"
