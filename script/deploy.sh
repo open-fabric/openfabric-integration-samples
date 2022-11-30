@@ -9,7 +9,7 @@ echo "MERCHANT_SERVER_URL: ${MERCHANT_SERVER_URL}"
 echo "ACCOUNT_SERVER_URL: ${ACCOUNT_SERVER_URL}"
 
 # push images to aws lightsail and parse image name
-for name in "NGINX" "MERCHANT" "ACCOUNT"
+for name in "NGINX" "MERCHANT-HOME" "MERCHANT-SDK-PG-TOKENIZATION" "MERCHANT-SDK-PG-CHARGE" "MERCHANT-SDK-CARD" "ACCOUNT"
 do
   echo "push $name"
   lower_case_name=$(echo "${name}" | tr '[:upper:]' '[:lower:]')
@@ -24,9 +24,11 @@ do
   fi
   echo "Image name: $IMAGE_NAME"
 
-  export $name"_IMAGE_NAME"="$IMAGE_NAME"
+  NEW_NAME=$(echo "$name" | tr '-' '_')
+  echo "new name: $NEW_NAME"
+  export $NEW_NAME"_IMAGE_NAME"="$IMAGE_NAME"
 done
 
-envsubst '$NGINX_IMAGE_NAME,$MERCHANT_IMAGE_NAME,$ACCOUNT_IMAGE_NAME,$CONTAINER_SERVICE_NAME,$MERCHANT_SERVER_URL,$ACCOUNT_SERVER_URL,$ACCOUNT_CLIENT_ID,$ACCOUNT_CLIENT_SECRET,$OF_AUTH_URL,$OF_ISSUER_URL,$OF_API_URL,$BASIC_AUTH_CREDENTIALS' < ./script/deploy-template.json > "containers.json"
+envsubst '$NGINX_IMAGE_NAME,$MERCHANT_HOME_IMAGE_NAME,$MERCHANT_SDK_PG_TOKENIZATION_IMAGE_NAME,$MERCHANT_SDK_PG_CHARGE_IMAGE_NAME,$MERCHANT_SDK_CARD_IMAGE_NAME,$ACCOUNT_IMAGE_NAME,$CONTAINER_SERVICE_NAME,$MERCHANT_SERVER_URL,$ACCOUNT_SERVER_URL,$ACCOUNT_CLIENT_ID,$ACCOUNT_CLIENT_SECRET,$OF_AUTH_URL,$OF_ISSUER_URL,$OF_API_URL,$BASIC_AUTH_CREDENTIALS' < ./script/deploy-template.json > "containers.json"
 
 aws lightsail create-container-service-deployment --region ${AWS_DEFAULT_REGION} --cli-input-json file://containers.json

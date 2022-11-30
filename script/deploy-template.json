@@ -26,20 +26,26 @@
         "BASIC_AUTH_CREDENTIALS": "$BASIC_AUTH_CREDENTIALS"
       }
     },
-    "merchant-integration-sample-sdk-pg-tokenization": {
-      "image": "$SDK_PG_TOKENIZATION_IMAGE_NAME",
+    "merchant-integration-sample-merchant-home": {
+      "image": "$MERCHANT_HOME_IMAGE_NAME",
+      "ports": {
+        "3000": "HTTP"
+      }
+    },
+    "merchant-integration-sample-merchant-sdk-pg-tokenization": {
+      "image": "$MERCHANT_SDK_PG_TOKENIZATION_IMAGE_NAME",
       "ports": {
         "3001": "HTTP"
       }
     },
-    "merchant-integration-sample-sdk-pg-charge": {
-      "image": "$SDK_PG_CHARGE_IMAGE_NAME",
+    "merchant-integration-sample-merchant-sdk-pg-charge": {
+      "image": "$MERCHANT_SDK_PG_CHARGE_IMAGE_NAME",
       "ports": {
         "3002": "HTTP"
       }
     },
-    "merchant-integration-sample-sdk-card": {
-      "image": "$SDK_CARD_IMAGE_NAME",
+    "merchant-integration-merchant-sample-sdk-card": {
+      "image": "$MERCHANT_SDK_CARD_IMAGE_NAME",
       "ports": {
         "3003": "HTTP"
       }
@@ -51,7 +57,7 @@
     "healthCheck": {
       "healthyThreshold": 2,
       "intervalSeconds": 300,
-      "path": "/index",
+      "path": "/",
       "successCodes": "200-499",
       "timeoutSeconds": 2,
       "unhealthyThreshold": 2
