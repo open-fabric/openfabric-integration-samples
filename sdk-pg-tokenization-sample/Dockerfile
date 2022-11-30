@@ -26,7 +26,7 @@ RUN echo "BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS}" >> ./.env
 RUN echo "NEXT_PUBLIC_PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}" >> ./.env
 RUN echo "NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY}" >> ./.env
 
-RUN sed -i -e "s/Environment.sandbox/'$ENV'/g" ./public/sdk-pg-charge.html
+RUN sed -i -e "s/Environment.sandbox/'$ENV'/g" ./public/sdk-pg-tokenization.html
 RUN sed -i -e "s/{PAYMENT_GATEWAY_NAME}/$PAYMENT_GATEWAY_NAME/g" ./public/sdk-pg-tokenization.html
 RUN sed -i -e "s/{PAYMENT_GATEWAY_PUBLISH_KEY}/$PAYMENT_GATEWAY_PUBLISH_KEY/g" ./public/sdk-pg-tokenization.html
 
@@ -48,4 +48,5 @@ RUN sed -i -e "s/{PAYMENT_GATEWAY_PUBLISH_KEY}/$PAYMENT_GATEWAY_PUBLISH_KEY/g" .
 RUN chmod 777 ./
 USER nextjs
 EXPOSE 3001
-CMD ["yarn", "start"]
+ENV PORT 3001
+CMD ["node", "server.js"]

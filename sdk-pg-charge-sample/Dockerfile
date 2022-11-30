@@ -44,4 +44,5 @@ RUN sed -i -e "s/{PAYMENT_GATEWAY_NAME}/$PAYMENT_GATEWAY_NAME/g" ./public/sdk-pg
 RUN chmod 777 ./
 USER nextjs
 EXPOSE 3002
-CMD ["yarn", "start"]
+ENV PORT 3002
+CMD ["node", "server.js"]
