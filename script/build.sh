@@ -12,7 +12,7 @@ docker build ./sdk-card-sample/ \
   --build-arg ENV=$ENV \
   --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
   --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
-  --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \  
+  --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \
   --build-arg BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS} \
   --build-arg OF_ISSUER_URL=${OF_ISSUER_URL}
 
@@ -22,7 +22,7 @@ docker build ./sdk-pg-tokenization-sample/ \
   --build-arg ENV=$ENV \
   --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
   --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
-  --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \  
+  --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \
   --build-arg BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS} \
   --build-arg PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME} \
   --build-arg PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY}
@@ -33,7 +33,7 @@ docker build ./sdk-pg-charge-sample/ \
   --build-arg ENV=$ENV \
   --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
   --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
-  --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \  
+  --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \
   --build-arg BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS} \
   --build-arg PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}
 

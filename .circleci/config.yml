@@ -29,7 +29,6 @@ jobs:
       - run:
           command: |
             envsubst '$MERCHANT_DOMAIN,$ACCOUNT_DOMAIN' < ./nginx/nginx.template.conf > nginx/nginx.conf
-            envsubst '$NGINX_IMAGE_NAME,$MERCHANT_IMAGE_NAME,$ACCOUNT_IMAGE_NAME,$CONTAINER_SERVICE_NAME,$MERCHANT_SERVER_URL,$ACCOUNT_SERVER_URL,$ACCOUNT_CLIENT_ID,$ACCOUNT_CLIENT_SECRET,$OF_AUTH_URL,$OF_ISSUER_URL,$OF_API_URL,$BASIC_AUTH_CREDENTIALS' < ./script/deploy-template.json > "containers.json"
       - run:
           command: |
             bash script/build.sh
