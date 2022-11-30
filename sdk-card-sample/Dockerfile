@@ -41,6 +41,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 RUN sed -i -e "s/Environment.sandbox/'$ENV'/g" ./public/sdk-card.html
 RUN chmod 777 ./
 USER nextjs
-EXPOSE 3002
-ENV PORT 3002
+EXPOSE 3003
+ENV PORT 3003
 CMD ["node", "server.js"]
