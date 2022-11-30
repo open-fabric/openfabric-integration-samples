@@ -26,7 +26,7 @@ RUN echo "BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS}" >> ./.env
 RUN echo "NEXT_PUBLIC_PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}" >> ./.env
 RUN echo "NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY}" >> ./.env
 
-RUN sed -i -e "s/{ENV}/$ENV/g" ./public/sdk-pg-charge.html
+RUN sed -i -e "s/Environment.sandbox/'$ENV'/g" ./public/sdk-pg-charge.html
 RUN sed -i -e "s/{PAYMENT_GATEWAY_NAME}/$PAYMENT_GATEWAY_NAME/g" ./public/sdk-pg-tokenization.html
 RUN sed -i -e "s/{PAYMENT_GATEWAY_PUBLISH_KEY}/$PAYMENT_GATEWAY_PUBLISH_KEY/g" ./public/sdk-pg-tokenization.html
 
@@ -42,7 +42,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-RUN sed -i -e "s/{ENV}/$ENV/g" ./public/sdk-pg-tokenization.html
+RUN sed -i -e "s/Environment.sandbox/'$ENV'/g" ./public/sdk-pg-tokenization.html
 RUN sed -i -e "s/{PAYMENT_GATEWAY_NAME}/$PAYMENT_GATEWAY_NAME/g" ./public/sdk-pg-tokenization.html
 RUN sed -i -e "s/{PAYMENT_GATEWAY_PUBLISH_KEY}/$PAYMENT_GATEWAY_PUBLISH_KEY/g" ./public/sdk-pg-tokenization.html
 RUN chmod 777 ./

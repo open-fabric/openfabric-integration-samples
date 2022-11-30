@@ -39,7 +39,7 @@ yarn build
 yarn start
 ```
 
-Open <http://localhost:3000> on browser and start your experience
+Open <http://localhost:3001> on browser and start your experience
 
 ## Structure
 

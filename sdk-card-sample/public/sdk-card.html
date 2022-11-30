@@ -61,8 +61,8 @@
       <script type="module" src="https://unpkg.com/@openfabric/merchant-sdk@1.0.0/dist/index.umd.min.js"></script>
       <script type="module">
         const authHost = `${window.location.origin}/api/of-auth`;
-        const currentEnv = '{ENV}'
-        const { OpenFabric } = OpenFabricMerchantSDK;
+        const { OpenFabric, Environment } = OpenFabricMerchantSDK;
+        const currentEnv = Environment.sandbox; //use Environment.production to go live.
 
         const initOpenFabric = (order) => {
           // get access token from server

@@ -10,7 +10,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import { requireLogin } from "./utils/requireLogin_middleware";
 
-const port = 3003;
+const port = 4000;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

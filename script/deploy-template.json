@@ -13,7 +13,7 @@
     "account-integration-sample": {
       "image": "$ACCOUNT_IMAGE_NAME",
       "ports": {
-        "3001": "HTTP"
+        "4000": "HTTP"
       },
       "environment": {
         "OF_AUTH_URL": "$OF_AUTH_URL",
@@ -26,10 +26,22 @@
         "BASIC_AUTH_CREDENTIALS": "$BASIC_AUTH_CREDENTIALS"
       }
     },
-    "merchant-integration-sample": {
-      "image": "$MERCHANT_IMAGE_NAME",
+    "merchant-integration-sample-sdk-pg-tokenization": {
+      "image": "$SDK_PG_TOKENIZATION_IMAGE_NAME",
       "ports": {
-        "3000": "HTTP"
+        "3001": "HTTP"
+      }
+    },
+    "merchant-integration-sample-sdk-pg-charge": {
+      "image": "$SDK_PG_CHARGE_IMAGE_NAME",
+      "ports": {
+        "3002": "HTTP"
+      }
+    },
+    "merchant-integration-sample-sdk-card": {
+      "image": "$SDK_CARD_IMAGE_NAME",
+      "ports": {
+        "3003": "HTTP"
       }
     }
   },
