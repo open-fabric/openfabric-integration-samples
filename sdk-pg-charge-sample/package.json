@@ -1,5 +1,5 @@
 {
-  "name": "merchant-integration-sample",
+  "name": "sdk-pg-charge-sample",
   "version": "0.1.0",
   "private": true,
   "engines": {
