@@ -8,7 +8,7 @@ const PaymentSuccess = (props: any) => {
   const cardHandler = useCallback((card_fetch_token: string) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-    fetch(`/api/fetch-card`, {
+    fetch(`/sdk-card/api/fetch-card`, {
       method: "POST",
       headers: headers,
       body: JSON.stringify({ card_fetch_token }),

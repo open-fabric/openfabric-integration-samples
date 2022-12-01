@@ -1,4 +1,4 @@
-import PaymentSuccess from "./sdk-card-success"
+import PaymentSuccess from "./success"
 
 const PaymentFailedPage = () => {
   return <PaymentSuccess

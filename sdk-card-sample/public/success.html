@@ -33,7 +33,7 @@
         card_fetch_token = location.search.match(/txn_card_token=([^&]*)/i)[1];
       }
 
-      fetch(`/api/fetch-card`, {
+      fetch(`/sdk-card/api/fetch-card`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

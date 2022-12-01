@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  assetPrefix: "/sdk-pg-charge/",
+  basePath: '/sdk-pg-charge',
   experimental: {
     outputStandalone: true,
   },
@@ -8,7 +10,8 @@ const nextConfig = {
     return [
       {
         source: "/",
-        destination: "/demo/sdk-pg-charge",
+        destination: "/sdk-pg-charge",
+        basePath: false,
         permanent: false,
       },
     ];
@@ -16,17 +19,17 @@ const nextConfig = {
   rewrites: async () => {
     return [
       {
-        source: "/sdk-pg-charge",
-        destination: "/sdk-pg-charge.html",
+        source: "/html",
+        destination: "/sdk-pg-charge/index.html",
       },
       {
-        source: "/sdk-pg-charge-success",
-        destination: "/sdk-pg-charge-success.html",
+        source: "/html/success",
+        destination: "/sdk-pg-charge/success.html",
       },
       {
-        source: "/sdk-pg-charge-failed",
-        destination: "/sdk-pg-charge-failed.html",
-      }
+        source: "/html/failed",
+        destination: "/sdk-pg-charge/failed.html",
+      },
     ];
   },
 };

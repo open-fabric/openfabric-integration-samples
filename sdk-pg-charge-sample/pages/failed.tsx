@@ -1,4 +1,4 @@
-import PaymentSuccess from "./sdk-pg-charge-success"
+import PaymentSuccess from "./success"
 
 const PaymentFailedPage = () => {
   return <PaymentSuccess

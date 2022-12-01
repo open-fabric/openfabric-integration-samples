@@ -44,7 +44,7 @@ const OrderPage = () => {
   React.useEffect(() => {
     setOrder(getTransactionOrder(window.location.origin))
 
-    fetch("/api/of-auth")
+    fetch("/sdk-card/api/of-auth")
       .then((response) => response.json())
       .then(({ access_token }) => setAccessToken(access_token));
   }, []);
@@ -60,8 +60,8 @@ const OrderPage = () => {
     // initialize Open Fabric's SDK
     const openFabric = OpenFabric(
       accessToken,
-      `${window.location.origin}/demo/sdk-card-success?merchant_ref=${order.partner_reference_id}`,
-      `${window.location.origin}/demo/sdk-card-failed?merchant_ref=${order.partner_reference_id}`
+      `${window.location.origin}/sdk-card/success?merchant_ref=${order.partner_reference_id}`,
+      `${window.location.origin}/sdk-card/failed?merchant_ref=${order.partner_reference_id}`
     )
       .setDebug(true)
       .setEnvironment(currentEnv);
@@ -254,8 +254,8 @@ const getTransactionOrder = (basePath: string): any => {
 
   return {
     partner_reference_id: partnerRefId,
-    partner_redirect_success_url: `${basePath}/demo/sdk-card-success?merchant_ref=${partnerRefId}`,
-    partner_redirect_fail_url: `${basePath}/demo/sdk-card-failed?merchant_ref=${partnerRefId}`,
+    partner_redirect_success_url: `${basePath}/sdk-card/success?merchant_ref=${partnerRefId}`,
+    partner_redirect_fail_url: `${basePath}/sdk-card/failed?merchant_ref=${partnerRefId}`,
     customer_info: {
       mobile_number: "+632 8855 8800",
       first_name: "John",

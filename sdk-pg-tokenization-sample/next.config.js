@@ -14,23 +14,24 @@ const nextConfig = {
         basePath: false,
         permanent: false,
       },
+    ];
+  },
+  rewrites: async () => {
+    return [
       {
         source: "/html",
-        destination: "/index.html",
-        permanent: false,
+        destination: "/sdk-pg-tokenization/index.html",
       },
       {
         source: "/html/success",
-        destination: "/success.html",
-        permanent: false,
+        destination: "/sdk-pg-tokenization/success.html",
       },
       {
         source: "/html/failed",
-        destination: "/failed.html",
-        permanent: false,
+        destination: "/sdk-pg-tokenization/failed.html",
       },
     ];
-  }
+  },
 };
 const withTM = require("next-transpile-modules")(["@openfabric/merchant-sdk"]);
 module.exports = withTM(nextConfig);

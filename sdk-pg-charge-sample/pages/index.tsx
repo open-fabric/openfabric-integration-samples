@@ -42,7 +42,7 @@ const OrderPage = () => {
   // get of access token
   React.useEffect(() => {
     setOrder(getTransactionOrder(window.location.origin));
-    fetch("/api/of-auth")
+    fetch("/sdk-pg-charge/api/of-auth")
       .then((response) => response.json())
       .then(({ access_token }) => setAccessToken(access_token));
   }, []);
@@ -58,8 +58,8 @@ const OrderPage = () => {
     // initialize Open Fabric's SDK
     const openFabric = OpenFabric(
       accessToken,
-      `${window.location.origin}/demo/sdk-pg-charge-success?merchant_ref=${order.partner_reference_id}`,
-      `${window.location.origin}/demo/sdk-pg-charge-failed?merchant_ref=${order.partner_reference_id}`
+      `${window.location.origin}/sdk-pg-charge/success?merchant_ref=${order.partner_reference_id}`,
+      `${window.location.origin}/sdk-pg-charge/failed?merchant_ref=${order.partner_reference_id}`
     )
       .setDebug(true)
       .setEnvironment(currentEnv);
@@ -317,8 +317,8 @@ const getTransactionOrder = (baseUrl: string): any => {
 
   return {
     partner_reference_id: partnerRefId,
-    partner_redirect_success_url: `${baseUrl}/demo/sdk-pg-charge-success?merchant_ref=${partnerRefId}`,
-    partner_redirect_fail_url: `${baseUrl}/demo/sdk-pg-charge-failed?merchant_ref=${partnerRefId}`,
+    partner_redirect_success_url: `${baseUrl}/sdk-pg-charge/success?merchant_ref=${partnerRefId}`,
+    partner_redirect_fail_url: `${baseUrl}/sdk-pg-charge/failed?merchant_ref=${partnerRefId}`,
     pg_name: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_NAME || "xendit",
     pg_flow: "charge",
     customer_info: {

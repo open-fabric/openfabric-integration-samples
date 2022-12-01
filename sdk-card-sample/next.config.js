@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  assetPrefix: "/sdk-card/",
+  basePath: '/sdk-card',
   experimental: {
     outputStandalone: true,
   },
@@ -8,7 +10,8 @@ const nextConfig = {
     return [
       {
         source: "/",
-        destination: "/demo/sdk-card",
+        destination: "/sdk-card",
+        basePath: false,
         permanent: false,
       },
     ];
@@ -16,17 +19,17 @@ const nextConfig = {
   rewrites: async () => {
     return [
       {
-        source: "/sdk-card",
-        destination: "/sdk-card.html",
+        source: "/html",
+        destination: "/sdk-card/index.html",
       },
       {
-        source: "/sdk-card-success",
-        destination: "/sdk-card-success.html",
+        source: "/html/success",
+        destination: "/sdk-card/success.html",
       },
       {
-        source: "/sdk-card-failed",
-        destination: "/sdk-card-failed.html",
-      }
+        source: "/html/failed",
+        destination: "/sdk-card/failed.html",
+      },
     ];
   },
 };
