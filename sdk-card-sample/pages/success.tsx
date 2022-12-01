@@ -41,6 +41,7 @@ const PaymentSuccess = (props: any) => {
     <div
       style={{
         marginTop: 128,
+        marginBottom: 50,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

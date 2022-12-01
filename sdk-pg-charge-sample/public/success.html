@@ -43,7 +43,9 @@
         str += '</div>'
       });
 
-      document.getElementById("data").innerHTML = str;
+      if (str) {
+        document.getElementById("data").innerHTML = str;
+      }
     }
 
     document.addEventListener("DOMContentLoaded", function () {
