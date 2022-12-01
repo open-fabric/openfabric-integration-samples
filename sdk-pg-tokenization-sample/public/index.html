@@ -94,7 +94,7 @@
 
       <script type="module" src="https://unpkg.com/@openfabric/merchant-sdk@1.0.0/dist/index.umd.min.js"></script>
       <script type="module">
-        const authHost = `${window.location.origin}/api/of-auth`;
+        const authHost = `${window.location.origin}/sdk-pg-tokenization/api/of-auth`;
         const { OpenFabric, Environment } = OpenFabricMerchantSDK;
         const currentEnv = Environment.sandbox; //use Environment.production to go live.
 
@@ -106,8 +106,8 @@
               // initialize Open Fabric's SDK
               const openFabric = OpenFabric(
                 access_token,
-                `${window.location.origin}/sdk-pg-tokenization-success`,
-                `${window.location.origin}/sdk-pg-tokenization-failed`
+                `${window.location.origin}/sdk-pg-tokenization/html/success`,
+                `${window.location.origin}/sdk-pg-tokenization/html/failed`
               ).setEnvironment(currentEnv);
 
               openFabric.createOrder(order)
@@ -137,8 +137,8 @@
           const postCode = "1634";
           const order = {
             partner_reference_id: partnerRefId,
-            partner_redirect_success_url: `${window.location.origin}/sdk-pg-tokenization-success?merchant_ref=${partnerRefId}`,
-            partner_redirect_fail_url: `${window.location.origin}/sdk-pg-tokenization-failed?merchant_ref=${partnerRefId}`,
+            partner_redirect_success_url: `${window.location.origin}/sdk-pg-tokenization/html/success?merchant_ref=${partnerRefId}`,
+            partner_redirect_fail_url: `${window.location.origin}/sdk-pg-tokenization/html/failed?merchant_ref=${partnerRefId}`,
             pg_name: '{PAYMENT_GATEWAY_NAME}',
             pg_publishable_key: '{PAYMENT_GATEWAY_PUBLISH_KEY}',
             pg_flow: "tokenization",

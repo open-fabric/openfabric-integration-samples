@@ -42,7 +42,7 @@ const OrderPage = () => {
   // get of access token
   React.useEffect(() => {
     setOrder(getTransactionOrder(window.location.origin))
-    fetch("/api/of-auth")
+    fetch("/sdk-pg-tokenization/api/of-auth")
       .then((response) => response.json())
       .then(({ access_token }) => setAccessToken(access_token));
   }, []);
@@ -58,8 +58,8 @@ const OrderPage = () => {
     // initialize Open Fabric's SDK
     const openFabric = OpenFabric(
       accessToken,
-      `${window.location.origin}/demo/sdk-pg-tokenization-success?merchant_ref=${order.partner_reference_id}`,
-      `${window.location.origin}/demo/sdk-pg-tokenization-failed?merchant_ref=${order.partner_reference_id}`
+      `${window.location.origin}/sdk-pg-tokenization/success?merchant_ref=${order.partner_reference_id}`,
+      `${window.location.origin}/sdk-pg-tokenization/failed?merchant_ref=${order.partner_reference_id}`
     )
       .setDebug(true)
       .setEnvironment(currentEnv);
@@ -365,8 +365,8 @@ const getTransactionOrder = (baseUrl: string): any => {
 
   return {
     partner_reference_id: partnerRefId,
-    partner_redirect_success_url: `${baseUrl}/demo/sdk-pg-tokenization-success?merchant_ref=${partnerRefId}`,
-    partner_redirect_fail_url: `${baseUrl}/demo/sdk-pg-tokenization-failed?merchant_ref=${partnerRefId}`,
+    partner_redirect_success_url: `${baseUrl}/sdk-pg-tokenization/success?merchant_ref=${partnerRefId}`,
+    partner_redirect_fail_url: `${baseUrl}/sdk-pg-tokenization/failed?merchant_ref=${partnerRefId}`,
     pg_name: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_NAME || "xendit",
     pg_publishable_key: process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_PUBLISH_KEY || "xnd_public_development_AZVI4iAxXD6fCgKzxhy1Rvr5obpIvKcJXNnXldhfjhJbWB7RDhwzakaf2dF3tQM",
     pg_flow: "tokenization",
