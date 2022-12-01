@@ -21,7 +21,7 @@ NEXT_PUBLIC_PAYMENT_GATEWAY_NAME=<Payment gateway name for nextjs>
 **Note:**
 
 * Merchant credential could be found in your Open Fabric Portal
-* `{ENV} and {PAYMENT_GATEWAY_NAME}` in [public/sdk-pg-charge.html](./public/sdk-pg-charge.html) should be replaced to your expected value
+* `{PAYMENT_GATEWAY_NAME}` in [public/index.html](./public/index.html) should be replaced to your expected value
 
 ## Running sample on local
 
@@ -45,9 +45,9 @@ Open <http://localhost:3002> on browser and start your experience
 To give the best experiences and simplifying the integration between Merchant and Open Fabric, we provides 2 versions of souce code. The fist one is written in typescript, nextjs. And the second one is the simplifying one which are quite familiar with most of developers, written in html and javascript.
 
 * [sdk-pg-charge-sample](./../sdk-pg-charge-sample/)
-  * [Client site (nextjs)](pages/demo/sdk-pg-charge.tsx)
+  * [Client site (nextjs)](pages/index.tsx)
   * [Server site (nextjs)](pages/api)
-  * [Simple client site version (html and javascript)](public/sdk-pg-charge.html)
+  * [Simple client site version (html and javascript)](public/index.html)
 
 
 **For Open Fabric's SDK usages**
@@ -56,14 +56,14 @@ To initialize Open Fabric's SDK
 ``` typescript
 const openFabric = OpenFabric(
   accessToken,
-  `${window.location.origin}/demo/sdk-card-success?merchant_ref=${order.partner_reference_id}`,
-  `${window.location.origin}/demo/sdk-card-failed?merchant_ref=${order.partner_reference_id}`
+  `${window.location.origin}/sdk-pg-charge/success?merchant_ref=${order.partner_reference_id}`,
+  `${window.location.origin}/sdk-pg-charge/failed?merchant_ref=${order.partner_reference_id}`
 )
   .setEnvironment(env);
 ```
-`${window.location.origin}/demo/sdk-card-success?merchant_ref=${order.partner_reference_id}` is the success page that Open Fabric's SDK redirect to
+`${window.location.origin}/sdk-pg-charge/success?merchant_ref=${order.partner_reference_id}` is the success page that Open Fabric's SDK redirect to
 
-`${window.location.origin}/demo/sdk-card-fail?merchant_ref=${order.partner_reference_id}` is the failed page that Open Fabric's SDK redirect to
+`${window.location.origin}/sdk-pg-charge/failed?merchant_ref=${order.partner_reference_id}` is the failed page that Open Fabric's SDK redirect to
 
 To create an order and initialize the SDK
 

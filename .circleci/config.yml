@@ -47,7 +47,6 @@ workflows:
             branches:
               only:
                 - main
-                - fix/merchant-pg-sample-simplify
   sandbox-deploy:
     jobs:
       - deploy-tenant-merchant-sample:
