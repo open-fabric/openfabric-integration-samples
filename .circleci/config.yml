@@ -28,29 +28,10 @@ jobs:
             sudo chmod +x /usr/local/bin/lightsailctl
       - run:
           command: |
-            which aws
-            aws --version
-            aws lightsail --version
+            envsubst '$MERCHANT_DOMAIN,$ACCOUNT_DOMAIN' < ./nginx/nginx.template.conf > nginx/nginx.conf
       - run:
           command: |
-            envsubst '$MERCHANT_DOMAIN,$ACCOUNT_DOMAIN' < ./nginx/nginx.template.conf > nginx/nginx.conf
-            cat ./nginx/nginx.conf
-            docker build ./nginx/ -t openfabric-integration-samples-nginx:latest
-            docker build ./merchant-integration-sample/ \
-              -t openfabric-integration-samples-merchant:latest \
-              --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
-              --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \
-              --build-arg PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY} \
-              --build-arg PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME} \
-              --build-arg ENV=$ENV \
-              --build-arg MERCHANT_SERVER_URL=${MERCHANT_SERVER_URL} \
-              --build-arg OF_ISSUER_URL=${OF_ISSUER_URL} \
-              --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
-              --build-arg OF_API_URL=${OF_API_URL} \
-              --build-arg ACCOUNT_SERVER_URL=${ACCOUNT_SERVER_URL} \
-              --build-arg BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS}
-            docker build ./account-integration-sample/ -t openfabric-integration-samples-account:latest
-            docker images
+            bash script/build.sh
       - run:
           command: |
             bash script/deploy.sh

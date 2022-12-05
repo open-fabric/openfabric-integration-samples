@@ -19,6 +19,6 @@ RUN yarn install
 COPY . .
 
 # Expose port to access server
-EXPOSE 3001
+EXPOSE 4000
 # Command to run our app
 ENTRYPOINT [ "yarn", "start"]

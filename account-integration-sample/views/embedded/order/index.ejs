@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Checkout Form</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" />
+  <link rel="stylesheet" href="/public/css/style.css" />
+</head>
+
+<body>
+  <body>
+    <div class="model">
+      <div class="room">
+        <div class="text-cover">
+          <h1>OF's House</h1>
+          <p class="price">120.00 <span>USD</span> / Night</p>
+          <hr />
+          <p>Entire Home for 1 guest</p>
+          <p>Tues, Oct 2, 2022 to Friday, Oct 5, 2022</p>
+        </div>
+      </div>
+      <div class="payment">
+        <div class="receipt-box">
+          <h3>Reciept Summary</h3>
+          <table class="table">
+            <tr>
+              <td>120 x 2 nights</td>
+              <td>240.00 USD</td>
+            </tr>
+            <tr>
+              <td>Discount</td>
+              <td>0 USD</td>
+            </tr>
+            <tr>
+              <td>Subtotal</td>
+              <td>240 USD</td>
+            </tr>
+            <tr>
+              <td>Tax</td>
+              <td>10 USD</td>
+            </tr>
+            <tfoot>
+              <tr>
+                <td>Sum</td>
+                <td>$250</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="payment-info">
+          <h3>Checkout Info</h3>
+          <form action="" id="merchant-transaction-form">
+            <label>Merchant Ref Id</label>
+            <input type="text" name="merchant_reference_id" id="merchant_reference_id" value="Mickey" />
+            <br />
+            <div>Use PGToken <input type="checkbox" id="use-pg-flow-checkbox" /></div>
+            <div id="pg-info" class="pg-info">
+              <label>PG Name</label>
+              <input type="text" name="merchant_reference_id" id="pg_name" value="xendit" />
+              <label>PG Key</label>
+              <input type="text" name="merchant_reference_id" id="pg_key"
+                value="xnd_public_development_AZVI4iAxXD6fCgKzxhy1Rvr5obpIvKcJXNnXldhfjhJbWB7RDhwzakaf2dF3tQM" />
+            </div>
+            <input class="btn" type="submit" value="Check out" />
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    window.onload = updateDefaultValue; // Runs the function on click
+    function updateDefaultValue() {
+      const refId = `MER-${Date.now()}`;
+      const merchantRef = document.getElementById("merchant_reference_id");
+      merchantRef.value = refId;
+    }
+    const pgFlowCheckBox = document.getElementById("use-pg-flow-checkbox");
+    const pgInfoSection = document.getElementById("pg-info");
+
+    if (pgFlowCheckBox) {
+      pgFlowCheckBox.addEventListener("change", (e) => {
+        const checked = pgFlowCheckBox.checked;
+        pgInfoSection.style.display = checked ? "block" : "none";
+      });
+    }
+
+    const transactionForm = document.getElementById("merchant-transaction-form");
+    if (transactionForm) {
+      transactionForm.addEventListener("submit", (e) => {
+        submitMerchantTransaction(e, this);
+      });
+    }
+
+    function submitMerchantTransaction(e, form) {
+      e.preventDefault();
+      const merchantRefId = document.getElementById("merchant_reference_id").value;
+      const isPGFlow = pgFlowCheckBox.checked;
+
+      const pgName = document.getElementById('pg_name').value
+      const pgKey = document.getElementById('pg_key').value
+
+      const amount = 250;
+      const currency = "USD";
+      const url = `${window.location.origin}/api/embedded/transactions`;
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Accept", "application/json");
+      const pgParam = pgKey ? {
+        name: pgName,
+        publishable_key: pgKey
+      } : {
+        name: pgName
+      }
+      const params = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify({
+          merchant_reference_id: merchantRefId,
+          status: "Created",
+          amount,
+          currency,
+          tax: 10,
+          items: [
+            {
+              id: "HOUSE-DANNY-1",
+              price: 120,
+              unit: "night",
+              quantity: 2,
+              from: "Tues, Oct 2, 2022",
+              to: "Friday, Oct 5, 2022",
+            },
+          ],
+          pg_provider_config: !isPGFlow ? undefined : pgParam
+        }),
+      };
+      fetch(url, params)
+        .then((response) => {
+          return response.json();
+        })
+        .then((value) => {
+          if (value.redirect_url) {
+            window.location.href = value.redirect_url;
+          }
+        });
+    }
+  </script>
+</body>
+
+</html>
