@@ -52,7 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ...ppaasTransactionRequest,
       ...ppaasTransaction,
     }
-    await db.push(savedTransaction.ppaasTransactionId, savedTransaction);
+    await db.push(`/${savedTransaction.ppaasTransactionId}`, savedTransaction);
     const transaction: QrPaymentTransaction = {
       serviceImplementationId: savedTransaction.serviceImplementationId,
       providerTransactionId: savedTransaction.providerTransactionId,

@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const ppaasTransactionId = req.query.ppaasTransactionId as string;
 
     try {
-      const ppaasTransaction: PPaaSTransaction = await db.getData(ppaasTransactionId as string);
+      const ppaasTransaction: PPaaSTransaction = await db.getData(`/${ppaasTransactionId}`);
       const transaction: QrPaymentTransaction = {
         serviceImplementationId: ppaasTransaction.serviceImplementationId,
         providerTransactionId: ppaasTransaction.providerTransactionId,
