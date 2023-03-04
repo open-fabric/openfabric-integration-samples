@@ -60,7 +60,10 @@ const TransactionPage = () => {
                 <Typography variant="h5" gutterBottom>
                   Scan to pay with ACME PAY
                 </Typography>
-                <iframe src={transaction.qrCodeConsumerScan.codeValue}></iframe>
+                <iframe
+                  src={transaction.qrCodeConsumerScan.codeValue}
+                  style={{ minHeight: "200px" }}
+                ></iframe>
               </div>
             )}
           {transaction.paymentStatus === "authorizing" && (
