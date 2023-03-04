@@ -9,7 +9,7 @@ const db = new JsonDB(new Config("ppaas-transactions", true, false, '/'));
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
-    const transactionRequest = JSON.parse(req.body) as QrPaymentTransactionRequest;
+    const transactionRequest = req.body as QrPaymentTransactionRequest;
     const ppaasTransactionRequest: PPaaSTransactionRequest = {
       serviceImplementationId: process.env.INGENICO_SERVICE_IMPLEMENTATION_ID!,
       ppaasTransactionId: uuidv4(),
@@ -40,8 +40,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ppaasTransactionRequest
     )).data;
 
-    console.log(ppaasTransaction);
-
     // Temporarily hard coding QR code to sample tenant approval page for testing
     // TODO: remove once QR generation is implemented
     if (ppaasTransaction.qrCodeScannedByConsumer) {
@@ -49,16 +47,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         `https://of-test-1.samples.${process.env.NEXT_PUBLIC_ENV}.openfabric.co/orchestrated/checkout?id=${ppaasTransaction.providerTransactionId}`
       )
     }
-    await db.push(ppaasTransaction.ppaasTransactionId, ppaasTransaction);
+    
+    const savedTransaction = {
+      ...ppaasTransactionRequest,
+      ...ppaasTransaction,
+    }
+    await db.push(savedTransaction.ppaasTransactionId, savedTransaction);
     const transaction: QrPaymentTransaction = {
-      serviceImplementationId: ppaasTransaction.serviceImplementationId,
-      providerTransactionId: ppaasTransaction.providerTransactionId,
-      ppaasTransactionId: ppaasTransaction.ppaasTransactionId,
-      paymentStatus: ppaasTransaction.paymentStatus,
-      paymentAmount: ppaasTransaction.paymentAmount,
-      order: ppaasTransaction.order,
-      qrCodeConsumerScan: ppaasTransaction.qrCodeScannedByConsumer,
-      creationDateTime: ppaasTransaction.creationDateTime,
+      serviceImplementationId: savedTransaction.serviceImplementationId,
+      providerTransactionId: savedTransaction.providerTransactionId,
+      ppaasTransactionId: savedTransaction.ppaasTransactionId,
+      paymentStatus: savedTransaction.paymentStatus,
+      paymentAmount: savedTransaction.paymentAmount,
+      order: savedTransaction.order,
+      qrCodeConsumerScan: savedTransaction.qrCodeScannedByConsumer,
+      creationDateTime: savedTransaction.creationDateTime,
     };
 
     res.status(201).json(transaction);

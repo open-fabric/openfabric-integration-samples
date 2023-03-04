@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import { TextField } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
+import cc from "currency-codes";
 
 const styles = {
   root: {
@@ -47,9 +48,15 @@ const POSCheckoutPage = () => {
   const onPayClick = async () => {
     setLoading(true);
 
+    order.paymentAmount.amount =
+      10 ** (cc.code(order.paymentAmount.currency)?.digits ?? 0) *
+      order.paymentAmount.baseAmount;
     const transaction = await (
       await fetch("/ingenico-pos/api/transactions", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(order),
       })
     ).json();
@@ -77,108 +84,118 @@ const POSCheckoutPage = () => {
             <div>
               <div id="order-content">
                 <Typography variant="subtitle1" gutterBottom>
-                  POS Order summary
+                  POS Order
                 </Typography>
-                <div style={{ marginTop: "20px" }}></div>
                 {order && (
-                  <div
-                    style={{
-                      display: "flex",
-                      flex: "1",
-                      marginLeft: "20px",
-                      color: "grey",
-                      fontSize: "14px",
-                      fontFamily:
-                        '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-                    }}
-                  >
-                    <TextField
-                      style={{ marginLeft: "50px" }}
-                      InputProps={{
-                        style: {
-                          fontSize: "12px",
-                        },
+                  <div style={{ marginTop: "20px" }}>
+                    <div
+                      style={{
+                        marginLeft: "20px",
+                        marginBottom: "10px",
+                        color: "grey",
+                        fontSize: "14px",
+                        fontFamily:
+                          '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
                       }}
-                      inputProps={{
-                        style: {
-                          fontSize: "12px",
-                          padding: "5px 5px",
-                        },
+                    >
+                      <TextField
+                        fullWidth 
+                        InputProps={{
+                          style: {
+                            fontSize: "12px",
+                          },
+                        }}
+                        inputProps={{
+                          style: {
+                            fontSize: "12px",
+                            padding: "5px 5px",
+                          },
+                        }}
+                        InputLabelProps={{
+                          style: {
+                            fontSize: "12px",
+                          },
+                        }}
+                        type={"text"}
+                        size="medium"
+                        label="Description"
+                        value={order.order.orderDescription}
+                        onChange={(e) => {
+                          onOrderChange({
+                            propName: "order.orderDescription",
+                            value: e.target.value,
+                          });
+                        }}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        marginLeft: "20px",
+                        color: "grey",
+                        fontSize: "14px",
+                        fontFamily:
+                          '"IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
                       }}
-                      InputLabelProps={{
-                        style: {
-                          fontSize: "12px",
-                        },
-                      }}
-                      type={"text"}
-                      size="small"
-                      label="Description"
-                      value={order.order.orderDescription}
-                      onChange={(e) => {
-                        onOrderChange({
-                          propName: "order.orderDescription",
-                          value: e.target.value,
-                        });
-                      }}
-                    />
-                    <TextField
-                      InputProps={{
-                        style: {
-                          fontSize: "12px",
-                        },
-                      }}
-                      inputProps={{
-                        style: {
-                          fontSize: "12px",
-                          padding: "5px 5px",
-                        },
-                      }}
-                      InputLabelProps={{
-                        style: {
-                          fontSize: "12px",
-                        },
-                      }}
-                      type={"number"}
-                      size="small"
-                      label="Amount"
-                      value={order.paymentAmount.amount}
-                      onChange={(e) => {
-                        const newAmount = parseFloat(e.target.value);
-                        onOrderChange({
-                          propName: "paymentAmount.amount",
-                          value: isNaN(newAmount) ? 0 : newAmount,
-                        });
-                      }}
-                    />
-                    <TextField
-                      style={{ marginLeft: "50px" }}
-                      InputProps={{
-                        style: {
-                          fontSize: "12px",
-                        },
-                      }}
-                      inputProps={{
-                        style: {
-                          fontSize: "12px",
-                          padding: "5px 5px",
-                        },
-                      }}
-                      InputLabelProps={{
-                        style: {
-                          fontSize: "12px",
-                        },
-                      }}
-                      type={"text"}
-                      size="small"
-                      label="Currency"
-                      value={order.paymentAmount.currency}
-                      onChange={(e) => {
-                        onOrderChange({
-                          propName: "paymentAmount.currency",
-                          value: e.target.value,
-                        });
-                      }}
-                    />
+                    >
+                      <TextField
+                        InputProps={{
+                          style: {
+                            fontSize: "12px",
+                          },
+                        }}
+                        inputProps={{
+                          style: {
+                            fontSize: "12px",
+                            padding: "5px 5px",
+                          },
+                        }}
+                        InputLabelProps={{
+                          style: {
+                            fontSize: "12px",
+                          },
+                        }}
+                        type={"number"}
+                        size="small"
+                        label="Amount"
+                        value={order.paymentAmount.baseAmount}
+                        onChange={(e) => {
+                          const newAmount = parseFloat(e.target.value);
+                          onOrderChange({
+                            propName: "paymentAmount.baseAmount",
+                            value: isNaN(newAmount) ? 0 : newAmount,
+                          });
+                        }}
+                      />
+                      <TextField
+                        style={{ marginLeft: "50px" }}
+                        InputProps={{
+                          style: {
+                            fontSize: "12px",
+                          },
+                        }}
+                        inputProps={{
+                          style: {
+                            fontSize: "12px",
+                            padding: "5px 5px",
+                          },
+                        }}
+                        InputLabelProps={{
+                          style: {
+                            fontSize: "12px",
+                          },
+                        }}
+                        type={"text"}
+                        size="small"
+                        label="Currency"
+                        value={order.paymentAmount.currency}
+                        onChange={(e) => {
+                          onOrderChange({
+                            propName: "paymentAmount.currency",
+                            value: e.target.value,
+                          });
+                        }}
+                      />
+                    </div>
                   </div>
                 )}
               </div>
@@ -228,8 +245,8 @@ const getTransactionOrder = (): any => {
     paymentScenario: "consumerscan",
     serviceDomain: "apm",
     paymentAmount: {
-      amount: 1200,
-      currency: "EUR",
+      baseAmount: 50,
+      currency: "SGD",
     },
     order: {
       orderId: uuidv4(),
