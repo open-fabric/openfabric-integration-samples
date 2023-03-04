@@ -26,8 +26,14 @@ const POSCheckoutPage = () => {
   const onOrderChange = (input: { propName: string; value: any }) => {
     let updatedOrder: any = {
       ...order,
-      [input.propName]: input.value,
     };
+
+    if (input.propName.indexOf(".") > -1) {
+      const propNameParts = input.propName.split(".");
+      updatedOrder[propNameParts[0]][propNameParts[1]] = input.value;
+    } else {
+      updatedOrder[input.propName] = input.value;
+    }
 
     setOrder(updatedOrder);
   };
@@ -44,7 +50,7 @@ const POSCheckoutPage = () => {
     const transaction = await (
       await fetch("/ingenico-pos/api/transactions", {
         method: "POST",
-        body: order,
+        body: JSON.stringify(order),
       })
     ).json();
 
@@ -107,10 +113,10 @@ const POSCheckoutPage = () => {
                       type={"text"}
                       size="small"
                       label="Description"
-                      value={order.description}
+                      value={order.order.orderDescription}
                       onChange={(e) => {
                         onOrderChange({
-                          propName: "description",
+                          propName: "order.orderDescription",
                           value: e.target.value,
                         });
                       }}
@@ -135,11 +141,11 @@ const POSCheckoutPage = () => {
                       type={"number"}
                       size="small"
                       label="Amount"
-                      value={order.amount}
+                      value={order.paymentAmount.amount}
                       onChange={(e) => {
                         const newAmount = parseFloat(e.target.value);
                         onOrderChange({
-                          propName: "amount",
+                          propName: "paymentAmount.amount",
                           value: isNaN(newAmount) ? 0 : newAmount,
                         });
                       }}
@@ -165,10 +171,10 @@ const POSCheckoutPage = () => {
                       type={"text"}
                       size="small"
                       label="Currency"
-                      value={order.currency}
+                      value={order.paymentAmount.currency}
                       onChange={(e) => {
                         onOrderChange({
-                          propName: "currency",
+                          propName: "paymentAmount.currency",
                           value: e.target.value,
                         });
                       }}

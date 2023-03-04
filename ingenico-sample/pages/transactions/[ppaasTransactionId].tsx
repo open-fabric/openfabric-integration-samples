@@ -18,7 +18,7 @@ const styles = {
 const TransactionPage = () => {
   const router = useRouter();
   const ppaasTransactionId = router.query.ppaasTransactionId as string;
-  const [transaction, setTransaction] = useState<any>(null);
+  const [transaction, setTransaction] = useState<any>({});
   const fetchData = async () => {
     const transaction = await (
       await fetch(`/ingenico-pos/api/transactions/${ppaasTransactionId}`)

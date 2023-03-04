@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         paymentStatus: ppaasTransaction.paymentStatus,
         paymentAmount: ppaasTransaction.paymentAmount,
         order: ppaasTransaction.order,
-        qrCodeConsumerScan: ppaasTransaction.qrCodeConsumerScan,
+        qrCodeConsumerScan: ppaasTransaction.qrCodeScannedByConsumer,
         creationDateTime: ppaasTransaction.creationDateTime,
       };
   

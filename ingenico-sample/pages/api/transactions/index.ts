@@ -9,7 +9,7 @@ const db = new JsonDB(new Config("ppaas-transactions", true, false, '/'));
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
-    const transactionRequest = req.body as QrPaymentTransactionRequest;
+    const transactionRequest = JSON.parse(req.body) as QrPaymentTransactionRequest;
     const ppaasTransactionRequest: PPaaSTransactionRequest = {
       serviceImplementationId: process.env.INGENICO_SERVICE_IMPLEMENTATION_ID!,
       ppaasTransactionId: uuidv4(),
@@ -35,15 +35,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         name: "Starbucks @Aperia Mall",
       },
     };
-    const ppaasTransaction: PPaaSTransaction = await axios.post(
+    const ppaasTransaction: PPaaSTransaction = (await axios.post(
       process.env.OF_INGENICO_TRANSACTIONS_URL!,
       ppaasTransactionRequest
-    );
+    )).data;
+
+    console.log(ppaasTransaction);
 
     // Temporarily hard coding QR code to sample tenant approval page for testing
     // TODO: remove once QR generation is implemented
-    if (ppaasTransaction.qrCodeConsumerScan) {
-      ppaasTransaction.qrCodeConsumerScan.codeValue = await QRCode.toDataURL(
+    if (ppaasTransaction.qrCodeScannedByConsumer) {
+      ppaasTransaction.qrCodeScannedByConsumer.codeValue = await QRCode.toDataURL(
         `https://of-test-1.samples.${process.env.NEXT_PUBLIC_ENV}.openfabric.co/orchestrated/checkout?id=${ppaasTransaction.providerTransactionId}`
       )
     }
@@ -55,7 +57,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       paymentStatus: ppaasTransaction.paymentStatus,
       paymentAmount: ppaasTransaction.paymentAmount,
       order: ppaasTransaction.order,
-      qrCodeConsumerScan: ppaasTransaction.qrCodeConsumerScan,
+      qrCodeConsumerScan: ppaasTransaction.qrCodeScannedByConsumer,
       creationDateTime: ppaasTransaction.creationDateTime,
     };
 

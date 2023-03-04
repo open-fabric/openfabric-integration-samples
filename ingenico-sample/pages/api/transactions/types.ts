@@ -64,7 +64,7 @@ export interface PPaaSTransaction extends PPaaSTransactionRequest {
   providerTransactionId: string;
   paymentStatus: PaymentStatus;
   creationDateTime: string;
-  qrCodeConsumerScan?: {
+  qrCodeScannedByConsumer?: {
     codeType: "qrcode";
     codeValue: string;
     displayType: string;
