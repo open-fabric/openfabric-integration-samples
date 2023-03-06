@@ -34,6 +34,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ppaasStoreId: process.env.INGENICO_STORE_ID!,
         name: "Starbucks @Aperia Mall",
       },
+      configuration: {
+        description: "ingenico"
+      }
     };
     const ppaasTransaction: PPaaSTransaction = (await axios.post(
       process.env.OF_INGENICO_TRANSACTIONS_URL!,
@@ -43,9 +46,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // Temporarily hard coding QR code to sample tenant approval page for testing
     // TODO: remove once QR generation is implemented
     if (ppaasTransaction.qrCodeScannedByConsumer) {
-      ppaasTransaction.qrCodeScannedByConsumer.codeValue = await QRCode.toDataURL(
-        `https://of-test-1.samples.${process.env.NEXT_PUBLIC_ENV}.openfabric.co/orchestrated/checkout?id=${ppaasTransaction.providerTransactionId}`
-      )
+      let params = ppaasTransaction.qrCodeScannedByConsumer.codeValue.split('?')[1]
+      let code = new URLSearchParams(params).get('code')
+      let url = JSON.parse(atob(code!.split('.')[1]))['value']
+      ppaasTransaction.qrCodeScannedByConsumer.codeValue = await QRCode.toDataURL(url)
     }
     
     const savedTransaction = {
@@ -62,6 +66,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       order: savedTransaction.order,
       qrCodeConsumerScan: savedTransaction.qrCodeScannedByConsumer,
       creationDateTime: savedTransaction.creationDateTime,
+      
     };
 
     res.status(201).json(transaction);

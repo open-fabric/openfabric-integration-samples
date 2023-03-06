@@ -58,6 +58,7 @@ export interface PPaaSTransactionRequest {
     ppaasStoreId: string;
     name: string;
   };
+  configuration: PPaaSConfigurationInfo
 }
 
 export interface PPaaSTransaction extends PPaaSTransactionRequest {
@@ -70,4 +71,8 @@ export interface PPaaSTransaction extends PPaaSTransactionRequest {
     displayType: string;
     expiryDateTime: string;
   };
+}
+
+export interface PPaaSConfigurationInfo {
+  description?: string;
 }
