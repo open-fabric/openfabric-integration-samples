@@ -1,11 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import { JsonDB, Config } from 'node-json-db';
 import QRCode from 'qrcode';
 import { PPaaSTransaction, PPaaSTransactionRequest, QrPaymentTransaction, QrPaymentTransactionRequest } from "./types";
-
-const db = new JsonDB(new Config("ppaas-transactions", true, false, '/'));
+import { getDB } from "./db";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
@@ -56,7 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ...ppaasTransactionRequest,
       ...ppaasTransaction,
     }
-    await db.push(`/${savedTransaction.ppaasTransactionId}`, savedTransaction);
+    await getDB().push(`/${savedTransaction.ppaasTransactionId}`, savedTransaction);
     const transaction: QrPaymentTransaction = {
       serviceImplementationId: savedTransaction.serviceImplementationId,
       providerTransactionId: savedTransaction.providerTransactionId,

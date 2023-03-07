@@ -1,15 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { JsonDB, Config } from 'node-json-db';
 import { PPaaSTransaction, QrPaymentTransaction } from "./types";
-
-const db = new JsonDB(new Config("ppaas-transactions", true, false, '/'));
+import { getDB } from "./db";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     const ppaasTransactionId = req.query.ppaasTransactionId as string;
 
     try {
-      const ppaasTransaction: PPaaSTransaction = await db.getData(`/${ppaasTransactionId}`);
+      const ppaasTransaction: PPaaSTransaction = await getDB().getData(`/${ppaasTransactionId}`);
       const transaction: QrPaymentTransaction = {
         serviceImplementationId: ppaasTransaction.serviceImplementationId,
         providerTransactionId: ppaasTransaction.providerTransactionId,
