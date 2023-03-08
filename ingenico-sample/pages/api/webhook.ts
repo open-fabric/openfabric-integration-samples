@@ -1,9 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import NextCors from 'nextjs-cors';
+import { getDB } from './transactions/db';
 import { PPaaSTransaction } from './transactions/types';
-import { Config, JsonDB } from 'node-json-db';
-
-const db = new JsonDB(new Config("ppaas-transactions", true, false, '/'));
 
 const handler = async (
   req: NextApiRequest,
@@ -18,8 +16,8 @@ const handler = async (
   if (req.method === 'POST') {
     if (req.body.ppaasTransactionId) {
       try {
-        const ppaasTransaction: PPaaSTransaction = await db.getData(`/${req.body.ppaasTransactionId}`);
-        await db.push(`/${req.body.ppaasTransactionId}`, {
+        const ppaasTransaction: PPaaSTransaction = await getDB().getData(`/${req.body.ppaasTransactionId}`);
+        await getDB().push(`/${req.body.ppaasTransactionId}`, {
           ...ppaasTransaction,
           ...req.body
         });
