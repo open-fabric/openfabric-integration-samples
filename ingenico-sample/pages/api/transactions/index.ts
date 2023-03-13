@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import QRCode from 'qrcode';
 import { PPaaSTransaction, PPaaSTransactionRequest, QrPaymentTransaction, QrPaymentTransactionRequest } from "./types";
 import { getDB } from "./db";
 
@@ -40,15 +39,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       process.env.OF_INGENICO_TRANSACTIONS_URL!,
       ppaasTransactionRequest
     )).data;
-
-    // Temporarily hard coding QR code to sample tenant approval page for testing
-    // TODO: remove once QR generation is implemented
-    if (ppaasTransaction.qrCodeScannedByConsumer) {
-      let params = ppaasTransaction.qrCodeScannedByConsumer.codeValue.split('?')[1]
-      let code = new URLSearchParams(params).get('code')
-      let url = JSON.parse(atob(code!.split('.')[1]))['value']
-      ppaasTransaction.qrCodeScannedByConsumer.codeValue = await QRCode.toDataURL(url)
-    }
     
     const savedTransaction = {
       ...ppaasTransactionRequest,
@@ -64,7 +54,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       order: savedTransaction.order,
       qrCodeConsumerScan: savedTransaction.qrCodeScannedByConsumer,
       creationDateTime: savedTransaction.creationDateTime,
-      
     };
 
     res.status(201).json(transaction);
