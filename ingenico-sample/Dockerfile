@@ -26,8 +26,6 @@ RUN echo "INGENICO_MERCHANT_ID=${INGENICO_MERCHANT_ID}" >> ./.env
 RUN echo "INGENICO_STORE_ID=${INGENICO_STORE_ID}" >> ./.env
 RUN echo "BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS}" >> ./.env
 
-RUN sed -i -e "s/Environment.sandbox/'$ENV'/g" ./public/index.html
-
 RUN yarn build
 
 FROM node:16-alpine AS runner
