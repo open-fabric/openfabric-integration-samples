@@ -51,10 +51,16 @@
         "3003": "HTTP"
       }
     },
+    "ingenico-pos": {
+      "image": "$INGENICO_IMAGE_NAME",
+      "ports": {
+        "3004": "HTTP"
+      }
+    },
     "merchant-pat-link": {
       "image": "$MERCHANT_PAT_LINK_IMAGE_NAME",
       "ports": {
-        "3004": "HTTP"
+        "3005": "HTTP"
       }
     }
   },
