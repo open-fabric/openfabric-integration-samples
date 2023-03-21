@@ -1,16 +1,7 @@
-import jwt from 'jsonwebtoken'
-import {
-  OF_AUTH_ENDPOINT, MERCHANT_CLIENT_ID, MERCHANT_CLIENT_SECRET,
-  INTERNAL_JWT_SECRET
-} from '@/lib/config'
+import { Buffer } from 'buffer'
+import { OF_AUTH_ENDPOINT, MERCHANT_CLIENT_ID, MERCHANT_CLIENT_SECRET } from '@/lib/config'
 
-export const localAuthToken = (payload: Record<string, string>, secret: string = INTERNAL_JWT_SECRET) => {
-  return jwt.sign({
-
-  }, secret)
-}
-
-export const publicAuthToken = async () => {
+export const authenticate = async () => {
   const params = new URLSearchParams()
   params.set('grant_type', 'client_credentials')
   params.set('scope', '')
