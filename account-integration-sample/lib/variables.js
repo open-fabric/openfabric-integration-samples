@@ -16,3 +16,4 @@ export const sessionSecret = process.env.SESSION_SECRET
 export const merchant_server_url = process.env.MERCHANT_SERVER_URL || "http://localhost:3000"
 export const merchant_redirect_url = merchant_server_url.replace('http://merchant-integration-sample:3000',"http://localhost:3000")
 export const trusted_api_key = process.env.TRUSTED_API_KEY || 'dwJeahb3jeNThmWPM2fgEs22EMAirjiQ'
+export const of_pat_url = process.env.OF_PAT_URL || "http://localhost:2023"

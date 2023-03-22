@@ -4,9 +4,53 @@
     <meta charset="UTF-8"/>
     <title>Document</title>
   </head>
+  <script>
+    function approve( status) {
+      const patLinkData = {
+        id: "<%= patLink.id %>",
+        partner_link_ref: "<%= patLink.partner_link_ref%>",
+        partner_customer_id: "<%= patLink.partner_customer_id%>",
+        intent: "<%= patLink.intent%>",
+        description: "<%= patLink.description%>",
+        constraints: "<%= patLink.constraints%>",
+        of_link_ref: "<%= patLink.of_link_ref%>",
+      }
+
+      const url = `${window.location.origin}/api/pat/${patLinkData.id}/approve`;
+      var headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      headers.append("Accept", "application/json");
+      const params = {
+        method: "PATCH",
+        headers: headers,
+        body: JSON.stringify({
+          ...patLinkData,
+          status: status,
+        }),
+      };
+      fetch(url, params)
+              .then(function (a) {
+                return a.json(); // call the json method on the response to get JSON
+              })
+              .then((data) => {
+                // HTTP 301 response
+                // HOW CAN I FOLLOW THE HTTP REDIRECT RESPONSE?
+                console.log(data)
+                window.location.href = data.url;
+
+              }).catch(function(err) {
+        console.info(err + " url: " + url);
+      });
+              ;
+    }
+  </script>
   <body>
-    <h1><%= patLink.id %></h1>
-    <h1><%= patLink.intent %></h1>
-    <h1><%= patLink.description %></h1>
+    <h1>Link Id: <%= patLink.id %></h1>
+    <h1>Intent: <%= patLink.intent %></h1>
+    <h1>Reason: <%= patLink.reason %></h1>
+    <h1>Reason: <%= patLink.reason %></h1>
+    <button style="margin-top:20px" id="approve-trans" onclick='approve("approved")'>
+      Approve
+    </button>
   </body>
 </html>
