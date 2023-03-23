@@ -4,7 +4,23 @@
   justify-content: space-between;
   align-items: center;
   padding: 6rem;
-  min-height: 100vh;
+  min-height: 50vh;
+
+  width: 500px;
+  border: #1a2950 1px solid;
+}
+.formLine {
+  justify-content: left;
+  width: 100%;
+}
+
+.submitButton{
+  background: #9b59b6;
+  border: #9b59b6 solid 1px;
+  width: 100px;
+  height: 50px;
+  margin-top: 10px;
+  border-radius: 3px;
 }
 
 .description {

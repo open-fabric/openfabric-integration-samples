@@ -21,14 +21,14 @@ export default async function handler(
   const formRequest = req.body
 
   const token = await authenticate()
-  var days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat','sun'];
 
+  var days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat','sun'];
   const payload = {
     partner_link_ref: crypto.randomUUID(),
     partner_customer_id: crypto.randomUUID(),
     intent: 'recurring',
-    partner_redirect_url: 'http://localhost:3000/success',
-    reason:  formRequest.reason,
+    partner_redirect_url: 'http://localhost:3000/approval_result',
+    description:  formRequest.description,
     constraints: {
       amount: formRequest.amount,
       currency: formRequest.currency,
@@ -50,8 +50,6 @@ export default async function handler(
   const response = await fetch(
     `${new URL('/v1/preapproved_transaction_links', "http://127.0.0.1:2023")}`, request)
   const data = await response.json()
-
-  console.log('<---', data)
 
   res.send(data.consent_capture_page_url)
 }

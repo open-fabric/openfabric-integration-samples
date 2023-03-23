@@ -15,7 +15,7 @@ export const create = catchAsync(async (req, res) => {
     partner_link_ref: req.body.partner_link_ref,
     partner_customer_id: req.body.partner_customer_id,
     intent: req.body.intent,
-    reason: req.body.reason,
+    description: req.body.description,
     constraints: req.body.constraints,
     of_link_ref: req.body.of_link_ref
   })
@@ -40,15 +40,20 @@ export const consentCapturePage = catchAsync(async (req, res) => {
 
 export const approvePatLink = catchAsync(async (req, res) => {
   let {access_token} = await GetAccessToken()
-  console.log('result')
+  let status = req.body.status;
+  let reason;
+  if(status == "approved") {
+    reason = "Card is valid for purchasing";
+  } else {
+    reason = "Card is blocked"
+  }
   const result = await axios.patch(
     new URL("/v1/preapproved_transaction_links", of_pat_url).toString(),
     {
       id: req.body.of_link_ref,
       tenant_link_ref: req.body.id,
-      reason: "Card is valid for purchasing",
-      status: req.body.status,
-
+      reason: reason,
+      status: status,
     },
     {
       headers: {
@@ -62,7 +67,7 @@ export const approvePatLink = catchAsync(async (req, res) => {
   //
   res.send(
     {
-      url: `${of_pat_url}/v1/preapproved_transaction_links/redirect?link_id=${result.data.id}`
+      url: `${of_pat_url}/v1/preapproved_transaction_links/redirect?link_id=${result.data.id}&status=${status}`
     }
   );
 

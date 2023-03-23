@@ -11,7 +11,7 @@ export default function Home() {
         amount: 100,
         currency: "SGD",
         frequency: "weekly",
-        reason: 'Weekly subscription for goods'
+        description: 'Weekly subscription for goods'
     })
     const Router = useRouter();
     const startLink = (e: MouseEvent<HTMLButtonElement>) => {
@@ -30,9 +30,8 @@ export default function Home() {
                 body: JSON.stringify({
                     amount: state.amount,
                     currency: state.currency,
-                    reason: state.reason,
+                    description: state.description,
                     frequency: state.frequency
-
                 }),
             })
         ).text();
@@ -48,34 +47,45 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
             <main className={styles.main}>
-                <label htmlFor="currency">Currency</label>
+                <div className={styles.formLine}>
+                <label htmlFor="currency">Currency: </label>
                 <input id="currency" name="currency" type="text"
                        value={state.currency}
                        onChange={e => setState({...state,  currency: e.target.value})}
 
                 />
-                <label htmlFor="amount">Amount:</label>
-                <input type="text" id="amount" name="amount"
-                       value={state.amount}
-                       onChange={e => setState({...state,  amount: e.target.value})}
-                />
-                <label htmlFor="description">Reason:</label>
-                <input type="text" id="reason" name="reason"
-                       value={state.reason}
-                       onChange={e => setState({...state,  reason: e.target.value})}
+                </div>
+                <div className={styles.formLine}>
 
-                />
-                <label htmlFor="frequency">Frequency:</label>
-                <select id="frequency" name="frequency"
-                        value={state.frequency}
-                        onChange={e => setState({...state,  frequency: e.target.value})}
+                    <label htmlFor="amount">Amount: </label>
+                    <input type="text" id="amount" name="amount"
+                           value={state.amount}
+                           onChange={e => setState({...state,  amount: e.target.value})}
+                    />
+                </div>
+                <div className={styles.formLine}>
+                    <label htmlFor="description">Description: </label>
+                    <textarea cols={40} rows={5} id="description" name="description"
+                           value={state.description}
+                           onChange={e => setState({...state,  description: e.target.value})}
 
-                >
-                    <option value="weekly">weekly</option>
-                    <option value="monthly">monthly</option>
-                    <option value="yearly">yearly</option>
-                </select>
-                <button onClick={onPayClick}>Submitttt</button>
+                    />
+                </div>
+                <div className={styles.formLine}>
+                    <label htmlFor="frequency">Frequency: </label>
+                    <select id="frequency" name="frequency"
+                            value={state.frequency}
+                            onChange={e => setState({...state,  frequency: e.target.value})}
+
+                    >
+                        <option value="weekly">weekly</option>
+                        <option value="monthly">monthly</option>
+                        <option value="yearly">yearly</option>
+                    </select>
+                </div>
+                <div className={styles.formLine}>
+                    <button className={styles.submitButton} onClick={onPayClick}>Submit</button>
+                </div>
             </main>
         </>
     )
