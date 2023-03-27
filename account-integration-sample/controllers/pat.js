@@ -2,7 +2,7 @@ import crypto from 'crypto'
 
 import { db } from '../db'
 import { catchAsync } from '../utils/catchAsync';
-import {of_issuer_url, of_pat_url} from "../lib/variables.js";
+import {account_server_url, of_issuer_url, of_pat_url} from "../lib/variables.js";
 import axios from "axios";
 import {GetAccessToken} from "../services/auth.js";
 import {config} from "dotenv";
@@ -22,7 +22,7 @@ export const create = catchAsync(async (req, res) => {
   res.send({
     tenant_link_ref: ref,
     tenant_customer_id: customerId,
-    consent_capture_page_url: `http://localhost:4000/pat/consent/${ref}`
+    consent_capture_page_url: new URL(account_server_url, `/pat/consent/${ref}`).toString()
   })
 })
 
@@ -40,7 +40,8 @@ export const consentCapturePage = catchAsync(async (req, res) => {
 
 export const approvePatLink = catchAsync(async (req, res) => {
   let {access_token} = await GetAccessToken()
-  let status = req.body.status;
+  let data = req.body;
+  let status = data.status;
   let reason;
   if(status == "approved") {
     reason = "Card is valid for purchasing";
@@ -50,8 +51,8 @@ export const approvePatLink = catchAsync(async (req, res) => {
   const result = await axios.patch(
     new URL("/v1/preapproved_transaction_links", of_pat_url).toString(),
     {
-      id: req.body.of_link_ref,
-      tenant_link_ref: req.body.id,
+      id: data.of_link_ref,
+      tenant_link_ref: data.id,
       reason: reason,
       status: status,
     },
@@ -67,7 +68,7 @@ export const approvePatLink = catchAsync(async (req, res) => {
   //
   res.send(
     {
-      url: `${of_pat_url}/v1/preapproved_transaction_links/redirect?link_id=${result.data.id}&status=${status}`
+      url: data.of_gateway_redirect_url
     }
   );
 

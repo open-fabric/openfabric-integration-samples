@@ -19,7 +19,7 @@ export default function Home() {
         console.log('start linking')
     }
 
-    const onPayClick = async () => {
+    const createPatLink = async () => {
         const transaction = await (
             await fetch("/api/link", {
                 method: "POST",
@@ -84,7 +84,7 @@ export default function Home() {
                     </select>
                 </div>
                 <div className={styles.formLine}>
-                    <button className={styles.submitButton} onClick={onPayClick}>Submit</button>
+                    <button className={styles.submitButton} onClick={createPatLink}>Submit</button>
                 </div>
             </main>
         </>
