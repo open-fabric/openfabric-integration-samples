@@ -37,6 +37,16 @@ docker build ./sdk-pg-charge-sample/ \
   --build-arg BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS} \
   --build-arg PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}
 
+# deploy ingenico-sample
+docker build ./ingenico-sample/ \
+  -t samples-ingenico:latest \
+  --build-arg ENV=$ENV \
+  --build-arg OF_INGENICO_TRANSACTIONS_URL=${OF_INGENICO_TRANSACTIONS_URL} \
+  --build-arg INGENICO_SERVICE_IMPLEMENTATION_ID=${INGENICO_SERVICE_IMPLEMENTATION_ID} \
+  --build-arg INGENICO_ORGANIZATION_ID=${INGENICO_ORGANIZATION_ID} \
+  --build-arg INGENICO_MERCHANT_ID=${INGENICO_MERCHANT_ID} \
+  --build-arg INGENICO_STORE_ID=${INGENICO_STORE_ID}
+
 docker build ./account-integration-sample/ -t samples-account:latest
 
 docker images
