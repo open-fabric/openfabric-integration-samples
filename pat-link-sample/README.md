@@ -1,38 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# End-to-end sample for Ingenico POS checkout with QR
 
-## Getting Started
+A sample to demonstrate end to end integration between ****Ingenico & Open Farbic**** using QR payment.
 
-First, run the development server:
+## Prerequisites and setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+* [Node.js](https://nodejs.org/en/) v16.0.0 or higher
+
+## Prepare your Env file
+
+Create **.env** file in root of this folder, according to your input Merchant credential - you can check the .sample.env file for more details
+
+```shell
+OF_AUTH_ENDPOINT=https://auth.dev.openfabric.co
+OF_API_ENDPOINT=
+MERCHANT_CLIENT_ID=
+MERCHANT_CLIENT_SECRET=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Note:**
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+* Merchant credential could be found in your Open Fabric Portal
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Running sample on local
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Make sure you done [this](#prepare-your-env-file)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+* To build the souce code
+```shell
+yarn build
+```
 
-## Learn More
+* To start server
 
-To learn more about Next.js, take a look at the following resources:
+```shell
+yarn start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open <http://localhost:3005> on browser and start your experience
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
