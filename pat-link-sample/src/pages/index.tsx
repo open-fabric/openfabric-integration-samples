@@ -20,7 +20,7 @@ export default function Home() {
     }
 
     const createPatLink = async () => {
-        const transaction = await (
+        const consentUrl = await (
             await fetch("/api/link", {
                 method: "POST",
                 headers: {
@@ -35,7 +35,8 @@ export default function Home() {
                 }),
             })
         ).text();
-        Router.push(transaction);
+
+        window.location.href = consentUrl
     };
 
     return (
