@@ -49,6 +49,9 @@
         <button type="button" class="w-100 btn btn-lg" id="pg-charge-html">
           PG Charge Flow (html)
         </button>
+        <button type="button" class="w-100 btn btn-lg" id="pat-link">
+          Pre-approved transaction link
+        </button>
       </div>
     </div>
     <script>
@@ -58,6 +61,7 @@
       let pgTokenHtml = document.getElementById("pg-token-html");
       let pgcharge = document.getElementById("pg-charge");
       let pgchargeHtml = document.getElementById("pg-charge-html");
+      let patLink = document.getElementById("pat-link");
 
       sdkCard.onclick = function () {
         window.location.href = `${window.location.origin}/sdk-card`;
@@ -81,6 +85,10 @@
 
       pgchargeHtml.onclick = function () {
         window.location.href = `${window.location.origin}/sdk-pg-charge/html`;
+      };
+
+      patLink.onclick = function () {
+        window.location.href = `${window.location.origin}/merchant-pat-link`;
       };
     </script>
   </div>
