@@ -49,7 +49,7 @@ docker build ./ingenico-sample/ \
 
 # deploy sdk-pat-sample
 docker build ./pat-link-sample/ \
-  -t merchant-pat-link:latest \
+  -t samples-merchant-pat-link:latest \
   --build-arg ENV=$ENV \
   --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
   --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
