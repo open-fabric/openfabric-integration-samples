@@ -1,6 +1,7 @@
 import { JsonDB } from "node-json-db";
 import { Config } from "node-json-db/dist/lib/JsonDBConfig";
-const db = new JsonDB(new Config("AccountTransaction", true, true, "/"));
+
+export const db = new JsonDB(new Config("AccountTransaction", true, true, "/"));
 
 export const addNewTransaction = (trans) => {
   db.push(`/transactions/${trans.account_reference_id}`, trans);

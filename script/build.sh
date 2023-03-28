@@ -47,6 +47,15 @@ docker build ./ingenico-sample/ \
   --build-arg INGENICO_MERCHANT_ID=${INGENICO_MERCHANT_ID} \
   --build-arg INGENICO_STORE_ID=${INGENICO_STORE_ID}
 
+# deploy sdk-pat-sample
+docker build ./pat-link-sample/ \
+  -t samples-merchant-pat-link:latest \
+  --build-arg ENV=$ENV \
+  --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
+  --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
+  --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \
+  --build-arg PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}
+
 docker build ./account-integration-sample/ -t samples-account:latest
 
 docker images
