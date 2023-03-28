@@ -1,9 +1,7 @@
 import crypto from 'crypto'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { OF_API_ENDPOINT} from '@/lib/config'
 import { authenticate } from '@/lib/auth'
-import {useDebugValue} from "react";
 
 type Data = {
   name: string
