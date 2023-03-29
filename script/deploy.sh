@@ -9,7 +9,7 @@ echo "MERCHANT_SERVER_URL: ${MERCHANT_SERVER_URL}"
 echo "ACCOUNT_SERVER_URL: ${ACCOUNT_SERVER_URL}"
 
 # push images to aws lightsail and parse image name
-for name in "NGINX" "MERCHANT-HOME" "MERCHANT-SDK-PG-TOKENIZATION" "MERCHANT-SDK-PG-CHARGE" "MERCHANT-SDK-CARD" "INGENICO" "ACCOUNT" "MERCHANT_PAT_LINK"
+for name in "NGINX" "MERCHANT-HOME" "MERCHANT-SDK-PG-TOKENIZATION" "MERCHANT-SDK-PG-CHARGE" "MERCHANT-SDK-CARD" "INGENICO" "ACCOUNT" "MERCHANT-PAT-LINK"
 do
   echo "push $name"
   lower_case_name=$(echo "${name}" | tr '[:upper:]' '[:lower:]')
