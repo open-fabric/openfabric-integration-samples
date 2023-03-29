@@ -2,7 +2,7 @@ import crypto from 'crypto'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { authenticate } from '@/lib/auth'
-import {MERCHANT_SAMPLE_HOST, OF_AUTH_ENDPOINT} from "@/lib/config";
+import {MERCHANT_SAMPLE_HOST} from "@/lib/config";
 
 type Data = {
   name: string

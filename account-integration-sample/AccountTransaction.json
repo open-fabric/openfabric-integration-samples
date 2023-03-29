@@ -1099,6 +1099,209 @@
                 "day_of_week": "thu"
             },
             "of_link_ref": "cf390943-cd69-4687-af55-5e48fc64eb57"
+        },
+        "9444effb-f020-4348-8620-2b1cab64bde5": {
+            "id": "9444effb-f020-4348-8620-2b1cab64bde5",
+            "partner_link_ref": "f603f5f4-d966-40d5-92fa-322196cd208e",
+            "partner_customer_id": "67447f66-01a3-4fa2-97e9-e517cdb71482",
+            "intent": "recurring",
+            "constraints": {
+                "amount": 100,
+                "currency": "SGD",
+                "frequency": "weekly",
+                "start_date": "2023-03-29T12:29:18.153Z",
+                "day_of_week": "wed"
+            },
+            "of_link_ref": "7e6045b2-ba6f-4929-b258-868a01649e7e"
+        },
+        "6af4c699-9930-43a2-a512-7f2d26a744e9": {
+            "id": "6af4c699-9930-43a2-a512-7f2d26a744e9",
+            "partner_link_ref": "61308cbf-852e-4f38-b696-cb264ab6e86d",
+            "partner_customer_id": "abadb236-8845-439f-a013-247d73532385",
+            "intent": "recurring",
+            "constraints": {
+                "amount": 100,
+                "currency": "SGD",
+                "frequency": "weekly",
+                "start_date": "2023-03-29T12:29:57.133Z",
+                "day_of_week": "wed"
+            },
+            "of_link_ref": "d0a185b3-a419-40c3-a16f-81ee4e17c91c"
+        },
+        "7546f2e2-7e3d-4f5e-88c1-d52ccc2f8186": {
+            "id": "7546f2e2-7e3d-4f5e-88c1-d52ccc2f8186",
+            "partner_link_ref": "1de98c3c-081a-4a94-85b3-430cd28f4026",
+            "partner_customer_id": "76892173-33ae-4dfd-acec-52594ea8c25b",
+            "intent": "recurring",
+            "constraints": {
+                "amount": 100,
+                "currency": "SGD",
+                "frequency": "weekly",
+                "start_date": "2023-03-29T12:30:14.101Z",
+                "day_of_week": "wed"
+            },
+            "of_link_ref": "ecfb5674-b1d2-4009-a536-97883aa6cd3c"
+        },
+        "d321895b-8f79-4385-a42d-a4d54f2f0de3": {
+            "id": "d321895b-8f79-4385-a42d-a4d54f2f0de3",
+            "partner_link_ref": "b77ce082-e71d-4e75-babf-dcf464ea13f9",
+            "partner_customer_id": "0572e637-a194-4929-b811-6a08c67df2cf",
+            "intent": "recurring",
+            "constraints": {
+                "amount": 100,
+                "currency": "SGD",
+                "frequency": "weekly",
+                "start_date": "2023-03-29T12:31:06.616Z",
+                "day_of_week": "wed"
+            },
+            "of_link_ref": "ae6fcbdd-6602-4f83-be2a-35fd98bd4dfa"
+        },
+        "5c20f8e6-0101-4542-a5ec-d956e97445cf": {
+            "id": "5c20f8e6-0101-4542-a5ec-d956e97445cf",
+            "partner_link_ref": "70b91d5a-3845-44e1-bc6d-af7c6815dcb8",
+            "partner_customer_id": "9d35af46-f4d7-48a8-adfd-50bc84e307aa",
+            "intent": "recurring",
+            "constraints": {
+                "amount": 100,
+                "currency": "SGD",
+                "frequency": "weekly",
+                "start_date": "2023-03-29T12:31:31.771Z",
+                "day_of_week": "wed"
+            },
+            "of_link_ref": "bae6219a-1fe5-4fb9-b7bd-0cb500d78178"
+        },
+        "0f4d76f1-853e-4cd1-b891-d1b39cee395e": {
+            "id": "0f4d76f1-853e-4cd1-b891-d1b39cee395e",
+            "partner_link_ref": "37e65980-a74a-4fdc-a845-27fb9d6ca5dc",
+            "partner_customer_id": "9a7e26b6-7fda-4c8e-bd05-699ff15010aa",
+            "intent": "recurring",
+            "constraints": {
+                "amount": 100,
+                "currency": "SGD",
+                "frequency": "weekly",
+                "start_date": "2023-03-29T12:32:53.624Z",
+                "day_of_week": "wed"
+            },
+            "of_link_ref": "f954245c-5346-41ce-9bca-e13731edcb78"
+        },
+        "38d7f15f-110f-4d89-a54d-6ed1b74d0caf": {
+            "id": "38d7f15f-110f-4d89-a54d-6ed1b74d0caf",
+            "partner_link_ref": "0190678c-1b0f-40d8-b296-b0b1bf729979",
+            "partner_customer_id": "bc4ae58b-3242-4205-98c3-13a8832b0c9d",
+            "intent": "recurring",
+            "constraints": {
+                "amount": 100,
+                "currency": "SGD",
+                "frequency": "weekly",
+                "start_date": "2023-03-29T12:35:17.492Z",
+                "day_of_week": "wed"
+            },
+            "of_link_ref": "11888d92-4f94-4ee7-b28a-ec638f2a42e5"
+        },
+        "a0950b84-2a50-4bc1-9dc0-20bc6f2e31b9": {
+            "id": "a0950b84-2a50-4bc1-9dc0-20bc6f2e31b9",
+            "partner_link_ref": "7f4427af-e644-44b9-8ff0-fa1c951aa287",
+            "partner_customer_id": "38604749-cd45-46e0-8331-0964b584e035",
+            "intent": "recurring",
+            "constraints": {
+                "amount": 100,
+                "currency": "SGD",
+                "frequency": "weekly",
+                "start_date": "2023-03-29T12:37:53.297Z",
+                "day_of_week": "wed"
+            },
+            "of_link_ref": "21d1d9b7-4965-4f7d-a6a0-08e969e1f491",
+            "of_gateway_redirect_url": "http://localhost:2023/?link_id=21d1d9b7-4965-4f7d-a6a0-08e969e1f491"
+        },
+        "c5e6d3cd-f543-4acd-a7ae-87a24c652db4": {
+            "id": "c5e6d3cd-f543-4acd-a7ae-87a24c652db4",
+            "partner_link_ref": "688b756f-6a52-45b5-8326-6368d3a43f25",
+            "partner_customer_id": "53a70819-679a-4c5a-a61b-4279a493514f",
+            "intent": "recurring",
+            "constraints": {
+                "amount": 100,
+                "currency": "SGD",
+                "frequency": "weekly",
+                "start_date": "2023-03-29T12:39:50.024Z",
+                "day_of_week": "wed"
+            },
+            "of_link_ref": "015f7e2c-d8dc-405f-81fa-469e46f447f5",
+            "of_gateway_redirect_url": "http://localhost:2023/?link_id=015f7e2c-d8dc-405f-81fa-469e46f447f5"
+        },
+        "673de523-2ebc-473a-9044-765e31b47329": {
+            "id": "673de523-2ebc-473a-9044-765e31b47329",
+            "partner_link_ref": "3e0eb8fe-ce66-4a7f-b28c-985dc08d2774",
+            "partner_customer_id": "ab40cc72-7e7d-47a9-8895-1a457f3333e5",
+            "intent": "recurring",
+            "constraints": {
+                "amount": 100,
+                "currency": "SGD",
+                "frequency": "weekly",
+                "start_date": "2023-03-29T12:50:25.141Z",
+                "day_of_week": "wed"
+            },
+            "of_link_ref": "fff35434-365f-47a0-8def-93786472774c",
+            "of_gateway_redirect_url": "http://localhost:2023/pat/redirect?link_id=fff35434-365f-47a0-8def-93786472774c"
+        },
+        "f072720c-61f7-43cb-808e-1181f8087b5f": {
+            "id": "f072720c-61f7-43cb-808e-1181f8087b5f",
+            "partner_link_ref": "b7ca330e-72c6-47fd-9da4-118daaf34589",
+            "partner_customer_id": "872f127c-6726-451c-ac93-a2b90fccb20d",
+            "intent": "recurring",
+            "constraints": {
+                "amount": 100,
+                "currency": "SGD",
+                "frequency": "weekly",
+                "start_date": "2023-03-29T12:51:05.042Z",
+                "day_of_week": "wed"
+            },
+            "of_link_ref": "6df4a0b3-a9a8-4a90-b0ea-8a547e5ea32a",
+            "of_gateway_redirect_url": "http://localhost:2023/v1/preapproved_transaction_links/redirect?link_id=6df4a0b3-a9a8-4a90-b0ea-8a547e5ea32a"
+        },
+        "15d4b66d-8f26-42e5-87f2-d54ff35cee7f": {
+            "id": "15d4b66d-8f26-42e5-87f2-d54ff35cee7f",
+            "partner_link_ref": "3074877c-b7e4-4d6e-ae56-9386794c0355",
+            "partner_customer_id": "b50c1ce6-40da-4a5b-8300-4f8aa36c208a",
+            "intent": "recurring",
+            "constraints": {
+                "amount": 100,
+                "currency": "SGD",
+                "frequency": "weekly",
+                "start_date": "2023-03-29T12:51:32.656Z",
+                "day_of_week": "wed"
+            },
+            "of_link_ref": "11e9110c-4177-40a2-a86b-f9f7d9f114dc",
+            "of_gateway_redirect_url": "http://localhost:2023/v1/preapproved_transaction_links/redirect?link_id=11e9110c-4177-40a2-a86b-f9f7d9f114dc"
+        },
+        "56be0a54-3970-47c9-8e76-5920b74f7bad": {
+            "id": "56be0a54-3970-47c9-8e76-5920b74f7bad",
+            "partner_link_ref": "c502a935-b783-4b2d-bd90-e358ce69c04d",
+            "partner_customer_id": "f27aaa00-623d-48cf-b847-4ed00499ea6a",
+            "intent": "recurring",
+            "constraints": {
+                "amount": 100,
+                "currency": "SGD",
+                "frequency": "weekly",
+                "start_date": "2023-03-29T12:52:51.148Z",
+                "day_of_week": "wed"
+            },
+            "of_link_ref": "311081ba-1ab1-4d48-886b-a78d5ea7b4ff",
+            "of_gateway_redirect_url": "http://localhost:2023/v1/preapproved_transaction_links/redirect?link_id=311081ba-1ab1-4d48-886b-a78d5ea7b4ff"
+        },
+        "b397804e-2af9-452e-83e8-d61355b541de": {
+            "id": "b397804e-2af9-452e-83e8-d61355b541de",
+            "partner_link_ref": "505d8072-5b8e-4964-a3df-d9d1e99fa39f",
+            "partner_customer_id": "6f10612e-9614-4d5a-9c17-7a8c4b290c32",
+            "intent": "recurring",
+            "constraints": {
+                "amount": 100,
+                "currency": "SGD",
+                "frequency": "weekly",
+                "start_date": "2023-03-29T12:52:59.700Z",
+                "day_of_week": "wed"
+            },
+            "of_link_ref": "e3a81aa4-f5b9-4e55-90b5-5b0027746f14",
+            "of_gateway_redirect_url": "http://localhost:2023/v1/preapproved_transaction_links/redirect?link_id=e3a81aa4-f5b9-4e55-90b5-5b0027746f14"
         }
     }
 }

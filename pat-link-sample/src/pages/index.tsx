@@ -13,7 +13,6 @@ export default function Home() {
         frequency: "weekly",
         description: 'Weekly subscription for goods'
     })
-    const Router = useRouter();
     const startLink = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         console.log('start linking')

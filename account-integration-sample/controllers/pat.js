@@ -17,12 +17,15 @@ export const create = catchAsync(async (req, res) => {
     intent: req.body.intent,
     description: req.body.description,
     constraints: req.body.constraints,
-    of_link_ref: req.body.of_link_ref
+    of_link_ref: req.body.of_link_ref,
+    of_gateway_redirect_url: req.body.of_gateway_redirect_url
   })
+  console.log('account_server_url')
+  console.log(account_server_url)
   res.send({
     tenant_link_ref: ref,
     tenant_customer_id: customerId,
-    consent_capture_page_url: new URL(account_server_url, `/pat/consent/${ref}`).toString()
+    consent_capture_page_url: new URL(`/pat/consent/${ref}`, account_server_url).toString()
   })
 })
 
