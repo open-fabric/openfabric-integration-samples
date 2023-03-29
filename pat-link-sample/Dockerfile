@@ -18,7 +18,6 @@ RUN cat >> .env
 RUN echo "NEXT_PUBLIC_ENV=${ENV}" >> ./.env
 RUN echo "OF_AUTH_ENDPOINT=${OF_AUTH_ENDPOINT}" >> ./.env
 RUN echo "MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID}" >> ./.env
-RUN echo "MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID}" >> ./.env
 RUN echo "MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET}" >> ./.env
 
 RUN yarn build

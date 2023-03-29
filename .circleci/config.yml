@@ -47,6 +47,7 @@ workflows:
             branches:
               only:
                 - main
+                - fix/deploy-pat-service
   sandbox-deploy:
     jobs:
       - deploy-tenant-merchant-sample:
