@@ -49,34 +49,42 @@ export default function Home() {
             </Head>
             <main className={styles.main}>
                 <div className={styles.formLine}>
-                <label htmlFor="currency">Currency: </label>
-                <input id="currency" name="currency" type="text"
-                       value={state.currency}
-                       onChange={e => setState({...state,  currency: e.target.value})}
+                    <label htmlFor="currency">Currency: </label>
+                    <br/>
 
-                />
+                    <input id="currency" name="currency" type="text"
+                           value={state.currency}
+                           onChange={e => setState({...state, currency: e.target.value})}
+
+                    />
                 </div>
+                <br/>
                 <div className={styles.formLine}>
-
                     <label htmlFor="amount">Amount: </label>
+                    <br/>
                     <input type="text" id="amount" name="amount"
                            value={state.amount}
-                           onChange={e => setState({...state,  amount: e.target.value})}
+                           onChange={e => setState({...state, amount: e.target.value})}
                     />
                 </div>
+                <br/>
                 <div className={styles.formLine}>
                     <label htmlFor="description">Description: </label>
+                    <br/>
+
                     <textarea cols={40} rows={5} id="description" name="description"
-                           value={state.description}
-                           onChange={e => setState({...state,  description: e.target.value})}
+                              value={state.description}
+                              onChange={e => setState({...state, description: e.target.value})}
 
                     />
                 </div>
+                <br/>
                 <div className={styles.formLine}>
                     <label htmlFor="frequency">Frequency: </label>
+                    <br/>
                     <select id="frequency" name="frequency"
                             value={state.frequency}
-                            onChange={e => setState({...state,  frequency: e.target.value})}
+                            onChange={e => setState({...state, frequency: e.target.value})}
 
                     >
                         <option value="weekly">weekly</option>
@@ -84,6 +92,7 @@ export default function Home() {
                         <option value="yearly">yearly</option>
                     </select>
                 </div>
+                <br/>
                 <div className={styles.formLine}>
                     <button className={styles.submitButton} onClick={createPatLink}>Submit</button>
                 </div>
