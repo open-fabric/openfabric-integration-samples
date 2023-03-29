@@ -2,6 +2,7 @@ import crypto from 'crypto'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { authenticate } from '@/lib/auth'
+import {MERCHANT_SAMPLE_HOST, OF_AUTH_ENDPOINT} from "@/lib/config";
 
 type Data = {
   name: string
@@ -25,7 +26,7 @@ export default async function handler(
     partner_link_ref: crypto.randomUUID(),
     partner_customer_id: crypto.randomUUID(),
     intent: 'recurring',
-    partner_redirect_url: 'http://localhost:3000/approval_result',
+    partner_redirect_url: `${MERCHANT_SAMPLE_HOST}/merchant-pat-link/approval_result`,
     description:  formRequest.description,
     constraints: {
       amount: formRequest.amount,
