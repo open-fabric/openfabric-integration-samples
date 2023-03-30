@@ -2,7 +2,7 @@ import crypto from 'crypto'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { authenticate } from '@/lib/auth'
-import {MERCHANT_SAMPLE_HOST} from "@/lib/config";
+import {MERCHANT_SAMPLE_HOST, OF_API_URL} from "@/lib/config";
 
 type Data = {
   name: string
@@ -46,8 +46,8 @@ export default async function handler(
     },
     body: JSON.stringify(payload)
   }
-  const response = await fetch(
-    `${new URL('/v1/preapproved_transaction_links', "http://127.0.0.1:2023")}`, request)
+  let url = new URL('/v1/preapproved_transaction_links', OF_API_URL).toString();
+  const response = await fetch(url, request)
   const data = await response.json()
 
   res.send(data.consent_capture_page_url)
