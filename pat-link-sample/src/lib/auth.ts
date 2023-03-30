@@ -1,5 +1,5 @@
 import { Buffer } from 'buffer'
-import { OF_AUTH_ENDPOINT, MERCHANT_CLIENT_ID, MERCHANT_CLIENT_SECRET } from '@/lib/config'
+import { OF_AUTH_URL, MERCHANT_CLIENT_ID, MERCHANT_CLIENT_SECRET } from '@/lib/config'
 
 export const authenticate = async () => {
   const params = new URLSearchParams()
@@ -10,7 +10,7 @@ export const authenticate = async () => {
     .from(`${MERCHANT_CLIENT_ID}:${MERCHANT_CLIENT_SECRET}`)
     .toString('base64')
 
-  let response = await fetch(new URL('/oauth2/token', OF_AUTH_ENDPOINT).toString(), {
+  let response = await fetch(new URL('/oauth2/token', OF_AUTH_URL).toString(), {
     method: 'POST',
     headers: {
       'Authorization': `Basic ${credentials}`,
