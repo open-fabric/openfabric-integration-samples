@@ -11,7 +11,7 @@ export const authenticate = async () => {
         .from(`${MERCHANT_CLIENT_ID}:${MERCHANT_CLIENT_SECRET}`)
         .toString('base64')
 
-    let response = await fetch(OF_AUTH_URL, {
+    let response = await fetch(new URL('/oauth2/token', OF_AUTH_URL).toString(), {
       method: 'POST',
       headers: {
         'Authorization': `Basic ${credentials}`,
