@@ -21,6 +21,19 @@ export const authenticate = async () => {
     })
     console.log('response')
     console.log(response)
+    let response1 = await fetch(new URL('/oauth2/token', OF_AUTH_URL).toString(), {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${credentials}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: JSON.stringify({
+        grant_type: 'client_credentials',
+        scope: ''
+      })
+    })
+    console.log('response1')
+    console.log(response1)
     const {access_token: token} = await response.json()
     return token
   }catch (e) {
@@ -28,6 +41,7 @@ export const authenticate = async () => {
     console.log(MERCHANT_CLIENT_SECRET)
     console.log(OF_AUTH_URL)
     console.log(e)
+
     throw e
   }
 }
