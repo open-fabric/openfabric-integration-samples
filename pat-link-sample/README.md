@@ -11,8 +11,8 @@ A sample to demonstrate end to end integration between ****Ingenico & Open Farbi
 Create **.env** file in root of this folder, according to your input Merchant credential - you can check the .sample.env file for more details
 
 ```shell
-OF_AUTH_ENDPOINT=https://auth.dev.openfabric.co
-OF_API_ENDPOINT=
+OF_AUTH_URL=https://auth.dev.openfabric.co
+OF_API_URL=
 MERCHANT_CLIENT_ID=
 MERCHANT_CLIENT_SECRET=
 ```

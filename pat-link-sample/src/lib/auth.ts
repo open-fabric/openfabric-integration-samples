@@ -21,15 +21,7 @@ export const authenticate = async () => {
     })
     const {access_token: token} = await response.json()
     return token
-  }catch (e) {
-    console.log("---data--")
-    console.log(MERCHANT_CLIENT_ID)
-    console.log(MERCHANT_CLIENT_SECRET)
-    console.log(OF_AUTH_URL)
-    console.log("--data--")
-
-    console.log(e)
-
+  } catch (e) {
     throw e
   }
 }

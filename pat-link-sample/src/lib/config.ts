@@ -1,5 +1,4 @@
-export const OF_AUTH_URL = `${process.env.OF_AUTH_ENDPOINT}` || 'https://auth.dev.openfabric.co'
+export const OF_AUTH_URL = `${process.env.OF_AUTH_URL}` || 'https://auth.dev.openfabric.co'
 export const OF_API_URL = `${process.env.OF_API_URL}` || 'https://api.dev.openfabric.co'
-export const MERCHANT_SAMPLE_HOST = `${process.env.MERCHANT_SAMPLE_HOST}` || 'https://merchant-1.samples.dev.openfabric.co'
-export const MERCHANT_CLIENT_ID = `${process.env.MERCHANT_CLIENT_ID}` || '26p63h3rcb3mlu7jef47sh15to'
-export const MERCHANT_CLIENT_SECRET = `${process.env.MERCHANT_CLIENT_SECRET}` || '1m6dicot1k2gsidm0i4s338t375d3a5335fp60kpvv2od71b0hs5'
+export const MERCHANT_CLIENT_ID = `${process.env.MERCHANT_CLIENT_ID}`
+export const MERCHANT_CLIENT_SECRET = `${process.env.MERCHANT_CLIENT_SECRET}`
