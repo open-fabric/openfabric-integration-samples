@@ -52,6 +52,7 @@ docker build ./pat-link-sample/ \
   -t samples-merchant-pat-link:latest \
   --build-arg ENV=$ENV \
   --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
+  --build-arg OF_API_URL=${OF_API_URL} \
   --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
   --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \
 
