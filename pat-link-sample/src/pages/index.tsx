@@ -23,9 +23,9 @@ export default function Form() {
             },
             body: JSON.stringify(data)
         });
-
         if (response.ok) {
-            const { url } = await response.json();
+            const  url = await response.text();
+
             window.location.href = url;
         } else {
             console.error('Form submission failed.');
