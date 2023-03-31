@@ -51,9 +51,12 @@ export default async function handler(
   }
   try {
     const response = await fetch(`${OF_API_URL}/v1/preapproved_transaction_links`, request)
-    const data = await response.json()
-
-    res.send(data.consent_capture_page_url)
+    if (response.ok) {
+      const data = await response.json()
+      res.send(data.consent_capture_page_url)
+    } else {
+      throw new Error('Error creating link: ', response.statusText, await response.json())
+    }
   } catch (e) {
     throw e
   }
