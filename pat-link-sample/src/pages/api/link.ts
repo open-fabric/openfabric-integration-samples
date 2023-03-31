@@ -22,14 +22,15 @@ export default async function handler(
   const token = await authenticate()
 
   const host = req.headers?.host || 'localhost:3004';
-  const protocol = /^localhost(:\d+)?$/.test(host) ? "http:" : "https:";
-
+  const protocol = /^localhost(:\d+)?$/.test(host) ? "http" : "https";
+  let partnerRedirectUrl = `${protocol}://${host}/merchant-pat-link/approval_result`;
   var days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat','sun'];
+
   const payload = {
     partner_link_ref: crypto.randomUUID(),
     partner_customer_id: crypto.randomUUID(),
     intent: 'recurring',
-    partner_redirect_url: `${protocol}://${host}/merchant-pat-link/approval_result`,
+    partner_redirect_url: partnerRedirectUrl,
     description:  formRequest.description,
     constraints: {
       amount: formRequest.amount,
@@ -55,7 +56,7 @@ export default async function handler(
       const data = await response.json()
       res.send(data.consent_capture_page_url)
     } else {
-      throw new Error('Error creating link: ', response.statusText, await response.json())
+      throw new Error(`Error creating link:  ${response.statusText},\n ${await response.json()}`)
     }
   } catch (e) {
     throw e

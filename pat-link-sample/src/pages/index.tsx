@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+
 
 export default function Form() {
     const [currency, setCurrency] = useState('SGD');
@@ -33,7 +34,7 @@ export default function Form() {
     };
 
     return (
-        <div className="form-container">
+        <div className='form-container'>
             <form onSubmit={handleSubmit}>
                 <legend>Subscribe for goods</legend>
                 <label>
@@ -69,7 +70,6 @@ export default function Form() {
                 </label>
                 <button type="submit">Submit</button>
             </form>
-
             <style jsx>{`
         .form-container {
           display: flex;

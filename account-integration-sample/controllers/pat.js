@@ -51,6 +51,8 @@ export const approvePatLink = catchAsync(async (req, res) => {
   } else {
     reason = "Card is blocked"
   }
+  console.log('of_pat_url')
+  console.log(of_pat_url)
   const result = await axios.patch(
     new URL("/v1/preapproved_transaction_links", of_pat_url).toString(),
     {
