@@ -23,6 +23,7 @@ export default async function handler(
 
   const host = req.headers?.host || 'localhost:3004';
   const protocol = /^localhost(:\d+)?$/.test(host) ? "http" : "https";
+ 
   let partnerRedirectUrl = `${protocol}://${host}/merchant-pat-link/approval_result`;
   var days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat','sun'];
 
@@ -56,7 +57,7 @@ export default async function handler(
       const data = await response.json()
       res.send(data.consent_capture_page_url)
     } else {
-      throw new Error(`Error creating link:  ${response.statusText},\n ${await response.json()}`)
+      throw new Error('Error creating link: ', response.statusText, await response.json())
     }
   } catch (e) {
     throw e
