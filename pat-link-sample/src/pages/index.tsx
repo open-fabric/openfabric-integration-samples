@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 export default function Form() {
-    const [currency, setCurrency] = useState('');
-    const [amount, setAmount] = useState('');
-    const [description, setDescription] = useState('');
+    const [currency, setCurrency] = useState('SGD');
+    const [amount, setAmount] = useState('100');
+    const [description, setDescription] = useState('Weekly subscriptions');
     const [frequency, setFrequency] = useState('weekly');
 
     const handleSubmit = async (event:any) => {
@@ -35,6 +35,7 @@ export default function Form() {
     return (
         <div className="form-container">
             <form onSubmit={handleSubmit}>
+                <legend>Subscribe for goods</legend>
                 <label>
                     Currency:
                     <input
