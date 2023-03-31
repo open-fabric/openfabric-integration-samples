@@ -19,9 +19,6 @@ export const authenticate = async () => {
       },
       body: params
     })
-    console.log('response---')
-    console.log(response.text())
-    console.log('response---')
     const {access_token: token} = await response.json()
     return token
   }catch (e) {

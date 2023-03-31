@@ -46,9 +46,21 @@ export default async function handler(
     },
     body: JSON.stringify(payload)
   }
-  let url = new URL('/v1/preapproved_transaction_links', OF_API_URL).toString();
-  const response = await fetch(url, request)
-  const data = await response.json()
+  try {
+    let url = new URL('/v1/preapproved_transaction_links', OF_API_URL).toString();
+    console.log('url--')
+    console.log(url)
+    console.log('url--')
+    const response = await fetch(url, request)
+    const data = await response.json()
 
-  res.send(data.consent_capture_page_url)
+    res.send(data.consent_capture_page_url)
+  } catch (e) {
+    console.log("error---")
+    console.log(OF_API_URL)
+    console.log(e)
+    console.log("error---")
+
+    throw e
+  }
 }
