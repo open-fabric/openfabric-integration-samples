@@ -2,7 +2,7 @@ import crypto from 'crypto'
 
 import { db } from '../db'
 import { catchAsync } from '../utils/catchAsync';
-import {account_server_url, of_issuer_url, of_pat_url} from "../lib/variables.js";
+import {account_server_url, of_api_url} from "../lib/variables.js";
 import axios from "axios";
 import {GetAccessToken} from "../services/auth.js";
 import {config} from "dotenv";
@@ -51,10 +51,8 @@ export const approvePatLink = catchAsync(async (req, res) => {
   } else {
     reason = "Card is blocked"
   }
-  console.log('of_pat_url')
-  console.log(of_pat_url)
   const result = await axios.patch(
-    new URL("/v1/preapproved_transaction_links", of_pat_url).toString(),
+    new URL("/v1/preapproved_transaction_links", of_api_url).toString(),
     {
       id: data.of_link_ref,
       tenant_link_ref: data.id,
