@@ -21,10 +21,10 @@ export default async function handler(
 
   const token = await authenticate()
 
-  const host = req.headers?.host || 'localhost:3004';
-  const protocol = /^localhost(:\d+)?$/.test(host) ? "http" : "https";
- 
-  let partnerRedirectUrl = `${protocol}://${host}/merchant-pat-link/approval_result`;
+  const domain = req.headers?.origin
+  console.log('req.headers')
+  console.log(req.headers)
+  let partnerRedirectUrl = `${domain}/merchant-pat-link/approval_result`;
   var days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat','sun'];
 
   const payload = {
