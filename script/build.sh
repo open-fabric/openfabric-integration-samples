@@ -3,13 +3,13 @@
 set -e
 
 # deploy nginx
-docker build --fail-fast ./nginx/ -t samples-nginx:latest
+docker build ./nginx/ -t samples-nginx:latest
 
 # deploy Open Fabric home page
-docker build --fail-fast ./home-sample/ -t samples-merchant-home:latest
+docker build ./home-sample/ -t samples-merchant-home:latest
 
 # deploy sdk-card-sample
-docker build --fail-fast ./sdk-card-sample/ \
+docker build ./sdk-card-sample/ \
   -t samples-merchant-sdk-card:latest \
   --build-arg ENV=$ENV \
   --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
@@ -19,7 +19,7 @@ docker build --fail-fast ./sdk-card-sample/ \
   --build-arg OF_ISSUER_URL=${OF_ISSUER_URL}
 
 # deploy sdk-pg-tokenization-sample
-docker build --fail-fast ./sdk-pg-tokenization-sample/ \
+docker build ./sdk-pg-tokenization-sample/ \
   -t samples-merchant-sdk-pg-tokenization:latest \
   --build-arg ENV=$ENV \
   --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
@@ -30,7 +30,7 @@ docker build --fail-fast ./sdk-pg-tokenization-sample/ \
   --build-arg PAYMENT_GATEWAY_PUBLISH_KEY=${PAYMENT_GATEWAY_PUBLISH_KEY}
 
 # deploy sdk-pg-charge-sample
-docker build --fail-fast ./sdk-pg-charge-sample/ \
+docker build ./sdk-pg-charge-sample/ \
   -t samples-merchant-sdk-pg-charge:latest \
   --build-arg ENV=$ENV \
   --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
@@ -40,7 +40,7 @@ docker build --fail-fast ./sdk-pg-charge-sample/ \
   --build-arg PAYMENT_GATEWAY_NAME=${PAYMENT_GATEWAY_NAME}
 
 # deploy ingenico-sample
-docker build --fail-fast ./ingenico-sample/ \
+docker build ./ingenico-sample/ \
   -t samples-ingenico:latest \
   --build-arg ENV=$ENV \
   --build-arg OF_INGENICO_TRANSACTIONS_URL=${OF_INGENICO_TRANSACTIONS_URL} \
@@ -50,7 +50,7 @@ docker build --fail-fast ./ingenico-sample/ \
   --build-arg INGENICO_STORE_ID=${INGENICO_STORE_ID}
 
 # deploy sdk-pat-sample
-docker build --fail-fast ./pat-link-sample/ \
+docker build -q ./pat-link-sample/ \
   -t samples-merchant-pat-link:latest \
   --build-arg ENV=$ENV \
   --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
@@ -58,6 +58,6 @@ docker build --fail-fast ./pat-link-sample/ \
   --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
   --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \
 
-docker build --fail-fast ./account-integration-sample/ -t samples-account:latest
+docker build ./account-integration-sample/ -t samples-account:latest
 
 docker images
