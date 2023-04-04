@@ -6,7 +6,7 @@
   "license": "MIT",
   "author": "hoangnh@openfabric.co",
   "scripts": {
-    "start": "yarn && NODE_OPTIONS='--experimental-specifier-resolution=node' node index.js"
+    "start": "NODE_OPTIONS='--experimental-specifier-resolution=node' node index.js"
   },
   "dependencies": {
     "express": "^4.17.3",

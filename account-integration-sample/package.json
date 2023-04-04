@@ -5,7 +5,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "yarn && NODE_OPTIONS='--experimental-specifier-resolution=node' node index.js",
+    "start": "NODE_OPTIONS='--experimental-specifier-resolution=node' node index.js",
     "dev": "NODE_OPTIONS='--experimental-specifier-resolution=node' nodemon index.js"
   },
   "dependencies": {

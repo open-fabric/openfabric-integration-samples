@@ -2,6 +2,7 @@ import crypto from 'crypto'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { authenticate } from '@/lib/auth'
+import { OF_API_URL} from "@/lib/config";
 
 type Data = {
   name: string
@@ -20,12 +21,15 @@ export default async function handler(
 
   const token = await authenticate()
 
+  const domain = req.headers?.origin
+  let partnerRedirectUrl = `${domain}/merchant-pat-link/approval_result`;
   var days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat','sun'];
+
   const payload = {
     partner_link_ref: crypto.randomUUID(),
     partner_customer_id: crypto.randomUUID(),
     intent: 'recurring',
-    partner_redirect_url: 'http://localhost:3000/approval_result',
+    partner_redirect_url: partnerRedirectUrl,
     description:  formRequest.description,
     constraints: {
       amount: formRequest.amount,
@@ -45,9 +49,15 @@ export default async function handler(
     },
     body: JSON.stringify(payload)
   }
-  const response = await fetch(
-    `${new URL('/v1/preapproved_transaction_links', "http://127.0.0.1:2023")}`, request)
-  const data = await response.json()
-
-  res.send(data.consent_capture_page_url)
+  try {
+    const response = await fetch(`${OF_API_URL}/v1/preapproved_transaction_links`, request)
+    if (response.ok) {
+      const data = await response.json()
+      res.send(data.consent_capture_page_url)
+    } else {
+      throw new Error(`Error creating link: ${response.statusText}, ${await response.json()}`)
+    }
+  } catch (e) {
+    throw e
+  }
 }

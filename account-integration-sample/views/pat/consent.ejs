@@ -1,88 +1,95 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8"/>
-    <title>Document</title>
-  </head>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form Data</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    p {
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: #fff;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3e8e41;
+    }
+  </style>
   <script>
-    function approve( status) {
+    function approve(status) {
       const patLinkData = {
-        id: "<%= patLink.id %>",
-        partner_link_ref: "<%= patLink.partner_link_ref%>",
-        partner_customer_id: "<%= patLink.partner_customer_id%>",
-        intent: "<%= patLink.intent%>",
-        description: "<%= patLink.description%>",
-        constraints: "<%= patLink.constraints%>",
-        of_link_ref: "<%= patLink.of_link_ref%>",
-      }
+        id: '<%= patLink.id %>',
+        partner_link_ref: '<%= patLink.partner_link_ref%>',
+        partner_customer_id: '<%= patLink.partner_customer_id%>',
+        intent: '<%= patLink.intent%>',
+        description: '<%= patLink.description%>',
+        constraints: '<%= patLink.constraints%>',
+        of_link_ref: '<%= patLink.of_link_ref%>',
+        of_gateway_redirect_url:
+                '<%= patLink.of_gateway_redirect_url%>',
+      };
 
       const url = `${window.location.origin}/api/pat/${patLinkData.id}/approve`;
-      var headers = new Headers();
-      headers.append("Content-Type", "application/json");
-      headers.append("Accept", "application/json");
+      const headers = new Headers({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      });
       const params = {
-        method: "PATCH",
-        headers: headers,
+        method: 'PATCH',
+        headers,
         body: JSON.stringify({
           ...patLinkData,
-          status: status,
+          status,
         }),
       };
       fetch(url, params)
-              .then(function (a) {
-                return a.json(); // call the json method on the response to get JSON
-              })
+              .then((response) => response.json())
               .then((data) => {
-                // HTTP 301 response
-                // HOW CAN I FOLLOW THE HTTP REDIRECT RESPONSE?
-                console.log(data)
+                console.log(data);
                 window.location.href = data.url;
-
-              }).catch(function(err) {
-        console.info(err + " url: " + url);
-      });
-              ;
+              })
+              .catch((error) => console.error(error));
     }
   </script>
-  <style>
+</head>
+<body>
+<div class="container">
+  <h1>You will allow this transaction <%= patLink.constraints.frequency %></h1>
+  <p><strong>Link ID:</strong> <%= patLink.id %></p>
+  <p><strong>Intent:</strong> <%= patLink.intent %></p>
+  <p><strong>Description:</strong> <%= patLink.description %></p>
+  <p><strong>Amount:</strong> <%= patLink.constraints.amount %></p>
+  <p><strong>Frequency:</strong> <%= patLink.constraints.frequency %></p>
+  <p><strong>Start Date:</strong> <%= patLink.constraints.start_date %></p>
 
-    .submitButton{
-      background: #9b59b6;
-      border: #9b59b6 solid 1px;
-      width: 100px;
-      height: 50px;
-      margin-top: 10px;
-      border-radius: 3px;
-    }
-    .main {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 6rem;
-      min-height: 30vh;
-
-      width: 500px;
-      border: #1a2950 1px solid;
-    }
-  </style>
-  <body>
-    <div class="main">
-      <div><label>LINK ID:</label><b> <%= patLink.id %></b></div>
-      <div><label>INTENT:</label> <b> <%= patLink.intent %></b></div>
-      <div><label>DESCRIPTION: </label><b><%= patLink.description %></b></div>
-      <div><label>AMOUNT: </label><b><%= patLink.constraints.amount %></b></div>
-      <div><label>CURRENCY: </label><b><%= patLink.constraints.currency %></b></div>
-      <div><label>FREQUENCY: </label><b><%= patLink.constraints.frequency %></b></div>
-      <div><label>START_DATE: </label><b><%= patLink.constraints.start_date %></b></div>
-      <div>
-        <button class="submitButton" id="approve-trans" onclick='approve("approved")'>
-          Approve
-        </button>
-        <button class="submitButton" id="approve-trans" onclick='approve("failed")'>
-          Deny
-        </button>
-      </div>
-    </div>
-  </body>
+  <button type="button" onclick="approve('approved')">Approve</button>
+  <button type="button" onclick="approve('failed')">Deny</button>
+</div>
+</body>
 </html>
