@@ -20,8 +20,6 @@ export const create = catchAsync(async (req, res) => {
     of_link_ref: req.body.of_link_ref,
     of_gateway_redirect_url: req.body.of_gateway_redirect_url
   })
-  console.log('account_server_url')
-  console.log(account_server_url)
   res.send({
     tenant_link_ref: ref,
     tenant_customer_id: customerId,
