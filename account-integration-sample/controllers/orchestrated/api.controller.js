@@ -2,6 +2,13 @@ import { catchAsync } from "../../utils/catchAsync";
 import * as transactionService from "../../services/of-transactions";
 
 export const CreateTransaction = catchAsync(async (req, res) => {
+
+  const initiation_flow = req.query.initiation_flow;
+  if(initiation_flow === 'pat') {
+    const response = await transactionService.CreatePatTransaction({ of_transaction: req.body });
+    return res.status(200).send(response);
+  }
+
   const response = await transactionService.CreateTransaction({ of_transaction: req.body });
   return res.status(200).send(response);
 });
