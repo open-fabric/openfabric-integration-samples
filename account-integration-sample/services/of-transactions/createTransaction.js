@@ -13,7 +13,7 @@ export const CreateTransaction = async ({
   }
 };
 
-export const CreatePatTransaction = async ({
+export const CreatePreApprovedTransaction = async ({
                                           of_transaction
                                         }) => {
   const amount = of_transaction.amount;

@@ -1,12 +1,11 @@
 import { catchAsync } from "../../utils/catchAsync";
 import * as transactionService from "../../services/of-transactions";
-import {GetTransactionById} from "../../services/of-transactions";
 
 export const CreateTransaction = catchAsync(async (req, res) => {
-  let transaction = await GetTransactionById({transaction_id: req.body.fabric_reference_id});
-
-  if(!!transaction.link_id) {
-    const response = await transactionService.CreatePatTransaction({ of_transaction: req.body });
+  const preApprovedInfo = req.body.pat_link?.link_id || req.body.pat_link?.tenant_link_ref || req.body.pat_link?.partner_link_ref;
+  
+  if(preApprovedInfo !== undefined) {
+    const response = await transactionService.CreatePreApprovedTransaction({ of_transaction: req.body });
     return res.status(200).send(response);
   }
 
