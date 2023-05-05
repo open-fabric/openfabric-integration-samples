@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const ppaasTransactionRequest: PPaaSTransactionRequest = {
       serviceImplementationId: process.env.INGENICO_SERVICE_IMPLEMENTATION_ID!,
       ppaasTransactionId: uuidv4(),
-      paymentScenario: "scanned-by-consumer",
+      paymentScenario: "consumerscan",
       paymentAmount: {
         amount: transactionRequest.paymentAmount.amount,
         currency: transactionRequest.paymentAmount.currency,
