@@ -7,7 +7,7 @@ export const WebhookCallBack = catchAsync(async (req, res) => {
       JSON.stringify(req.body, null, 2)
     );
 
-    if Array.isArray(req.body) {
+    if (Array.isArray(req.body)) {
       req.body.forEach((notification) => {
         console.log(
           `Transaction charged: id=${notification.account_reference_id}, status=${notification.status}, charged_at=${notification.charged_at}`
