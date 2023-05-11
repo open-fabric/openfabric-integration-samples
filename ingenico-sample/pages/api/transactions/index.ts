@@ -52,7 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       paymentStatus: savedTransaction.paymentStatus,
       paymentAmount: savedTransaction.paymentAmount,
       order: savedTransaction.order,
-      qrCodeConsumerScan: savedTransaction.qrCodeScannedByConsumer,
+      qrCodeConsumerScan: savedTransaction.qrCodeConsumerScan,
       creationDateTime: savedTransaction.creationDateTime,
     };
 
