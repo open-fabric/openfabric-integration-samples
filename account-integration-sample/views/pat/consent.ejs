@@ -85,8 +85,12 @@
   <p><strong>Intent:</strong> <%= patLink.intent %></p>
   <p><strong>Description:</strong> <%= patLink.description %></p>
   <p><strong>Amount:</strong> <%= patLink.constraints.amount %></p>
-  <p><strong>Frequency:</strong> <%= patLink.constraints.frequency %></p>
+  <p><strong>Currency:</strong> <%= patLink.constraints.currency %></p>
   <p><strong>Start Date:</strong> <%= patLink.constraints.start_date %></p>
+  <p><strong>Frequency:</strong> <%= patLink.constraints.frequency %></p>
+  <p><strong>Day of week:</strong> <%= patLink.constraints.day_of_week %></p>
+  <p><strong>Day of month:</strong> <%= patLink.constraints.day_of_month %></p>
+  <p><strong>Month of year:</strong> <%= patLink.constraints.month_of_year %></p>
 
   <button type="button" onclick="approve('approved')">Approve</button>
   <button type="button" onclick="approve('failed')">Deny</button>
