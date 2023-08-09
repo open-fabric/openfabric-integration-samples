@@ -61,6 +61,7 @@ export const authorize = async ({ clientId, clientSecret }, scope) => {
       },
       body: new URLSearchParams({
         grant_type: 'client_credentials',
+        scope
       })
     }
   )
