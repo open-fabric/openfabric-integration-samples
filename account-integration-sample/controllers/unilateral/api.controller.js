@@ -74,7 +74,7 @@ export const listPartners = catchAsync(async (req, res) => {
     MERCHANTS.map(async ({ credentials, ...merchant }) => {
       const accessToken = await authorize(
         credentials[of_auth_url],
-        'resources/transactions.create'
+        'resources/transactions.create resources/cards.read'
       )
       return {
         ...merchant,
