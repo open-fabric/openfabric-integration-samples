@@ -81,7 +81,7 @@ To fetch card
 
 ``` typescript
 const result = await axios.post(
-    `${process.env.OF_ISSUER_URL}/i/fetchCard`,
+    `${process.env.OF_ISSUER_URL}/v1/tenants/cards/details`,
     {
       card_fetch_token,
     },
