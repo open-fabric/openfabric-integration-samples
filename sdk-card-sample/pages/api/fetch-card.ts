@@ -38,7 +38,7 @@ const BackEndFetchCard = async (
   const { access_token } = await Authentication(process.env.MERCHANT_CLIENT_ID ?? '', process.env.MERCHANT_CLIENT_SECRET ?? '')("resources/cards.read");
 
   const result = await axios.post(
-    `${process.env.OF_ISSUER_URL}/i/fetchCard`,
+    `${process.env.OF_ISSUER_URL}/v1/tenants/cards/details`,
     {
       card_fetch_token,
     },

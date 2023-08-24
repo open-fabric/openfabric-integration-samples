@@ -72,7 +72,7 @@ const BackEndFetchCard = async (
   const accessToken = await GetAccessToken("resources/cards.read");
 
   const response = await axios.post(
-    `${of_issuer_url}/i/fetchCard`,
+    `${of_issuer_url}/v1/tenants/cards/details`,
     {
       card_fetch_token,
     },
