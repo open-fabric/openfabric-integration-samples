@@ -1,6 +1,7 @@
 import express from "express";
 import * as uiRoute from './ui'
 import * as apiRoute from './api'
+import patRoutes from './pat.routes'
 
 const router = express.Router();
 
@@ -37,7 +38,12 @@ const defaultRoutes = [
     path: "/utitlies",
     route: apiRoute.DbController,
   },
+  {
+    path: "/",
+    route: patRoutes,
+  },
 ];
+
 defaultRoutes.forEach((route) => {
   router.use(route.path, route.route);
 });

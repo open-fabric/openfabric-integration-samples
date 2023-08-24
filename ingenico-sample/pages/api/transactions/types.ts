@@ -37,7 +37,7 @@ export interface QrPaymentTransaction extends QrPaymentTransactionRequest {
 export interface PPaaSTransactionRequest {
   serviceImplementationId: string;
   ppaasTransactionId: string;
-  paymentScenario?: "scanned-by-consumer";
+  paymentScenario?: "consumerscan";
   paymentAmount: {
     amount: number;
     currency: string;
@@ -65,7 +65,7 @@ export interface PPaaSTransaction extends PPaaSTransactionRequest {
   providerTransactionId: string;
   paymentStatus: PaymentStatus;
   creationDateTime: string;
-  qrCodeScannedByConsumer?: {
+  qrCodeConsumerScan?: {
     codeType: "qrcode";
     codeValue: string;
     displayType: string;

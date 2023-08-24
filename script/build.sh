@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # deploy nginx
 docker build ./nginx/ -t samples-nginx:latest
 
@@ -46,6 +48,15 @@ docker build ./ingenico-sample/ \
   --build-arg INGENICO_ORGANIZATION_ID=${INGENICO_ORGANIZATION_ID} \
   --build-arg INGENICO_MERCHANT_ID=${INGENICO_MERCHANT_ID} \
   --build-arg INGENICO_STORE_ID=${INGENICO_STORE_ID}
+
+# deploy sdk-pat-sample
+docker build -q ./pat-link-sample/ \
+  -t samples-merchant-pat-link:latest \
+  --build-arg ENV=$ENV \
+  --build-arg OF_AUTH_URL=${OF_AUTH_URL} \
+  --build-arg OF_API_URL=${OF_API_URL} \
+  --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
+  --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \
 
 docker build ./account-integration-sample/ -t samples-account:latest
 

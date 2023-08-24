@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form Data</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    p {
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: #fff;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3e8e41;
+    }
+  </style>
+  <script>
+    function approve(status) {
+      const patLinkData = {
+        id: '<%= patLink.id %>',
+        partner_link_ref: '<%= patLink.partner_link_ref%>',
+        partner_customer_id: '<%= patLink.partner_customer_id%>',
+        intent: '<%= patLink.intent%>',
+        description: '<%= patLink.description%>',
+        constraints: '<%= patLink.constraints%>',
+        of_link_ref: '<%= patLink.of_link_ref%>',
+        of_gateway_redirect_url:
+                '<%= patLink.of_gateway_redirect_url%>',
+      };
+
+      const url = `${window.location.origin}/api/pat/${patLinkData.id}/approve`;
+      const headers = new Headers({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      });
+      const params = {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify({
+          ...patLinkData,
+          status,
+        }),
+      };
+      fetch(url, params)
+              .then((response) => response.json())
+              .then((data) => {
+                console.log(data);
+                window.location.href = data.url;
+              })
+              .catch((error) => console.error(error));
+    }
+  </script>
+</head>
+<body>
+<div class="container">
+  <h1>You will allow this transaction <%= patLink.constraints.frequency %></h1>
+  <p><strong>Link ID:</strong> <%= patLink.id %></p>
+  <p><strong>Intent:</strong> <%= patLink.intent %></p>
+  <p><strong>Description:</strong> <%= patLink.description %></p>
+  <p><strong>Amount:</strong> <%= patLink.constraints.amount %></p>
+  <p><strong>Currency:</strong> <%= patLink.constraints.currency %></p>
+  <p><strong>Start Date:</strong> <%= patLink.constraints.start_date %></p>
+  <p><strong>Frequency:</strong> <%= patLink.constraints.frequency %></p>
+  <p><strong>Day of week:</strong> <%= patLink.constraints.day_of_week %></p>
+  <p><strong>Day of month:</strong> <%= patLink.constraints.day_of_month %></p>
+  <p><strong>Month of year:</strong> <%= patLink.constraints.month_of_year %></p>
+
+  <button type="button" onclick="approve('approved')">Approve</button>
+  <button type="button" onclick="approve('failed')">Deny</button>
+</div>
+</body>
+</html>

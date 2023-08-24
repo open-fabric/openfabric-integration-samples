@@ -107,3 +107,4 @@ dist
 # TernJS port file
 .tern-port
 merchant-integration-sample/.npmrc
+/account-integration-sample/AccountTransaction.json
