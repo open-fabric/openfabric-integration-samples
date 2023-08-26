@@ -22,7 +22,7 @@ export const CreateTransaction = catchAsync(async (req, res) => {
 
 export const FetchCard = async (card_fetch_token, access_token) => {
     const result = await axios.post(
-        `${of_issuer_url}/i/fetchCard`,
+        `${of_issuer_url}/v1/tenants/cards/details`,
         {
             card_fetch_token,
         },
