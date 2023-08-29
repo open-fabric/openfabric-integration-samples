@@ -49,6 +49,19 @@ export const MERCHANTS = [{
       clientSecret: 'lsopq2kb796pdvj5g73tvk90n7j7os29tt1k211ut3ias3j8k2i'
     }
   }
+}, {
+  name: 'Shopee',
+  url: 'https://shopee.sg',
+  credentials: {
+    'https://auth.sandbox.openfabric.co/oauth2/token': {
+      clientId: '5lh8kn3b6e7sh7hnllj4rp7n6o',
+      clientSecret: '13jgpu30lodc2kmunsrd5i8bnduna0dks36stvkts8fh29jcphqc'
+    },
+    'https://auth.dev.openfabric.co/oauth2/token': {
+      clientId: 'ucdgh8kadm2gkpbpksg084ro3',
+      clientSecret: 's9f55kah44hk9jccn3060sja38p0mddpidvu7bohc9joddhsd9l'
+    }
+  }
 }]
 
 export const authorize = async ({ clientId, clientSecret }, scope) => {
