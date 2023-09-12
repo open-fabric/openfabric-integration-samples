@@ -19,6 +19,14 @@ const defaultRoutes = [
     route: apiRoute.OFAuth,
   },
   {
+    path: "/api/qrph",
+    route: apiRoute.QRPH,
+  },
+  {
+    path: "/qrph",
+    route: uiRoute.QrphTransaction,
+  },
+  {
     path: "/api/callback",
     route: apiRoute.WebhookCallback,
   },
