@@ -1,5 +1,5 @@
 import express from "express";
-import { unilateralController } from "../../controllers";
+import { unilateralController } from "../../controllers/index.js";
 
 const router = express.Router();
 

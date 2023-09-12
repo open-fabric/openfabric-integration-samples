@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { account_server_url } from "../../lib/variables";
+import { account_server_url } from "../../lib/variables.js";
 export const CreateTransaction = async ({ of_transaction }) => {
   return {
     account_reference_id: uuid(),

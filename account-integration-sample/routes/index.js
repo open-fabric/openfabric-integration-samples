@@ -1,7 +1,7 @@
 import express from "express";
-import * as uiRoute from './ui'
-import * as apiRoute from './api'
-import patRoutes from './pat.routes'
+import * as uiRoute from './ui/index.js'
+import * as apiRoute from './api/index.js'
+import patRoutes from './pat.routes.js'
 
 const router = express.Router();
 

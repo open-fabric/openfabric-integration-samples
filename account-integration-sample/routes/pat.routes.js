@@ -1,5 +1,5 @@
 import express from 'express';
-import {create, consentCapturePage, approvePatLink} from '../controllers/pat'
+import {create, consentCapturePage, approvePatLink} from '../controllers/pat.js'
 
 const router = express.Router();
 

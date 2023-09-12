@@ -1,6 +1,6 @@
-import { catchAsync } from "../../utils/catchAsync";
-import { merchant_redirect_url } from "../../lib/variables";
-import * as db from "../../db";
+import { catchAsync } from "../../utils/catchAsync.js";
+import { merchant_redirect_url } from "../../lib/variables.js";
+import * as db from "../../db/index.js";
 export const CheckOutUI = catchAsync(async (req, res) => {
   const account_reference_id = req.query.account_reference_id;
   if (!account_reference_id) {

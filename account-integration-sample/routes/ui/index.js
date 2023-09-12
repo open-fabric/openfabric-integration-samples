@@ -1,2 +1,2 @@
-export * from './orchestrated-checkout.route'
-export * from './embedded-checkout.route'
+export * from './orchestrated-checkout.route.js'
+export * from './embedded-checkout.route.js'

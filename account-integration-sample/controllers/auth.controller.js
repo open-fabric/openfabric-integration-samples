@@ -1,5 +1,5 @@
 import { GetAccessToken } from "../services/auth.js";
-import { catchAsync } from "../utils/catchAsync";
+import { catchAsync } from "../utils/catchAsync.js";
 
 export const OpenFabricAuthentication = catchAsync(async (req, res) => {
   const token = await GetAccessToken(req.body.scope);
