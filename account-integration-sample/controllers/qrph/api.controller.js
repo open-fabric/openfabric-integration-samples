@@ -1,4 +1,3 @@
-import crypto from 'crypto'
 import { catchAsync } from '../../utils/catchAsync.js';
 import {of_api_url} from "../../lib/variables.js";
 import axios from "axios";
@@ -10,12 +9,11 @@ import { encodeQr } from '../../utils/encodeQr.js';
 
 export const initiateQrphTxn = catchAsync(async (req, res) => {
   const {access_token} = await GetAccessToken()
-  const ref = crypto.randomUUID()
   const data = req.body;
   const qrCode = createQrCodePayload(data);
 
   const reqBody = {
-    tenant_reference_id: data.tenant_reference_id || ref,
+    tenant_reference_id: data.tenant_reference_id,
     amount: data.amount,
     currency: data.currency,
     instrument: 'qrph',
@@ -56,7 +54,8 @@ export const previewQrphTxn = catchAsync(async (req, res) => {
     }
 
     res.send({
-      qrCode
+      qrCode,
+      data: JSON.stringify(data)
     });
     return;
   });

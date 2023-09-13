@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import qr from "qrcode";
 import { catchAsync } from "../../utils/catchAsync.js";
 import { db } from '../../db/index.js'
@@ -5,7 +6,12 @@ import { encodeQr } from "../../utils/encodeQr.js";
 
 export const InitializeTxnUI = catchAsync(async (req, res) => {
   const qrCode = req.query.qr_code;
-
+  const dataJson = req.query.data;
+  const data = dataJson && JSON.parse(dataJson)
+  const result = {
+    ...data,
+    tenant_reference_id: data?.tenant_reference_id || uuid()
+  };
   qr.toDataURL(encodeQr(qrCode), (err, qrSRC) => {
     if (err) {
       console.error(err);
@@ -14,7 +20,8 @@ export const InitializeTxnUI = catchAsync(async (req, res) => {
 
     res.render("qrph/initiate-txn", {
       qrSRC: qrCode ? qrSRC : undefined,
-      qrCode
+      qrCode,
+      data: JSON.stringify(result)
     });
   });
 });

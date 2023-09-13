@@ -106,7 +106,7 @@
       </div>
       <div class="data">
         <h2>Transaction Details:</h2>
-        <% if ( typeof data == "object" ) { %>
+        <% if ( typeof data != "undefined" && typeof data == "object" ) { %>
             <% for (const key in data) { %>
               <div class="dataRow">
                 <div class="dataKey"><%= key %>:</div> 

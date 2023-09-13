@@ -34,6 +34,7 @@
           flex-direction: row;
           max-width: 100%;
           padding: 0 5vh;
+          margin-top: 1vh;
         }
 
         .qrCodeContent {
@@ -54,18 +55,21 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
-        .formFields {
-            display: flex;
-            flex-wrap: wrap;
+        .formColumns {
+          margin-top: 2.5vh;
+          display:flex;
+          flex-direction: row;
+        }
+
+        .formColumn {
+          width: 100%;
+          padding: 0vh 2.5vh;
         }
 
         .formRow {
             display: flex;
             flex-direction: row;
             text-align: left;
-            flex: 0 0 calc(50% - 10px);
-            box-sizing: border-box;
-            margin-right: 0.5vh;
         }
 
         label {
@@ -74,12 +78,12 @@
             font-weight: bold;
             color: #333;
             padding-right: 10px;
-            width: 55%;
+            width: 60%;
             padding: 1vh 0;
         }
 
         input[type="text"] {
-            width: 35%;
+            width: 30%;
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
@@ -90,7 +94,6 @@
           display: flex;
           flex-direction: row;
           justify-content: space-around;
-          padding: 0vh 20vh;
         }
 
         button[type="button"] {
@@ -143,10 +146,18 @@
           </div>
         </div>
         <% } %>
-        <h3>Enter transaction details</h3>
-        <div id="formFields" class="formFields"></div>
+        <div class="formColumns">
+          <div class="formColumn">
+            <h3>Enter QR details</h3>
+            <div id="qrFormFields" class="formFields"></div>
+          </div>
+          <hr />
+          <div class="formColumn">
+            <h3>Enter transaction details</h3>
+            <div id="txnFormFields" class="formFields"></div>
+          </div>
+        </div>
         <div class="buttons">
-          <input type="hidden" id="isLoading" value="false">
           <div id="loadingSpinner_previewButton" class="spinner"></div>
           <button type="button" id="previewButton">Preview QR</button>
           <div id="loadingSpinner_submitButton" class="spinner"></div>
@@ -155,6 +166,9 @@
     </form>
 
     <script>
+        const dataJson = '<%- data %>';
+        const data = dataJson && JSON.parse(dataJson);
+
         function apiSubmit(url, body) {
             var headers = new Headers();
             headers.append("Content-Type", "application/json");
@@ -187,23 +201,8 @@
             document.getElementById(buttonId).style.display = "inline-block";
         }
 
-        function renderForm() {
-            const formFields = [
-                { label: 'Bank Identification Code:', name: 'bank_code', value: 'CUOBPHM2XXX' },
-                { label: 'Bank Account Number:', name: 'bank_account_number', value: '326010000063' },
-                { label: 'Bank Branch Code:', name: 'bank_branch_code', value: '000' },
-                { label: 'Merchant Category Code:', name: 'merchant_category_code', value: '5814' },
-                { label: 'Currency Code:', name: 'currency_code', value: '608' },
-                { label: 'Country Code:', name: 'country_code', value: 'PH' },
-                { label: 'Merchant Name:', name: 'merchant_name', value: 'Open Fabric QRPH' },
-                { label: 'Merchant City:', name: 'merchant_city', value: 'Manila' },
-                { label: 'Postal Code:', name: 'postal_code', value: '1645' },
-                { label: 'Transaction Amount:', name: 'amount', value: '1000' },
-                { label: 'Transaction Currency:', name: 'currency', value: 'PHP' },
-                { label: 'Tenant Reference Id:', name: 'tenant_reference_id', value: '', placeholder: 'Optional' },
-            ];
-
-            const formContainer = document.getElementById('formFields');
+        function generateFormContainer(formId, formFields) {
+          const formContainer = document.getElementById(formId);
 
             formFields.forEach((field) => {
                 const div = document.createElement('div');
@@ -228,6 +227,28 @@
                 formContainer.appendChild(div);
             });
         }
+        function renderForm() {
+            const qrFormFields = [
+                { label: 'Bank Identification Code:', name: 'bank_code', value: data?.bank_code || 'CUOBPHM2XXX' },
+                { label: 'Bank Account Number:', name: 'bank_account_number', value: data?.bank_account_number || '326010000063' },
+                { label: 'Bank Branch Code:', name: 'bank_branch_code', value: data?.bank_branch_code || '000' },
+                { label: 'Merchant Category Code:', name: 'merchant_category_code', value: data?.merchant_category_code || '5814' },
+                { label: 'Currency Code:', name: 'currency_code', value: data?.currency_code || '608' },
+                { label: 'Country Code:', name: 'country_code', value: data?.country_code || 'PH' },
+                { label: 'Merchant Name:', name: 'merchant_name', value: data?.merchant_name || 'Open Fabric QRPH' },
+                { label: 'Merchant City:', name: 'merchant_city', value: data?.merchant_city || 'Manila' },
+                { label: 'Postal Code:', name: 'postal_code', value: data?.postal_code || '1645'}
+            ];
+
+            const txnFormFields = [
+              { label: 'Transaction Amount:', name: 'amount', value: data?.amount || '1000' },
+              { label: 'Transaction Currency:', name: 'currency', value: data?.currency || 'PHP' },
+              { label: 'Tenant Reference Id:', name: 'tenant_reference_id', value: data?.tenant_reference_id },
+            ]
+
+            generateFormContainer('qrFormFields', qrFormFields);
+            generateFormContainer('txnFormFields', txnFormFields);
+        }
 
         function submit(buttonId, isSubmit) {
             try {
@@ -237,11 +258,7 @@
                 const inputElements = document.querySelectorAll('input');
 
                 const success = Array.from(inputElements).every((input) => {
-                    if (input.value.trim() === '' &&
-                        input.id !== 'tenant_reference_id' &&
-                        input.id !== 'postal_code' &&
-                        input.id !== 'bank_branch_code'
-                    ) {
+                    if (input.value.trim() === '') {
                         alert('Please fill in all the fields.');
                         return false
                     }
@@ -273,7 +290,7 @@
                   showButton(buttonId)
                   if (json.qrCode) {
                     const baseUrl = window.location.origin;
-                    const url = `${baseUrl}/qrph/init-transaction?qr_code=${json.qrCode}`;
+                    const url = `${baseUrl}/qrph/init-transaction?qr_code=${json.qrCode}&data=${json.data}`;
                     window.location.href = url;
                   }
                 })
