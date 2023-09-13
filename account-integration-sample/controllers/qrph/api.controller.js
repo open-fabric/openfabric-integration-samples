@@ -4,6 +4,7 @@ import {of_api_url} from "../../lib/variables.js";
 import axios from "axios";
 import {GetAccessToken} from "../../services/auth.js";
 import { generateEmvcoQrText } from '../../utils/generateEmvcoQrText.js';
+import { db } from '../../db/index.js'
 
 export const initiateQrphTxn = catchAsync(async (req, res) => {
   const {access_token} = await GetAccessToken()
@@ -19,8 +20,6 @@ export const initiateQrphTxn = catchAsync(async (req, res) => {
     qr_code: qrCode,
   }
 
-  console.log(reqBody)
-
   const result = await axios.post(
     new URL("/v1/tenants/transactions", of_api_url).toString(),
     reqBody,
@@ -32,10 +31,14 @@ export const initiateQrphTxn = catchAsync(async (req, res) => {
     }
   );
 
+  db.push(`/transactions/${result.data.id}`, {
+    data:result.data,
+    qrCode
+  })
+
   res.send(
     {
       id: result.data.id,
-      qr_code: qrCode,
     }
   );
 });
