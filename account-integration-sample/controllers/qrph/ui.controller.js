@@ -1,3 +1,5 @@
+import { GetTransactionByIdV1 } from "../../services/of-transactions/getTransactionById.js";
+import qr from "qrcode";
 import { catchAsync } from "../../utils/catchAsync.js";
 
 export const InitializeTxnUI = catchAsync(async (req, res) => {
@@ -11,6 +13,7 @@ export const GetTxnUI = catchAsync(async (req, res) => {
 
   if (!id) {
     console.error("Missing `id` in query");
+    return res.status(400).json({ error: "Missing `id` in query" });
   }
 
   const txn = await GetTransactionByIdV1(id);

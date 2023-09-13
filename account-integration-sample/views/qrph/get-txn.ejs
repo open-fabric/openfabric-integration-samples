@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home Page</title>
+<body>
+<h2>QRPH Transaction</h2>
+<div class="container">
+    <h3>Displaying QRPH Transaction Result for Transaction ID: <%= data["id"] %> </h3>
+    <div id="app_tab_content" class="content">
+        <% if ( typeof qrSRC != "undefined" ) { %>
+            <img id="qr" alt="QR Code Image" src="<%= qrSRC %>"/>
+        <% } %>
+        <% if ( typeof qrCode != "undefined" ) { %>
+          <div> QR Text Content: <%= qrCode %> </div>
+        <% } %>
+    </div>
+    <div>
+      <% if ( typeof data == "object" ) { %>
+        <ul>
+          <% for (const key in data) { %>
+            <li><strong><%= key %>:</strong> <%= data[key] %></li>
+          <% } %>
+      </ul>
+      <% } %>
+    </div>
+    <button type="button" id="createButton" onclick="onClick()">Create Another Transaction</button>
+</div>
+<script>
+    function onClick() {
+      const baseUrl = window.location.origin
+      const url = `${baseUrl}/qrph/init-transaction`
+      window.location.href = url
+    }
+</script>
+</body>
+</html>

@@ -15,7 +15,7 @@ export const GetTransactionById = async ({ transaction_id }) => {
   return response.data
 };
 
-export const GetTransactionByIdV1 = async ({ transaction_id }) => {
+export const GetTransactionByIdV1 = async (transaction_id) => {
   const { access_token } = await GetAccessToken();
   const response = await axios.get(`${of_api_url}/v1/tenants/transactions/${transaction_id}`,{
     headers: {

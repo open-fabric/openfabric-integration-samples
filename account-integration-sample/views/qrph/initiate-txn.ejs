@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRPH Transactions</title>
+</head>
+<body>
+    <h1>QRPH Transaction</h1>
+    <h3>Initialize a QRPH Transaction</h3>
+    <form id="inputForm">
+        <label for="bank_code">Bank Identification Code:</label>
+        <input type="text" id="bank_code" name="bank_code" value="CUOBPHM2XXX"><br>
+
+        <label for="bank_account_number">Bank Account Number:</label>
+        <input type="text" id="bank_account_number" name="bank_account_number" value="326010000063"><br>
+
+        <label for="bank_branch_code">Bank Branch Code (optional):</label>
+        <input type="text" id="bank_branch_code" name="bank_branch_code" value="000"><br>
+
+        <label for="merchant_category_code">Merchant Category Code:</label>
+        <input type="text" id="merchant_category_code" name="merchant_category_code" value="5814"><br>
+
+        <label for="currency_code">Currency Code:</label>
+        <input type="text" id="currency_code" name="currency_code" value="608"><br>
+
+        <label for="country_code">Country Code:</label>
+        <input type="text" id="country_code" name="country_code" value="PH"><br>
+
+        <label for="merchant_name">Merchant Name:</label>
+        <input type="text" id="merchant_name" name="merchant_name" value="S and R MBTC 9182"><br>
+
+        <label for="merchant_city">Merchant City:</label>
+        <input type="text" id="merchant_city" name="merchant_city" value="Taguig"><br>
+
+        <label for="postal_code">Postal Code (optional):</label>
+        <input type="text" id="postal_code" name="postal_code" value="1645"><br>
+
+        <label for="amount">Transaction Amount:</label>
+        <input type="text" id="amount" name="amount" value="1000"><br>
+
+        <label for="currency">Transaction Currency:</label>
+        <input type="text" id="currency" name="currency" value="PHP"><br>
+
+        <label for="tenant_reference_id">Tenant Reference Id (optional):</label>
+        <input type="text" id="tenant_reference_id" name="tenant_reference_id" value=""><br>
+
+        <button type="button" id="submitButton">Submit Transaction</button>
+    </form>
+
+    <script>
+        function apiSubmit(url, body) {
+            var headers = new Headers();
+            headers.append("Content-Type", "application/json");
+            headers.append("Accept", "application/json");
+            const params = {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(body),
+            };
+            return fetch(url, params)
+                .then((response) => {
+                    return response.json();
+                })
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const captureButton = document.getElementById('submitButton');
+            captureButton.addEventListener('click', function () {
+                const formData = {};
+
+                const inputElements = document.querySelectorAll('input');
+
+                const success = Array.from(inputElements).every((input) => {
+                    if (input.value.trim() === '' &&
+                        input.id !== 'tenant_reference_id' &&
+                        input.id !== 'postal_code' &&
+                        input.id !== 'bank_branch_code'
+                    ) {
+                        alert('Please fill in all the fields.');
+                        return false
+                    }
+
+                    formData[input.id] = input.value;
+                    return true
+                });
+
+                if (!success) return
+
+                apiSubmit('/api/qrph/init-transaction', formData)
+                    .then((json) => {
+                        console.log(json);
+                        if (json.id) {
+                            const baseUrl = window.location.origin;
+                            const url = `${baseUrl}/qrph/get-transaction?id=${json.id}&qr_code=${json.qr_code}`;
+                            window.location.href = url;
+                        }
+                    })
+            });
+        });
+    </script>
+</body>
+</html>
