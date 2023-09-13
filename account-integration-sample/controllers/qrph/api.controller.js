@@ -4,7 +4,9 @@ import {of_api_url} from "../../lib/variables.js";
 import axios from "axios";
 import {GetAccessToken} from "../../services/auth.js";
 import { generateEmvcoQrText } from '../../utils/generateEmvcoQrText.js';
-import { db } from '../../db/index.js'
+import { db } from '../../db/index.js';
+import qr from 'qrcode';
+import { encodeQr } from '../../utils/encodeQr.js';
 
 export const initiateQrphTxn = catchAsync(async (req, res) => {
   const {access_token} = await GetAccessToken()
@@ -42,6 +44,23 @@ export const initiateQrphTxn = catchAsync(async (req, res) => {
     }
   );
 });
+
+export const previewQrphTxn = catchAsync(async (req, res) => {
+  const data = req.body;
+  const qrCode = createQrCodePayload(data);
+
+  qr.toDataURL(encodeQr(qrCode), (err, qrSRC) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: err });
+    }
+
+    res.send({
+      qrCode
+    });
+    return;
+  });
+})
 
 const createQrCodePayload = (data) => {
   const qrPayload = {

@@ -1,10 +1,22 @@
 import qr from "qrcode";
 import { catchAsync } from "../../utils/catchAsync.js";
 import { db } from '../../db/index.js'
+import { encodeQr } from "../../utils/encodeQr.js";
 
 export const InitializeTxnUI = catchAsync(async (req, res) => {
-  res.render("qrph/initiate-txn", {});
-  return;
+  const qrCode = req.query.qr_code;
+
+  qr.toDataURL(encodeQr(qrCode), (err, qrSRC) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: err });
+    }
+
+    res.render("qrph/initiate-txn", {
+      qrSRC: qrCode ? qrSRC : undefined,
+      qrCode
+    });
+  });
 });
 
 export const GetTxnUI = catchAsync(async (req, res) => {
@@ -18,7 +30,7 @@ export const GetTxnUI = catchAsync(async (req, res) => {
   const txn = await db.getData(`/transactions/${id}`)
   const qrCode = txn.qrCode
 
-  qr.toDataURL(encode(qrCode), (err, qrSRC) => {
+  qr.toDataURL(encodeQr(qrCode), (err, qrSRC) => {
     if (err) {
       console.error(err);
       return res.status(500).json({ error: err });
@@ -31,8 +43,3 @@ export const GetTxnUI = catchAsync(async (req, res) => {
     });
   });
 });
-
-const encode = (payload) => {
-  const data = JSON.stringify(payload);
-  return encodeURIComponent(data);
-}

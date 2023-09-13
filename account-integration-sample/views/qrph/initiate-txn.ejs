@@ -6,22 +6,47 @@
     <title>Initialize QRPH Transaction</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f5f5f5;
+          font-family: Arial, sans-serif;
+          text-align: center;
+          background-color: #f5f5f5;
         }
 
         h1 {
-            color: #333;
+          color: #333;
+        }
+
+        h2 {
+          margin-top: 0;
         }
 
         h3 {
-            color: #666;
+          color: #666;
+          margin-top: 0;
+        }
+
+        img#qr {
+          max-width: 100%;
+          height: auto;
+          margin-bottom: 10px;
+        }
+        .qrDisplay {
+          display: flex;
+          flex-direction: row;
+          max-width: 100%;
+          padding: 0 5vh;
+        }
+
+        .qrCodeContent {
+          text-align: left;
+          word-wrap: break-word;
+          max-width: 70%;
+          font-size: 1.8vh;
+          margin-top:2vh;
         }
 
         #inputForm {
-            width: 80%;
-            max-width: 50vh;
+            width: 100%;
+            max-width: 80vh;
             margin: 0 auto;
             padding: 1vh 4vh 3vh 4vh;
             background-color: #fff;
@@ -29,10 +54,18 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
+        .formFields {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
         .formRow {
             display: flex;
             flex-direction: row;
             text-align: left;
+            flex: 0 0 calc(50% - 10px);
+            box-sizing: border-box;
+            margin-right: 0.5vh;
         }
 
         label {
@@ -41,16 +74,23 @@
             font-weight: bold;
             color: #333;
             padding-right: 10px;
-            width: 60%;
+            width: 55%;
             padding: 1vh 0;
         }
 
         input[type="text"] {
-            width: 80%;
+            width: 35%;
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 4px;
+        }
+
+        .buttons {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          padding: 0vh 20vh;
         }
 
         button[type="button"] {
@@ -61,6 +101,12 @@
             padding: 10px 20px;
             cursor: pointer;
             transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+        }
+
+        button[type="button"]:disabled {
+          background-color: #e0e0e0;
+          box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.06), 0px 8px 10px 1px rgba(0, 0, 0, 0.042), 0px 3px 14px 2px rgba(0, 0, 0, 0.036);
+          cursor: not-allowed;
         }
 
         button[type="button"]:hover {
@@ -88,11 +134,24 @@
     <h1>QRPH Transaction</h1>
     <h3>Initialize a QRPH Transaction</h3>
     <form id="inputForm">
-        <h3>Input transaction details</h3>
-        <div id="formFields"></div>
-        <input type="hidden" id="isLoading" value="false">
-        <div id="loadingSpinner" class="spinner"></div>
-        <button type="button" id="submitButton">Submit Transaction</button>
+      <% if ( typeof qrCode != "undefined" ) { %>
+        <div class="qrDisplay">
+          <img id="qr" alt="QR Code Image" src="<%= qrSRC %>"/>
+          <div class="qrCodeContent">
+            <h2>QR Code Content:</h2>
+            <div> <%= qrCode %> </div>
+          </div>
+        </div>
+        <% } %>
+        <h3>Enter transaction details</h3>
+        <div id="formFields" class="formFields"></div>
+        <div class="buttons">
+          <input type="hidden" id="isLoading" value="false">
+          <div id="loadingSpinner_previewButton" class="spinner"></div>
+          <button type="button" id="previewButton">Preview QR</button>
+          <div id="loadingSpinner_submitButton" class="spinner"></div>
+          <button type="button" id="submitButton">Submit Transaction</button>
+        </div>
     </form>
 
     <script>
@@ -111,14 +170,21 @@
                 })
         }
 
-        function hideButton() {
-            document.getElementById("loadingSpinner").style.display = "inline-block";
-            document.getElementById("submitButton").style.display = "none";
+        function toggleButtonDisable(disable) {
+          const buttons = document.querySelectorAll('button')
+          buttons.forEach((button) => button.disabled = disable)
         }
 
-        function showButton() {
-            document.getElementById("loadingSpinner").style.display = "none";
-            document.getElementById("submitButton").style.display = "inline-block";
+        function hideButton(buttonId) {
+            toggleButtonDisable(true)
+            document.getElementById(`loadingSpinner_${buttonId}`).style.display = "inline-block";
+            document.getElementById(buttonId).style.display = "none";
+        }
+
+        function showButton(buttonId) {
+            toggleButtonDisable(false)
+            document.getElementById(`loadingSpinner_${buttonId}`).style.display = "none";
+            document.getElementById(buttonId).style.display = "inline-block";
         }
 
         function renderForm() {
@@ -134,7 +200,7 @@
                 { label: 'Postal Code:', name: 'postal_code', value: '1645' },
                 { label: 'Transaction Amount:', name: 'amount', value: '1000' },
                 { label: 'Transaction Currency:', name: 'currency', value: 'PHP' },
-                { label: 'Tenant Reference Id:', name: 'tenant_reference_id', value: '' },
+                { label: 'Tenant Reference Id:', name: 'tenant_reference_id', value: '', placeholder: 'Optional' },
             ];
 
             const formContainer = document.getElementById('formFields');
@@ -153,15 +219,19 @@
                 input.name = field.name;
                 input.value = field.value;
 
+                if (field.placeholder) {
+                    input.placeholder = field.placeholder;
+                }
+
                 div.appendChild(label);
                 div.appendChild(input);
                 formContainer.appendChild(div);
             });
         }
 
-        function submit() {
+        function submit(buttonId, isSubmit) {
             try {
-                hideButton()
+                hideButton(buttonId)
                 const formData = {};
 
                 const inputElements = document.querySelectorAll('input');
@@ -181,13 +251,14 @@
                 });
 
                 if (!success) {
-                    showButton()
+                    showButton(buttonId)
                     return
                 }
 
-                apiSubmit('/api/qrph/init-transaction', formData)
+                if (isSubmit) {
+                  apiSubmit('/api/qrph/init-transaction', formData)
                     .then((json) => {
-                        showButton()
+                        showButton(buttonId)
                         if (json.id) {
                             const baseUrl = window.location.origin;
                             const url = `${baseUrl}/qrph/get-transaction?id=${json.id}`;
@@ -197,15 +268,32 @@
                         }
                     }
                 )
+              } else {
+                apiSubmit('/api/qrph/preview-transaction', formData).then((json) => {
+                  showButton(buttonId)
+                  if (json.qrCode) {
+                    const baseUrl = window.location.origin;
+                    const url = `${baseUrl}/qrph/init-transaction?qr_code=${json.qrCode}`;
+                    window.location.href = url;
+                  }
+                })
+              }
             } catch (e) {
-                showButton()
+                showButton(buttonId)
                 console.log(e);
             }
         }
+
         document.addEventListener('DOMContentLoaded', function () {
             renderForm();
             const submitButton = document.getElementById('submitButton');
-            submitButton.addEventListener('click', submit);
+            submitButton.addEventListener('click', function (){
+              submit('submitButton', true)
+            });
+            const previewButton = document.getElementById('previewButton');
+            previewButton.addEventListener('click', function () {
+              submit('previewButton', false)
+            });
         });
     </script>
 </body>
