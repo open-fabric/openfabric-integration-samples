@@ -4,7 +4,7 @@ import {
   account_client_id,
   account_client_secrect,
   of_auth_url,
-} from "../lib/variables";
+} from "../lib/variables.js";
 
 export const GetAccessToken = async (scope) => {
   const basic = Buffer.from(

@@ -1,7 +1,7 @@
 import express from "express";
-import * as uiRoute from './ui'
-import * as apiRoute from './api'
-import patRoutes from './pat.routes'
+import * as uiRoute from './ui/index.js'
+import * as apiRoute from './api/index.js'
+import patRoutes from './pat.routes.js'
 
 const router = express.Router();
 
@@ -17,6 +17,14 @@ const defaultRoutes = [
   {
     path: "/api/of-auth",
     route: apiRoute.OFAuth,
+  },
+  {
+    path: "/api/qrph",
+    route: apiRoute.QRPH,
+  },
+  {
+    path: "/qrph",
+    route: uiRoute.QrphTransaction,
   },
   {
     path: "/api/callback",

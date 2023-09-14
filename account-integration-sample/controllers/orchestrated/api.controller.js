@@ -1,5 +1,5 @@
-import { catchAsync } from "../../utils/catchAsync";
-import * as transactionService from "../../services/of-transactions";
+import { catchAsync } from "../../utils/catchAsync.js";
+import * as transactionService from "../../services/of-transactions/index.js";
 
 export const CreateTransaction = catchAsync(async (req, res) => {
   const preApprovedInfo = req.body.pat_link?.link_id || req.body.pat_link?.tenant_link_ref || req.body.pat_link?.partner_link_ref;

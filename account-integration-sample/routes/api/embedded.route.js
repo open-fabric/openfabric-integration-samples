@@ -1,5 +1,5 @@
 import express from "express";
-import { embeddedController } from "../../controllers";
+import { embeddedController } from "../../controllers/index.js";
 const router = express.Router();
 router.route("/transactions").post(embeddedController.CreateTransaction);
 router.route("/transactions").get(embeddedController.getTransaction);

@@ -1,5 +1,5 @@
 import { JsonDB } from "node-json-db";
-import { Config } from "node-json-db/dist/lib/JsonDBConfig";
+import { Config } from "node-json-db/dist/lib/JsonDBConfig.js";
 
 export const db = new JsonDB(new Config("AccountTransaction", true, true, "/"));
 

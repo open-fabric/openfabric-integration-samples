@@ -1,6 +1,6 @@
 import axios from "axios";
-import { of_api_url } from "../../lib/variables";
-import { GetAccessToken } from "../auth";
+import { of_api_url } from "../../lib/variables.js";
+import { GetAccessToken } from "../auth.js";
 export const createEmbeddedTransaction = async ({ transaction }) => {
   const { access_token } = await GetAccessToken();
   const result = await axios.post(`${of_api_url}/t/transactions`, transaction, {

@@ -1,5 +1,5 @@
-import {parseCredentials, compareCredentials} from './credentialsExtract'
-import {basicAuthCredentials} from '../lib/variables'
+import {parseCredentials, compareCredentials} from './credentialsExtract.js'
+import {basicAuthCredentials} from '../lib/variables.js'
 import auth from 'basic-auth'
 
 export const requireLogin = (req, res, next) => {

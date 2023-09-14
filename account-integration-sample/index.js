@@ -3,12 +3,12 @@ import bodyParser from "body-parser";
 import path from "path";
 import device from "express-device";
 import { fileURLToPath } from "url";
-import routes from "./routes";
-import { errorHandler } from "./utils/errorHandler";
-import { basicAuthCredentials, sessionSecret } from "./lib/variables";
+import routes from "./routes/index.js";
+import { errorHandler } from "./utils/errorHandler.js";
+import { basicAuthCredentials, sessionSecret } from "./lib/variables.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-import { requireLogin } from "./utils/requireLogin_middleware";
+import { requireLogin } from "./utils/requireLogin_middleware.js";
 
 const port = 4000;
 const app = express();

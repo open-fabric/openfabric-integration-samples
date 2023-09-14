@@ -1,5 +1,5 @@
-import { catchAsync } from "../../utils/catchAsync";
-import { trusted_api_key } from "../../lib/variables";
+import { catchAsync } from "../../utils/catchAsync.js";
+import { trusted_api_key } from "../../lib/variables.js";
 export const WebhookCallBack = catchAsync(async (req, res) => {
   if (req.header("X-Api-Key") === trusted_api_key || req.header("X-API-Key") === trusted_api_key) {
     console.log(

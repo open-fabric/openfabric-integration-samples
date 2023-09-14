@@ -1,5 +1,5 @@
 import express from "express";
-import { embeddedController } from "../../controllers";
+import { embeddedController } from "../../controllers/index.js";
 const router = express.Router();
 router.route("/checkout").get(embeddedController.CheckOutUI);
 router.route("/order").get(embeddedController.OrderUI);
