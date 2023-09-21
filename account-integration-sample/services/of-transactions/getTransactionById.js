@@ -1,8 +1,8 @@
 import axios from "axios";
 import {
   of_api_url
-} from "../../lib/variables";
-import { GetAccessToken } from "../auth";
+} from "../../lib/variables.js";
+import { GetAccessToken } from "../auth.js";
 
 export const GetTransactionById = async ({ transaction_id }) => {
   const { access_token } = await GetAccessToken();
@@ -14,4 +14,3 @@ export const GetTransactionById = async ({ transaction_id }) => {
   })
   return response.data
 };
-

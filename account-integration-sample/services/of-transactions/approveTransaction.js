@@ -1,6 +1,6 @@
 import axios from "axios";
-import { of_api_url } from "../../lib/variables";
-import { GetAccessToken } from "../auth";
+import { of_api_url } from "../../lib/variables.js";
+import { GetAccessToken } from "../auth.js";
 
 export const ApproveTransaction = async ({
   account_reference_id,

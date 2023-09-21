@@ -1,11 +1,10 @@
 import crypto from 'crypto'
 
-import { db } from '../db'
-import { catchAsync } from '../utils/catchAsync';
+import { db } from '../db/index.js'
+import { catchAsync } from '../utils/catchAsync.js';
 import {account_server_url, of_api_url} from "../lib/variables.js";
 import axios from "axios";
 import {GetAccessToken} from "../services/auth.js";
-import {config} from "dotenv";
 
 export const create = catchAsync(async (req, res) => {
   const ref = crypto.randomUUID()

@@ -1,8 +1,8 @@
-import { catchAsync } from "../../utils/catchAsync";
-import * as dbService from "../../services/db";
-import * as transactionService from "../../services/of-transactions";
-import { account_server_url, of_issuer_url } from "../../lib/variables";
-import { GetAccessToken } from "../../services/auth";
+import { catchAsync } from "../../utils/catchAsync.js";
+import * as dbService from "../../services/db/index.js";
+import * as transactionService from "../../services/of-transactions/index.js";
+import { account_server_url, of_issuer_url } from "../../lib/variables.js";
+import { GetAccessToken } from "../../services/auth.js";
 import axios from "axios";
 
 export const CreateTransaction = catchAsync(async (req, res) => {
