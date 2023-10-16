@@ -2,7 +2,7 @@ import crypto from 'crypto'
 
 import { db } from '../db/index.js'
 import { catchAsync } from '../utils/catchAsync.js';
-import {account_server_url, of_api_url} from "../lib/variables.js";
+import {account_server_url, of_api_url, of_gateway_redirect_url} from "../lib/variables.js";
 import axios from "axios";
 import {GetAccessToken} from "../services/auth.js";
 
@@ -28,10 +28,19 @@ export const create = catchAsync(async (req, res) => {
 
 export const consentCapturePage = catchAsync(async (req, res) => {
   try {
-    const patLink = await db.getData(`/pat_links/${req.params.id}`)
-    console.log(req.params, patLink)
+    const {access_token} = await GetAccessToken()
+
+    const result = await axios.get(
+      new URL(`/v1/preapproved_transaction_links/${req.params.id}`, of_api_url).toString(),
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
     res.render('pat/consent', {
-      patLink
+      patLink: result.data
     })
   } catch (e) {
     res.status(404).send('Not found')
@@ -39,20 +48,20 @@ export const consentCapturePage = catchAsync(async (req, res) => {
 })
 
 export const approvePatLink = catchAsync(async (req, res) => {
-  let {access_token} = await GetAccessToken()
-  let data = req.body;
-  let status = data.status;
+  const {access_token} = await GetAccessToken()
+  const data = req.body;
+  const status = data.status;
   let reason;
   if(status == "approved") {
     reason = "Card is valid for purchasing";
   } else {
     reason = "Card is blocked"
   }
-  const result = await axios.patch(
+  await axios.patch(
     new URL("/v1/preapproved_transaction_links", of_api_url).toString(),
     {
-      id: data.of_link_ref,
-      tenant_link_ref: data.id,
+      id: data.id,
+      tenant_link_ref: data.tenant_link_ref,
       reason: reason,
       status: status,
     },
@@ -64,11 +73,9 @@ export const approvePatLink = catchAsync(async (req, res) => {
     }
   );
 
-
-  //
   res.send(
     {
-      url: data.of_gateway_redirect_url
+      url: `${of_gateway_redirect_url}?link_id=${data.id}`
     }
   );
 
