@@ -27,6 +27,10 @@ const defaultRoutes = [
     route: uiRoute.QrphTransaction,
   },
   {
+    path: "/api/pba",
+    route: apiRoute.PBA,
+  },
+  {
     path: "/api/callback",
     route: apiRoute.WebhookCallback,
   },
