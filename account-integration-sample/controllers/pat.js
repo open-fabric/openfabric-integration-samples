@@ -12,7 +12,7 @@ export const create = catchAsync(async (req, res) => {
   await db.push(`/pat_links/${ref}`, {
     id: ref,
     partner_link_ref: req.body.partner_link_ref,
-    partner_customer_id: req.body.partner_customer_id,
+    partner_customer_ref: req.body.partner_customer_ref,
     intent: req.body.intent,
     description: req.body.description,
     constraints: req.body.constraints,
@@ -21,7 +21,7 @@ export const create = catchAsync(async (req, res) => {
   })
   res.send({
     tenant_link_ref: ref,
-    tenant_customer_id: customerId,
+    tenant_customer_ref: customerId,
     consent_capture_page_url: new URL(`/pat/consent/${ref}`, account_server_url).toString()
   })
 })
