@@ -27,7 +27,7 @@ export default async function handler(
 
   const payload = {
     partner_link_ref: crypto.randomUUID(),
-    partner_customer_id: crypto.randomUUID(),
+    partner_customer_ref: crypto.randomUUID(),
     intent: 'recurring',
     partner_redirect_url: partnerRedirectUrl,
     description:  formRequest.description,
