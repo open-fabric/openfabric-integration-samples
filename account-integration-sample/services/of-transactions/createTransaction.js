@@ -31,3 +31,21 @@ export const CreatePreApprovedTransaction = async ({ of_transaction }) => {
     reason: reason,
   };
 };
+
+export const CreateDualAuthTransaction = async ({ of_transaction }) => {
+  const amount = of_transaction.amount;
+  let status;
+  let reason;
+  if (amount < 100) {
+    status = "approved";
+  } else if (amount > 150) {
+    status = "failed";
+    reason = "Not credit enough balance";
+  }
+
+  return {
+    tenant_reference_id: uuid(),
+    status: status,
+    reason: reason
+  }
+};

@@ -3,8 +3,13 @@ import * as transactionService from "../../services/of-transactions/index.js";
 
 export const CreateTransaction = catchAsync(async (req, res) => {
   const preApprovedInfo = req.body.pat_link?.link_id || req.body.pat_link?.tenant_link_ref || req.body.pat_link?.partner_link_ref;
-  
-  if(preApprovedInfo !== undefined) {
+  const isDualAuth = req.body.network_transaction_ref
+
+  if (isDualAuth) {
+    const response = await transactionService.CreateDualAuthTransaction({ of_transaction: req.body });
+    return res.status(200).send(response);
+  }
+  else if (preApprovedInfo !== undefined) {
     const response = await transactionService.CreatePreApprovedTransaction({ of_transaction: req.body });
     return res.status(200).send(response);
   }
