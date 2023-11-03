@@ -53,7 +53,7 @@ export default async function handler(
     const response = await fetch(`${OF_API_URL}/v1/preapproved_transaction_links`, request)
     if (response.ok) {
       const data = await response.json()
-      res.send(data.consent_capture_page_url)
+      res.send(data.tenant_consent_redirect_url)
     } else {
       throw new Error(`Error creating link: ${response.statusText}, ${await response.json()}`)
     }
