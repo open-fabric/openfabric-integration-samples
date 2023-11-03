@@ -5,11 +5,7 @@ export const CreateTransaction = catchAsync(async (req, res) => {
   const preApprovedInfo = req.body.pat_link?.link_id || req.body.pat_link?.tenant_link_ref || req.body.pat_link?.partner_link_ref;
   const isDualAuth = req.body.network_transaction_ref
 
-  if (isDualAuth) {
-    const response = await transactionService.CreateDualAuthTransaction({ of_transaction: req.body });
-    return res.status(200).send(response);
-  }
-  else if (preApprovedInfo !== undefined) {
+  if (preApprovedInfo !== undefined || isDualAuth !== undefined) {
     const response = await transactionService.CreatePreApprovedTransaction({ of_transaction: req.body });
     return res.status(200).send(response);
   }
