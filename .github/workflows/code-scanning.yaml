@@ -1,11 +1,13 @@
 name: Code scanning with CodeQL
 on: # test and build PR on any branch
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - '**'
 jobs:
   analyze:
-    if: ${{ github.event_name == 'pull_request' && github.secret_source == 'Actions' }}
     name: Analyze
     runs-on: ubuntu-latest
     strategy:
