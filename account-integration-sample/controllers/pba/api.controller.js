@@ -9,7 +9,7 @@ export const provisionAccountDevice = catchAsync(async (req, res) => {
   // read header X-User-Id from Express request
   const userId = req.headers["x-user-id"];
   const tenantCustomerRef = "C0"+userId;
-  const financialAccountNumber = "101"+userId;
+  const financialAccountNumber = "FR"+userId;
   const data = req.body;
 
   const reqBody = {
