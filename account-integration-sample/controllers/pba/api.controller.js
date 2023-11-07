@@ -14,10 +14,9 @@ export const provisionAccountDevice = catchAsync(async (req, res) => {
 
   const reqBody = {
     tenant_customer_ref: tenantCustomerRef,
-    financial_account_number: financialAccountNumber,
+    tenant_account_ref: financialAccountNumber,
     wallet_id: data.wallet_id,
-    device_name: data.device_name,
-    billing_currency: "PHP",
+    device_name: data.device_name
   }
 
   const result = await axios.post(
