@@ -36,7 +36,8 @@ export const provisionAccountDevice = catchAsync(async (req, res) => {
 
   res.send(
     {
-      entrollment_data: result.data.sdk_tokenize_account_device_ref,
+      entrollment_data: result.data.sdk_tokenize_account_device_data,
+      result: result.data
     }
   );
 });
