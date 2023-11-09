@@ -28,8 +28,7 @@ export default async function handler(
   const payload = {
     partner_link_ref: crypto.randomUUID(),
     partner_customer_ref: crypto.randomUUID(),
-    intent: 'recurring',
-    partner_redirect_url: partnerRedirectUrl,
+    return_url: partnerRedirectUrl,
     description:  formRequest.description,
     constraints: {
       amount: formRequest.amount,
@@ -55,7 +54,7 @@ export default async function handler(
       const data = await response.json()
       res.send(data.gateway_redirect_url)
     } else {
-      throw new Error(`Error creating link: ${response.statusText}, ${await response.json()}`)
+      throw new Error(`Error creating link: ${response.statusText}, ${JSON.stringify(await response.json())}`)
     }
   } catch (e) {
     throw e
