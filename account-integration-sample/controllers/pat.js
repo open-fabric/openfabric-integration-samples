@@ -32,7 +32,7 @@ export const consentCapturePage = catchAsync(async (req, res) => {
     const patLinkData = db.getData(`/pat_links/${req.params.id}`)
 
     const result = await axios.get(
-      new URL(`/v1/preapproved_transaction_links/${patLinkData.link_id}`, of_api_url).toString(),
+      new URL(`/v1/preapproved_transaction_links/${patLinkData.of_link_id}`, of_api_url).toString(),
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -44,6 +44,7 @@ export const consentCapturePage = catchAsync(async (req, res) => {
       patLink: result.data
     })
   } catch (e) {
+    console.error('Failed to fetch PAT link data', e);
     res.status(404).send('Not found')
   }
 })
