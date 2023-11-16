@@ -51,9 +51,10 @@
         intent: '<%= patLink.intent%>',
         description: '<%= patLink.description%>',
         constraints: '<%= patLink.constraints%>',
+        gateway_redirect_url: '<%= patLink.gateway_redirect_url%>',
       };
 
-      const url = `${window.location.origin}/api/pat/${patLinkData.id}/approve`;
+      const url = `${window.location.origin}/api/pat/${patLinkData.tenant_link_ref}/approve`;
       const headers = new Headers({
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -62,14 +63,13 @@
         method: 'PATCH',
         headers,
         body: JSON.stringify({
-          ...patLinkData,
           status,
         }),
       };
       fetch(url, params)
               .then((response) => response.json())
               .then((data) => {
-                window.location.href = data.url;
+                window.location.href = patLinkData.gateway_redirect_url;
               })
               .catch((error) => console.error(error));
     }
