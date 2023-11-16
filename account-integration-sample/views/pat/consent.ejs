@@ -92,8 +92,8 @@
   <p><strong>Day of month:</strong> <%= patLink.constraints.day_of_month %></p>
   <p><strong>Month of year:</strong> <%= patLink.constraints.month_of_year %></p>
 
-  <button type="button" <% if (patLink.status !== 'initiated') { %>disabled style="background-color: lightgray;"<% } %> onclick="approve('approved')">Approve</button>
-  <button type="button" <% if (patLink.status !== 'initiated') { %>disabled style="background-color: lightgray;"<% } %> onclick="approve('failed')">Deny</button>
+  <button type="button" <% if (patLink.status !== 'pending') { %>disabled style="background-color: lightgray;"<% } %> onclick="approve('approved')">Approve</button>
+  <button type="button" <% if (patLink.status !== 'pending') { %>disabled style="background-color: lightgray;"<% } %> onclick="approve('failed')">Deny</button>
 </div>
 </body>
 </html>
