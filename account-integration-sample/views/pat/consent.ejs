@@ -45,17 +45,16 @@
     function approve(status) {
       const patLinkData = {
         id: '<%= patLink.id %>',
+        tenant_link_ref: '<%= patLink.tenant_link_ref %>',
         partner_link_ref: '<%= patLink.partner_link_ref%>',
-        partner_customer_id: '<%= patLink.partner_customer_id%>',
+        partner_customer_ref: '<%= patLink.partner_customer_ref%>',
         intent: '<%= patLink.intent%>',
         description: '<%= patLink.description%>',
         constraints: '<%= patLink.constraints%>',
-        of_link_ref: '<%= patLink.of_link_ref%>',
-        of_gateway_redirect_url:
-                '<%= patLink.of_gateway_redirect_url%>',
+        gateway_redirect_url: '<%= patLink.gateway_redirect_url%>',
       };
 
-      const url = `${window.location.origin}/api/pat/${patLinkData.id}/approve`;
+      const url = `${window.location.origin}/api/pat/${patLinkData.tenant_link_ref}/approve`;
       const headers = new Headers({
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -64,15 +63,13 @@
         method: 'PATCH',
         headers,
         body: JSON.stringify({
-          ...patLinkData,
           status,
         }),
       };
       fetch(url, params)
               .then((response) => response.json())
               .then((data) => {
-                console.log(data);
-                window.location.href = data.url;
+                window.location.href = patLinkData.gateway_redirect_url;
               })
               .catch((error) => console.error(error));
     }
@@ -82,7 +79,10 @@
 <div class="container">
   <h1>You will allow this transaction <%= patLink.constraints.frequency %></h1>
   <p><strong>Link ID:</strong> <%= patLink.id %></p>
+  <p><strong>Tenant Link Ref</strong> <%= patLink.tenant_link_ref %></p>
+  <p><strong>Partner Link Ref</strong> <%= patLink.partner_link_ref %></p>
   <p><strong>Intent:</strong> <%= patLink.intent %></p>
+  <p><strong>Status:</strong> <%= patLink.status %></p>
   <p><strong>Description:</strong> <%= patLink.description %></p>
   <p><strong>Amount:</strong> <%= patLink.constraints.amount %></p>
   <p><strong>Currency:</strong> <%= patLink.constraints.currency %></p>
@@ -92,8 +92,8 @@
   <p><strong>Day of month:</strong> <%= patLink.constraints.day_of_month %></p>
   <p><strong>Month of year:</strong> <%= patLink.constraints.month_of_year %></p>
 
-  <button type="button" onclick="approve('approved')">Approve</button>
-  <button type="button" onclick="approve('failed')">Deny</button>
+  <button type="button" <% if (patLink.status !== 'pending') { %>disabled style="background-color: lightgray;"<% } %> onclick="approve('approved')">Approve</button>
+  <button type="button" <% if (patLink.status !== 'pending') { %>disabled style="background-color: lightgray;"<% } %> onclick="approve('failed')">Deny</button>
 </div>
 </body>
 </html>
