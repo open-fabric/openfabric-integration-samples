@@ -249,7 +249,9 @@
         function submit(buttonId) {
             try {
                 hideButton(buttonId)
-                const formData = {};
+                const formData = {
+                  return_url: `${window.location.origin}/pat/create_success`
+                };
 
                 const inputElements = document.querySelectorAll('input');
 
