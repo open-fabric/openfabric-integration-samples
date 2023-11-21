@@ -57,6 +57,7 @@ docker build -q ./pat-link-sample/ \
   --build-arg OF_API_URL=${OF_API_URL} \
   --build-arg MERCHANT_CLIENT_ID=${MERCHANT_CLIENT_ID} \
   --build-arg MERCHANT_CLIENT_SECRET=${MERCHANT_CLIENT_SECRET} \
+  --build-arg OF_GATEWAY_REDIRECT_URL=${OF_GATEWAY_REDIRECT_URL} \
 
 docker build ./account-integration-sample/ -t samples-account:latest
 

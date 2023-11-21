@@ -61,6 +61,9 @@
       "image": "$MERCHANT_PAT_LINK_IMAGE_NAME",
       "ports": {
         "3005": "HTTP"
+      },
+      "environment": {
+        "OF_GATEWAY_REDIRECT_URL": "$OF_GATEWAY_REDIRECT_URL"
       }
     }
   },
