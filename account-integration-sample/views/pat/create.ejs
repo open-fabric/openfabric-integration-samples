@@ -219,9 +219,6 @@
         }
         function renderForm() {
             const patFormFields = [
-                { label: 'Tenant Link Ref:', name: 'tenant_link_ref', value: "<%= tenant_link_ref %>", required: true},
-                { label: 'Tenant Partner Ref:', name: 'tenant_partner_ref', value: "<%= tenant_partner_ref %>", required: true},
-                { label: 'Tenant Customer Ref:', name: 'tenant_customer_ref', value: "<%= tenant_customer_ref %>", required: true},
                 { label: 'Currency:', name: 'currency', value: 'SGD', required: true},
                 { label: 'Description:', name: 'description'},
             ];
@@ -269,7 +266,7 @@
                     showButton(buttonId)
                     return
                 }
-                apiSubmit('/api/pat', formData)
+                apiSubmit('/api/pat/init', formData)
                   .then((json) => {
                       showButton(buttonId)
                       if (json.url) {

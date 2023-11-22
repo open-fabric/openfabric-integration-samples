@@ -1,12 +1,32 @@
 import crypto from 'crypto'
 
+import { db } from '../db/index.js'
 import { catchAsync } from '../utils/catchAsync.js';
-import {of_api_url} from "../lib/variables.js";
+import {account_server_url, of_api_url} from "../lib/variables.js";
 import axios from "axios";
 import {GetAccessToken} from "../services/auth.js";
 
-// update to hit create pat endpoint
 export const create = catchAsync(async (req, res) => {
+  const ref = crypto.randomUUID()
+  const customerId = crypto.randomUUID()
+  await db.push(`/pat_links/${ref}`, {
+    id: ref,
+    partner_link_ref: req.body.partner_link_ref,
+    partner_customer_ref: req.body.partner_customer_ref,
+    intent: req.body.intent,
+    description: req.body.description,
+    constraints: req.body.constraints,
+    of_link_id: req.body.link_id,
+    of_gateway_redirect_url: req.body.gateway_redirect_url
+  })
+  res.send({
+    tenant_link_ref: ref,
+    tenant_customer_ref: customerId,
+    tenant_consent_redirect_url: new URL(`/pat/consent/${ref}`, account_server_url).toString()
+  })
+})
+
+export const initiatePatCreation = catchAsync(async (req, res) => {
   const data = req.body;
 
   try {
@@ -15,9 +35,9 @@ export const create = catchAsync(async (req, res) => {
     const result = await axios.post(
       new URL(`/v1/preapproved_transaction_links`, of_api_url).toString(),
       {
-        tenant_link_ref: data.tenant_link_ref,
-        tenant_partner_ref: data.tenant_partner_ref,
-        tenant_customer_ref: data.tenant_customer_ref,
+        tenant_link_ref: crypto.randomUUID(),
+        tenant_partner_ref: crypto.randomUUID(),
+        tenant_customer_ref: crypto.randomUUID(),
         return_url: data.returl_url,
         description: data.description,
         constraints: {
@@ -78,11 +98,7 @@ export const consentCapturePage = catchAsync(async (req, res) => {
 })
 
 export const createPatPage = catchAsync(async (req, res) => {
-  res.render("pat/create", {
-    tenant_link_ref: crypto.randomUUID(),
-    tenant_partner_ref: crypto.randomUUID(),
-    tenant_customer_ref: crypto.randomUUID(),
-  });
+  res.render("pat/create", {});
 })
 
 export const createPatSuccessPage = catchAsync(async (req, res) => {
