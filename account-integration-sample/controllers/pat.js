@@ -26,6 +26,54 @@ export const create = catchAsync(async (req, res) => {
   })
 })
 
+export const initiatePatCreation = catchAsync(async (req, res) => {
+  const data = req.body;
+
+  try {
+    const {access_token} = await GetAccessToken()
+
+    const result = await axios.post(
+      new URL(`/v1/preapproved_transaction_links`, of_api_url).toString(),
+      {
+        tenant_link_ref: crypto.randomUUID(),
+        tenant_customer_ref: crypto.randomUUID(),
+        tenant_partner_ref: data.tenant_partner_ref,
+        return_url: data.returl_url,
+        description: data.description,
+        constraints: {
+          currency: data.currency,
+          start_date: new Date().toISOString(),
+        },
+        customer_info: {
+          first_name: data.first_name,
+          last_name: data.last_name,
+          email: data.email,
+          mobile_number: data.mobile_number
+        },
+        billing_address: {
+          address_line_1: data.address_line_1,
+          address_line_2: data.address_line_2,
+          city: data.city,
+          country: data.country,
+          post_code: data.post_code
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    res.send({
+      url: result.gateway_redirect_url
+    })
+  } catch (e) {
+    res.status(404).send('Unable to create')
+  }
+})
+
 export const consentCapturePage = catchAsync(async (req, res) => {
   try {
     const {access_token} = await GetAccessToken()
@@ -47,6 +95,22 @@ export const consentCapturePage = catchAsync(async (req, res) => {
     console.error('Failed to fetch PAT link data', e);
     res.status(404).send('Not found')
   }
+})
+
+export const createPatPage = catchAsync(async (req, res) => {
+  res.render("pat/create", {});
+})
+
+export const createPatSuccessPage = catchAsync(async (req, res) => {
+  const query = req.query
+  res.render("pat/create_success", {
+    data: {
+      link_id: query.link_id,
+      partner_link_ref: query.partner_link_ref,
+      tenant_link_ref: query.tenant_link_ref,
+      status: query.status,
+    }
+  })
 })
 
 export const approvePatLink = catchAsync(async (req, res) => {

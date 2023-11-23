@@ -17,7 +17,7 @@ export default function Form() {
             frequency
         };
 
-        const response = await fetch('merchant-pat-link/api/link', {
+        const response = await fetch('/merchant-pat-link/api/link', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -108,3 +108,4 @@ dist
 .tern-port
 merchant-integration-sample/.npmrc
 /account-integration-sample/AccountTransaction.json
+/pat-link-sample/PatLink.json
