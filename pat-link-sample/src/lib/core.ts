@@ -10,7 +10,7 @@ export interface PatLink {
     email: string;
     mobile_number: string;
   }
-  customer_billing_address: {
+  billing_address: {
     address_line_1: string;
     address_line_2: string;
     post_code: string;

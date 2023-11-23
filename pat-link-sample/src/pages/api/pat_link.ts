@@ -12,7 +12,7 @@ interface PartnerPreApprovedTransactionLinkRequest {
     email: string;
     mobile_number: string;
   }
-  customer_billing_address: {
+  billing_address: {
     address_line_1: string;
     address_line_2: string;
     post_code: string;
@@ -42,7 +42,7 @@ export default async function handler(
       tenant_link_ref: data.tenant_link_ref,
       gateway_redirect_url: data.gateway_redirect_url,
       customer_info: data.customer_info,
-      customer_billing_address: data.customer_billing_address,
+      billing_address: data.billing_address,
     })
 
     const response:PartnerPreApprovedTransactionLinkResponse = {
