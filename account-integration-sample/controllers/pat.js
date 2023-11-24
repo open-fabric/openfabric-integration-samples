@@ -38,7 +38,7 @@ export const initiatePatCreation = catchAsync(async (req, res) => {
         tenant_link_ref: crypto.randomUUID(),
         tenant_customer_ref: crypto.randomUUID(),
         tenant_partner_ref: data.tenant_partner_ref,
-        return_url: data.returl_url,
+        return_url: data.return_url,
         description: data.description,
         constraints: {
           currency: data.currency,
@@ -47,7 +47,7 @@ export const initiatePatCreation = catchAsync(async (req, res) => {
         customer_info: {
           first_name: data.first_name,
           last_name: data.last_name,
-          email: data.email,
+          email: data.email ? data.email: undefined,
           mobile_number: data.mobile_number
         },
         billing_address: {
@@ -67,7 +67,7 @@ export const initiatePatCreation = catchAsync(async (req, res) => {
     );
 
     res.send({
-      url: result.gateway_redirect_url
+      url: result.data.gateway_redirect_url
     })
   } catch (e) {
     res.status(404).send('Unable to create')

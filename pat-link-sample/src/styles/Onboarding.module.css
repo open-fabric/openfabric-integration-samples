@@ -62,3 +62,8 @@
   font-weight: bold;
   width: 40%;
 }
+
+.dataValue {
+  width: 60%;
+  word-wrap: break-word;
+}
