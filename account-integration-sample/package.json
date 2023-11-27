@@ -9,7 +9,7 @@
     "dev": "NODE_OPTIONS='--experimental-specifier-resolution=node' nodemon index.js"
   },
   "dependencies": {
-    "axios": "^0.26.1",
+    "axios": "^1.6.0",
     "basic-auth": "^2.0.1",
     "body-parser": "^1.19.2",
     "cookie-parser": "^1.4.6",
