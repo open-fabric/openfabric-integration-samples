@@ -41,5 +41,5 @@ RUN chmod 777 ./
 USER nextjs
 EXPOSE 3004
 ENV PORT 3004
-ENV HOSTNAME "0.0.0.0"
-CMD echo $HOSTNAME ; node server.js
+# Workaround for Lightsail container overriding HOSTNAME variable
+CMD env HOSTNAME="0.0.0.0" node server.js
