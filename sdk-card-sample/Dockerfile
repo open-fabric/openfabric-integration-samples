@@ -43,4 +43,5 @@ RUN chmod 777 ./
 USER nextjs
 EXPOSE 3003
 ENV PORT 3003
-CMD ["node", "server.js"]
+ENV HOSTNAME "0.0.0.0"
+CMD echo $HOSTNAME ; node server.js

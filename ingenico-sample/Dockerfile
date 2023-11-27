@@ -1,12 +1,12 @@
 # 1. Install dependencies only when needed
-FROM node:16-alpine AS deps
+FROM node:18-alpine AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
-FROM node:16-alpine AS builder
+FROM node:18-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -28,7 +28,7 @@ RUN echo "BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS}" >> ./.env
 
 RUN yarn build
 
-FROM node:16-alpine AS runner
+FROM node:18-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 RUN addgroup -g 1777 -S nodejs
@@ -41,4 +41,5 @@ RUN chmod 777 ./
 USER nextjs
 EXPOSE 3004
 ENV PORT 3004
-CMD ["node", "server.js"]
+ENV HOSTNAME "0.0.0.0"
+CMD echo $HOSTNAME ; node server.js
