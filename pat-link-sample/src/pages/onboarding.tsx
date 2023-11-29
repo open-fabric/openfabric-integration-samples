@@ -11,7 +11,7 @@ export default function Onboarding() {
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
-    window.location.href = `${patLink?.gateway_redirect_url}?phase=onboarding_completed&partner_link_ref=${partnerLinkRef}`
+    window.location.href = `${patLink?.gateway_redirect_url}&phase=onboarding_completed&partner_link_ref=${partnerLinkRef}`
   }
 
   const fetchPatLink = async () => {

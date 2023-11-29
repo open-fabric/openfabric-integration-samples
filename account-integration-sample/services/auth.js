@@ -12,7 +12,7 @@ export const GetAccessToken = async (scope) => {
   ).toString("base64");
   const body = qs.stringify({
     grant_type: "client_credentials",
-    scope: scope || 'resources/transactions.read resources/transactions.create resources/transactions.update resources/pat_links.read resources/pat_links.update'
+    scope: scope || 'resources/transactions.read resources/transactions.create resources/transactions.update resources/pat_links.create resources/pat_links.read resources/pat_links.update'
   });
   const response = await axios.post(of_auth_url, body, {
     headers: {
