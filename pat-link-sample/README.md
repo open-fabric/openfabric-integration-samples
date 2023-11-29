@@ -15,6 +15,7 @@ OF_AUTH_URL=https://auth.dev.openfabric.co
 OF_API_URL=
 MERCHANT_CLIENT_ID=
 MERCHANT_CLIENT_SECRET=
+MERCHANT_SERVER_URL=
 ```
 
 **Note:**

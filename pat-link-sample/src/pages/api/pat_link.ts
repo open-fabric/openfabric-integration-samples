@@ -1,6 +1,7 @@
 import crypto from 'crypto'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import * as dbService from "../../lib/db";
+import { MERCHANT_SERVER_URL } from '@/lib/config';
 
 interface PartnerPreApprovedTransactionLinkRequest {
   link_id: string;
@@ -29,11 +30,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log(req, 'request')
-  console.log(res, 'response')
   if (req.method === 'POST') {
     const data = req.body as PartnerPreApprovedTransactionLinkRequest
-    const host = req.headers?.['x-forwarded-host'];
     const partnerCustomerRef = crypto.randomUUID();
     const partnerLinkRef = crypto.randomUUID();
 
@@ -48,7 +46,7 @@ export default async function handler(
     })
 
     const response:PartnerPreApprovedTransactionLinkResponse = {
-      partner_onboard_redirect_url: `${host}/merchant-pat-link/onboarding?partner_link_ref=${partnerLinkRef}`,
+      partner_onboard_redirect_url: `${MERCHANT_SERVER_URL}/merchant-pat-link/onboarding?partner_link_ref=${partnerLinkRef}`,
       partner_customer_ref: partnerCustomerRef,
     }
 
