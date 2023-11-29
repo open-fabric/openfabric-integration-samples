@@ -29,9 +29,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  console.log(req, 'request')
+  console.log(res, 'response')
   if (req.method === 'POST') {
     const data = req.body as PartnerPreApprovedTransactionLinkRequest
-    const host = req.headers?.host
+    const host = req.headers?.['x-forwarded-host'];
     const partnerCustomerRef = crypto.randomUUID();
     const partnerLinkRef = crypto.randomUUID();
 
