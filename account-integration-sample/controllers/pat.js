@@ -70,7 +70,7 @@ export const initiatePatCreation = catchAsync(async (req, res) => {
       url: result.data.gateway_redirect_url
     })
   } catch (e) {
-    res.status(404).send('Unable to create')
+    res.status(404).send(`Unable to create PAT Link: ${e}`)
   }
 })
 
