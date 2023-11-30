@@ -47,14 +47,14 @@ export const initiatePatCreation = catchAsync(async (req, res) => {
         customer_info: {
           first_name: data.first_name,
           last_name: data.last_name,
-          email: data.email ? data.email: undefined,
-          mobile_number: data.mobile_number
+          email: data.email || undefined,
+          mobile_number: data.mobile_number || undefined
         },
         billing_address: {
           address_line_1: data.address_line_1,
           address_line_2: data.address_line_2,
-          city: data.city,
-          country: data.country,
+          city: data.city || undefined,
+          country: data.country || undefined,
           post_code: data.post_code
         }
       },
