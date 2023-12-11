@@ -20,15 +20,15 @@ const nextConfig = {
     return [
       {
         source: "/html",
-        destination: "/sdk-pg-charge/index.html",
+        destination: "/index.html",
       },
       {
         source: "/html/success",
-        destination: "/sdk-pg-charge/success.html",
+        destination: "/success.html",
       },
       {
         source: "/html/failed",
-        destination: "/sdk-pg-charge/failed.html",
+        destination: "/failed.html",
       },
     ];
   },

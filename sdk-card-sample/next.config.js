@@ -20,15 +20,15 @@ const nextConfig = {
     return [
       {
         source: "/html",
-        destination: "/sdk-card/index.html",
+        destination: "/index.html",
       },
       {
         source: "/html/success",
-        destination: "/sdk-card/success.html",
+        destination: "/success.html",
       },
       {
         source: "/html/failed",
-        destination: "/sdk-card/failed.html",
+        destination: "/failed.html",
       },
     ];
   },
