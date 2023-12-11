@@ -55,7 +55,8 @@ export const initiatePatCreation = catchAsync(async (req, res) => {
           address_line_2: data.address_line_2,
           city: data.city || undefined,
           country: data.country || undefined,
-          post_code: data.post_code
+          post_code: data.post_code,
+          country_code: data.country_code || undefined
         }
       },
       {
