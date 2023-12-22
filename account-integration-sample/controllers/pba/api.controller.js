@@ -49,13 +49,13 @@ export const approveFinalAuthTransaction = catchAsync(async (req, res) => {
   let reason;
   let status = 'approved';
 
-  if (req.data.amount > 100000) {
+  if (req.data.amount > 8000) {
     approveAmount = 0;
     status = 'declined';
     reason = 'Fail for transaction amount over 100000';
   } else {
     if (req.data.auth_indicator?.is_partial_approval) {
-      approveAmount -= approveAmount > 10 ? 10 : 1
+      approveAmount -= getRandomNumber(0.5, req.data.amount);
     }
   }
 
@@ -102,4 +102,8 @@ export const WebhookCallBack = catchAsync(async (req, res) => {
       .send({ status: "Failed", reason: "Unauthenticated" });
   }
 });
+
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
