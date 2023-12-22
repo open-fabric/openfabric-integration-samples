@@ -19,3 +19,7 @@ export const readTransaction = (account_reference_id) => {
 export const clearTransactions = () => {
   db.delete('/transactions')
 }
+
+export const addNewPbaTransactions = (transaction) => {
+  db.push(`/pba/transactions/${transaction.tenant_reference_id}`, transaction);
+}
