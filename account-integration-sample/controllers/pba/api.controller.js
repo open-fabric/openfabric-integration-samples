@@ -52,7 +52,7 @@ export const approveFinalAuthTransaction = catchAsync(async (req, res) => {
   if (req.data.amount > 8000) {
     approveAmount = 0;
     status = 'declined';
-    reason = 'Fail for transaction amount over 100000';
+    reason = 'Fail for transaction amount over 8000';
   } else {
     if (req.data.auth_indicator?.is_partial_approval) {
       approveAmount -= getRandomNumber(0.5, req.data.amount);
