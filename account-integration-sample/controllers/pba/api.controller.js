@@ -4,6 +4,7 @@ import axios from "axios";
 import { GetAccessToken } from "../../services/auth.js";
 import { db, addNewPbaTransactions } from '../../db/index.js';
 import { trusted_api_key } from "../../lib/variables.js";
+import { v4 as uuidv4 } from "uuid";
 
 export const provisionAccountDevice = catchAsync(async (req, res) => {
   const { access_token } = await GetAccessToken('resources/customers.create')
@@ -45,23 +46,25 @@ export const provisionAccountDevice = catchAsync(async (req, res) => {
 
 export const approveFinalAuthTransaction = catchAsync(async (req, res) => {
   const tenantReferenceId = uuidv4()
-  let approveAmount = req.data.amount;
+  const reqData = req.body;
+
+  let approveAmount = reqData.amount;
   let reason;
   let status = 'approved';
 
-  if (req.data.amount > 8000) {
+  if (reqData.amount > 8000) {
     approveAmount = 0;
     status = 'declined';
     reason = 'Fail for transaction amount over 8000';
   } else {
-    if (req.data.auth_indicator?.is_partial_approval) {
-      approveAmount -= getRandomNumber(1, Math.floor(req.data.amount));
+    if (reqData.auth_indicator?.is_partial_approval) {
+      approveAmount -= getRandomNumber(1, Math.floor(reqData.amount));
     }
   }
 
 
   const transaction = {
-    ...req.data,
+    ...reqData,
     tenant_reference_id: tenantReferenceId,
     approved_amount: approveAmount,
     status: status,
