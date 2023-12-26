@@ -1,8 +1,8 @@
 // For format details, see https://aka.ms/devcontainer.json
 {
-  "name": "Development Environment in a Docker Container",
+  "name": "Slice Development Environment in a Docker Container",
   // This is a pre-build image contain all tool required
-  "image": "gelmium/devcontainer:latest",
+  "image": "ghcr.io/open-fabric/slice-dev-env:latest",
   // Add any feature will cause devcontainer image to be rebuilt
   // "features": {
   // },
@@ -16,7 +16,7 @@
       "type": "volume"
     }
   ],
-  // the run args will be passed to docker run command
+  // forward port 8080 of the devcontainer to the host for vscode web
   "runArgs": [
     "--network-alias",
     "${devcontainerId}",
@@ -28,17 +28,22 @@
   "forwardPorts": [],
 
   // Use 'initializeCommand' to run commands in the host before the container is created.
-  "initializeCommand": "docker pull gelmium/devcontainer:latest;echo DEVCONTAINER_REF=${devcontainerId} > .devcontainer/.env",
+  "initializeCommand": "docker pull ghcr.io/open-fabric/slice-dev-env:latest;echo DEVCONTAINER_REF=${devcontainerId} > .devcontainer/.env",
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "bash -i -c 'post_create_command' || true",
 
   // A command to run each time the container is successfully started.
-  "postStartCommand": "bash -i -c 'post_start_command' || true",
+  "postStartCommand": "",
 
   // Configure tool-specific properties.
   "customizations": {
     "codespaces": {
+      "repositories": {
+        "open-fabric/template-base-all-project": {
+          "permissions": "read-all"
+        }
+      }
     },
     "vscode": {
       "extensions": [
@@ -55,19 +60,31 @@
         "GitHub.copilot-chat",
         "Prisma.prisma",
         "yoavbls.pretty-ts-errors",
-        "GraphQL.vscode-graphql-syntax",
-        "ms-python.python",
-        "ms-python.black-formatter",
-        "golang.Go"
+        "mathiasfrohlich.Kotlin",  // used only in slice-transaction-service
+        "fwcd.kotlin",  // used only in slice-transaction-service
+        "GraphQL.vscode-graphql-syntax", // used only in slice-graphql-service
+        "ms-python.python",  // used only in slice-graphql-service
+        "ms-python.black-formatter",  // used only in slice-graphql-service
+        "redhat.vscode-yaml" // used only in slice-api-definitions-internal
       ],
-      "settings": {
+      "settings": { 
         "editor.dragAndDrop": false,
-        "prettier.configPath": "/root/.prettierrc"
+        "prettier.configPath": "/root/.prettierrc",
+        "gitlens.autolinks": [
+        
+            {
+                "prefix": "SP-",
+                "url": "https://open-fabric.atlassian.net/browse/SP-<num>"
+            },
+            {
+                "prefix": "SDO-",
+                "url": "https://open-fabric.atlassian.net/browse/SDO-<num>"
+            }
+        ]
       }
     }
   },
   "containerEnv": {
-    // your environment variables
   },
   // Connect as root. To use non root user: https://aka.ms/dev-containers-non-root.
   "remoteUser": "root"
