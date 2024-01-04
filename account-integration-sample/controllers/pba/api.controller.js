@@ -76,11 +76,6 @@ export const approveFinalAuthTransaction = catchAsync(async (req, res) => {
   else if (amount >= 7400) {
     await new Promise(resolve => setTimeout(resolve, 5000));
   }
-  else {
-    if (reqData.auth_indicator?.is_partial_approval) {
-      approveAmount -= getRandomNumber(1, Math.floor(reqData.amount));
-    }
-  }
 
 
   const transaction = {
