@@ -51,12 +51,29 @@ export const approveFinalAuthTransaction = catchAsync(async (req, res) => {
   let approveAmount = reqData.amount;
   let reason;
   let status = 'approved';
+  const amount = reqData.amount;
 
-  if (reqData.amount > 8000) {
+  if (amount >= 8000) {
     approveAmount = 0;
     status = 'declined';
     reason = 'Fail for transaction amount over 8000';
-  } else {
+  } 
+  else if (amount >= 7900) {
+    approveAmount = 7900 / 2;
+  }
+  else if (amount >= 7800) {
+    return res.status(400).send({ status: "Failed", reason: "Fail for transaction amount over 7800" });
+  }
+  else if (amount >= 7700) {
+    return res.status(500);
+  }
+  else if (amount >= 7600) {
+    approveAmount = 10000;
+  }
+  else if (amount >= 7500) {
+    approveAmount = 0;
+  }
+  else {
     if (reqData.auth_indicator?.is_partial_approval) {
       approveAmount -= getRandomNumber(1, Math.floor(reqData.amount));
     }
