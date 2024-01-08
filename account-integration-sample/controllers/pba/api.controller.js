@@ -98,6 +98,60 @@ export const approveFinalAuthTransaction = catchAsync(async (req, res) => {
   );
 });
 
+export const approvePreAuthTransaction = catchAsync(async (req, res) => {
+  const tenantReferenceId = uuidv4()
+  const reqData = req.body;
+
+  let approveAmount = reqData.amount;
+  let reason;
+  let status = 'approved';
+  const amount = reqData.amount;
+
+  if (amount >= 8000) {
+    approveAmount = 0;
+    status = 'declined';
+    reason = 'Fail for transaction amount over 8000';
+  } 
+  else if (amount >= 7900) {
+    approveAmount = 7900 / 2;
+  }
+  else if (amount >= 7800) {
+    return res.status(400).send({ status: "Failed", reason: "Fail for transaction amount over 7800" });
+  }
+  else if (amount >= 7700) {
+    return res.status(500);
+  }
+  else if (amount >= 7600) {
+    approveAmount = 10000;
+  }
+  else if (amount >= 7500) {
+    approveAmount = 0;
+  }
+  else if (amount >= 7400) {
+    await new Promise(resolve => setTimeout(resolve, 5000));
+  }
+
+
+  const transaction = {
+    ...reqData,
+    tenant_reference_id: tenantReferenceId,
+    approved_amount: approveAmount,
+    status: status,
+    reason: reason,
+  }
+
+  addNewPbaTransactions(transaction);
+
+  res.send(
+    {
+      tenant_reference_id: transaction.tenant_reference_id,
+      approved_amount: transaction.approved_amount,
+      status: transaction.status,
+      reason: transaction.reason,
+    }
+  );
+});
+
 export const WebhookCallBack = catchAsync(async (req, res) => {
   if (req.header("X-Api-Key") === trusted_api_key || req.header("X-API-Key") === trusted_api_key) {
     console.log(
