@@ -6,6 +6,7 @@ import { db, addNewPbaTransactions } from '../../db/index.js';
 import { trusted_api_key } from "../../lib/variables.js";
 import { v4 as uuidv4 } from "uuid";
 
+const blackListedMerchants = ['ABC123TESTMTF01']
 export const provisionAccountDevice = catchAsync(async (req, res) => {
   const { access_token } = await GetAccessToken('resources/customers.create')
   // read header X-User-Id from Express request
@@ -77,6 +78,23 @@ export const approveFinalAuthTransaction = catchAsync(async (req, res) => {
     await new Promise(resolve => setTimeout(resolve, 5000));
   }
 
+  const cvmLimit = reqData?.verification_data?.cvm_limit
+  const transitTxnType = reqData?.verification_data?.transit_transaction_type
+
+  if (cvmLimit && transitTxnType === '03' && parseInt(cvmLimit) < amount) {
+    approveAmount = 0;
+    status = 'declined';
+    reason = 'Fail for transaction amount over cvm limit';
+  } 
+
+  const networkMerchantId = reqData?.network_merchant_id;
+
+  if (transitTxnType === '07' && blackListedMerchants.includes(networkMerchantId)) {
+    approveAmount = 0;
+    status = 'declined';
+    reason = 'Fail for blacklisted merchant';
+  }
+
 
   const transaction = {
     ...reqData,
@@ -131,6 +149,22 @@ export const approvePreAuthTransaction = catchAsync(async (req, res) => {
     await new Promise(resolve => setTimeout(resolve, 5000));
   }
 
+  const cvmLimit = reqData?.verification_data?.cvm_limit
+  const transitTxnType = reqData?.verification_data?.transit_transaction_type
+
+  if (cvmLimit && transitTxnType === '03' && parseInt(cvmLimit) < amount) {
+    approveAmount = 0;
+    status = 'declined';
+    reason = 'Fail for transaction amount over cvm limit';
+  } 
+
+  const networkMerchantId = reqData?.network_merchant_id;
+
+  if (transitTxnType === '07' && blackListedMerchants.includes(networkMerchantId)) {
+    approveAmount = 0;
+    status = 'declined';
+    reason = 'Fail for blacklisted merchant';
+  }
 
   const transaction = {
     ...reqData,
