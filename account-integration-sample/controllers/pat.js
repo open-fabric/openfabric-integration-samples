@@ -36,14 +36,10 @@ export const initiatePatCreation = catchAsync(async (req, res) => {
       new URL(`/v1/preapproved_transaction_links`, of_api_url).toString(),
       {
         tenant_link_ref: crypto.randomUUID(),
-        tenant_customer_ref: crypto.randomUUID(),
         tenant_partner_ref: data.tenant_partner_ref,
         return_url: data.return_url,
         description: data.description,
-        constraints: {
-          currency: data.currency,
-          start_date: new Date().toISOString(),
-        },
+        tenant_customer_ref: data.tenant_customer_ref,
         customer_info: {
           first_name: data.first_name,
           last_name: data.last_name,
