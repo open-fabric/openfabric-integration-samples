@@ -21,6 +21,7 @@ services:
       - MERCHANT_SERVER_URL=${MERCHANT_SERVER_URL}
       - BASIC_AUTH_CREDENTIALS=${BASIC_AUTH_CREDENTIALS}
       - SESSION_SECRET=${SESSION_SECRET}
+      - TRUSTED_API_KEY=${TRUSTED_API_KEY}
     ports:
       - "3001:3001"
     container_name: account-integration-sample
