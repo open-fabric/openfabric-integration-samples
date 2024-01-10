@@ -7,6 +7,8 @@ import { trusted_api_key } from "../../lib/variables.js";
 import { v4 as uuidv4 } from "uuid";
 
 const blackListedMerchants = ['ABC123TESTMTF01']
+const trustedApiKeys = [trusted_api_key, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9']
+
 export const provisionAccountDevice = catchAsync(async (req, res) => {
   const { access_token } = await GetAccessToken('resources/customers.create')
   // read header X-User-Id from Express request
@@ -187,7 +189,7 @@ export const approvePreAuthTransaction = catchAsync(async (req, res) => {
 });
 
 export const WebhookCallBack = catchAsync(async (req, res) => {
-  if (req.header("X-Api-Key") === trusted_api_key || req.header("X-API-Key") === trusted_api_key) {
+  if (trustedApiKeys.includes(req.header("X-Api-Key")) || trustedApiKeys.includes(req.header("X-API-Key"))) {
     console.log(
       "Received OF notifications: ",
       JSON.stringify(req.body, null, 2)
