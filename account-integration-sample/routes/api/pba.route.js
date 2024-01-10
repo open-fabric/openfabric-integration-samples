@@ -5,4 +5,6 @@ router.route("/provision").post(pbaController.provisionAccountDevice);
 router.route("/transactions/final-auth/approval").post(pbaController.approveFinalAuthTransaction);
 router.route("/transactions/pre-auth/approval").post(pbaController.approvePreAuthTransaction);
 router.route("/webhook").post(pbaController.WebhookCallBack);
+router.route("/transactions").get(pbaController.getTransaction);
+
 export const PBA = router;

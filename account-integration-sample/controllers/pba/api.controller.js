@@ -2,7 +2,7 @@ import { catchAsync } from '../../utils/catchAsync.js';
 import { of_api_url } from "../../lib/variables.js";
 import axios from "axios";
 import { GetAccessToken } from "../../services/auth.js";
-import { db, addNewPbaTransactions } from '../../db/index.js';
+import { db, addNewPbaTransactions, getPbaTransaction } from '../../db/index.js';
 import { trusted_api_key } from "../../lib/variables.js";
 import { v4 as uuidv4 } from "uuid";
 
@@ -209,7 +209,14 @@ export const WebhookCallBack = catchAsync(async (req, res) => {
   }
 });
 
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+export const getTransaction = catchAsync(async (req, res) => {
+  const networkTxnRef = req.query.txn_lifecycle_id;
+  const txn = getPbaTransaction(networkTxnRef);
+
+  if (!txn) {
+    return res.status(404).send({ status: "Failed", reason: "Transaction not found" });
+  }
+
+  res.send(txn);
+});
 
