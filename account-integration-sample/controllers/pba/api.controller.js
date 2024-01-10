@@ -211,12 +211,12 @@ export const WebhookCallBack = catchAsync(async (req, res) => {
 
 export const getNotification = catchAsync(async (req, res) => {
   const networkTxnRef = req.query.txn_lifecycle_id;
-  const txn = getPbaNotification(networkTxnRef);
+  const notification = getPbaNotification(networkTxnRef);
 
-  if (!txn) {
-    return res.status(404).send({ status: "Failed", reason: "Transaction not found" });
+  if (!notification) {
+    return res.status(404).send({ status: "Failed", reason: "Notification not found" });
   }
 
-  res.send(txn);
+  res.send(notification);
 });
 
