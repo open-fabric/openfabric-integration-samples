@@ -2,7 +2,7 @@ import { catchAsync } from '../../utils/catchAsync.js';
 import { of_api_url } from "../../lib/variables.js";
 import axios from "axios";
 import { GetAccessToken } from "../../services/auth.js";
-import { db, addNewPbaTransactions, getPbaTransaction } from '../../db/index.js';
+import { db, addNewPbaTransactions, addNewPbaNotification } from '../../db/index.js';
 import { trusted_api_key } from "../../lib/variables.js";
 import { v4 as uuidv4 } from "uuid";
 
@@ -193,13 +193,13 @@ export const WebhookCallBack = catchAsync(async (req, res) => {
       JSON.stringify(req.body, null, 2)
     );
 
-    if (Array.isArray(req.body)) {
-      req.body.forEach((notification) => {
-        console.log(
-          `Pba transaction notification: id=${notification.tenant_reference_id}, of_transaction_id=${notification.transaction_id}, notification_id=${notification.notification_id}`
-        );
-      });
-    }
+    const data = Array.isArray(req.body) ? req.body : [req.body];
+    data.forEach((notification) => {
+      console.log(
+        `Pba transaction notification: id=${notification?.data?.tenant_reference_id}, of_transaction_id=${notification?.data?.transaction_id}, notification_id=${notification?.data?.notification_id}`
+      );
+      addNewPbaNotification(notification);
+    });
 
     return res.status(200).send({ status: "Success" });
   } else {
@@ -209,9 +209,9 @@ export const WebhookCallBack = catchAsync(async (req, res) => {
   }
 });
 
-export const getTransaction = catchAsync(async (req, res) => {
+export const getNotification = catchAsync(async (req, res) => {
   const networkTxnRef = req.query.txn_lifecycle_id;
-  const txn = getPbaTransaction(networkTxnRef);
+  const txn = getPbaNotification(networkTxnRef);
 
   if (!txn) {
     return res.status(404).send({ status: "Failed", reason: "Transaction not found" });
