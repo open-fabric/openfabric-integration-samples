@@ -2,7 +2,7 @@ import { catchAsync } from '../../utils/catchAsync.js';
 import { of_api_url } from "../../lib/variables.js";
 import axios from "axios";
 import { GetAccessToken } from "../../services/auth.js";
-import { db, addNewPbaTransactions, addNewPbaNotification } from '../../db/index.js';
+import { db, addNewPbaTransactions, addNewPbaNotification, getPbaNotification } from '../../db/index.js';
 import { trusted_api_key } from "../../lib/variables.js";
 import { v4 as uuidv4 } from "uuid";
 
