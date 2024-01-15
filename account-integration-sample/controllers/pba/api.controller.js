@@ -2,10 +2,11 @@ import { catchAsync } from '../../utils/catchAsync.js';
 import { of_api_url } from "../../lib/variables.js";
 import axios from "axios";
 import { GetAccessToken } from "../../services/auth.js";
-import { db, addNewPbaTransactions } from '../../db/index.js';
+import { db, addNewPbaTransactions, addNewPbaNotification, getPbaNotification } from '../../db/index.js';
 import { trusted_api_key } from "../../lib/variables.js";
 import { v4 as uuidv4 } from "uuid";
 
+const blackListedMerchants = ['ABC123TESTMTF01']
 export const provisionAccountDevice = catchAsync(async (req, res) => {
   const { access_token } = await GetAccessToken('resources/customers.create')
   // read header X-User-Id from Express request
@@ -51,17 +52,119 @@ export const approveFinalAuthTransaction = catchAsync(async (req, res) => {
   let approveAmount = reqData.amount;
   let reason;
   let status = 'approved';
+  const amount = reqData.amount;
 
-  if (reqData.amount > 8000) {
+  if (amount >= 8000) {
     approveAmount = 0;
     status = 'declined';
     reason = 'Fail for transaction amount over 8000';
-  } else {
-    if (reqData.auth_indicator?.is_partial_approval) {
-      approveAmount -= getRandomNumber(1, Math.floor(reqData.amount));
-    }
+  } 
+  else if (amount >= 7900) {
+    approveAmount = 7900 / 2;
+  }
+  else if (amount >= 7800) {
+    return res.status(400).send({ status: "Failed", reason: "Fail for transaction amount over 7800" });
+  }
+  else if (amount >= 7700) {
+    return res.status(500);
+  }
+  else if (amount >= 7600) {
+    approveAmount = 10000;
+  }
+  else if (amount >= 7500) {
+    approveAmount = 0;
+  }
+  else if (amount >= 7400) {
+    await new Promise(resolve => setTimeout(resolve, 5000));
   }
 
+  const cvmLimit = reqData?.verification_data?.cvm_limit
+  const transitTxnType = reqData?.verification_data?.transit_transaction_type
+
+  if (cvmLimit && transitTxnType === '03' && parseInt(cvmLimit) < amount) {
+    approveAmount = 0;
+    status = 'declined';
+    reason = 'Fail for transaction amount over cvm limit';
+  } 
+
+  const networkMerchantId = reqData?.network_merchant_id;
+
+  if (transitTxnType === '07' && blackListedMerchants.includes(networkMerchantId)) {
+    approveAmount = 0;
+    status = 'declined';
+    reason = 'Fail for blacklisted merchant';
+  }
+
+
+  const transaction = {
+    ...reqData,
+    tenant_reference_id: tenantReferenceId,
+    approved_amount: approveAmount,
+    status: status,
+    reason: reason,
+  }
+
+  addNewPbaTransactions(transaction);
+
+  res.send(
+    {
+      tenant_reference_id: transaction.tenant_reference_id,
+      approved_amount: transaction.approved_amount,
+      status: transaction.status,
+      reason: transaction.reason,
+    }
+  );
+});
+
+export const approvePreAuthTransaction = catchAsync(async (req, res) => {
+  const tenantReferenceId = uuidv4()
+  const reqData = req.body;
+
+  let approveAmount = reqData.amount;
+  let reason;
+  let status = 'approved';
+  const amount = reqData.amount;
+
+  if (amount >= 8000) {
+    approveAmount = 0;
+    status = 'declined';
+    reason = 'Fail for transaction amount over 8000';
+  } 
+  else if (amount >= 7900) {
+    approveAmount = 7900 / 2;
+  }
+  else if (amount >= 7800) {
+    return res.status(400).send({ status: "Failed", reason: "Fail for transaction amount over 7800" });
+  }
+  else if (amount >= 7700) {
+    return res.status(500);
+  }
+  else if (amount >= 7600) {
+    approveAmount = 10000;
+  }
+  else if (amount >= 7500) {
+    approveAmount = 0;
+  }
+  else if (amount >= 7400) {
+    await new Promise(resolve => setTimeout(resolve, 5000));
+  }
+
+  const cvmLimit = reqData?.verification_data?.cvm_limit
+  const transitTxnType = reqData?.verification_data?.transit_transaction_type
+
+  if (cvmLimit && transitTxnType === '03' && parseInt(cvmLimit) < amount) {
+    approveAmount = 0;
+    status = 'declined';
+    reason = 'Fail for transaction amount over cvm limit';
+  } 
+
+  const networkMerchantId = reqData?.network_merchant_id;
+
+  if (transitTxnType === '07' && blackListedMerchants.includes(networkMerchantId)) {
+    approveAmount = 0;
+    status = 'declined';
+    reason = 'Fail for blacklisted merchant';
+  }
 
   const transaction = {
     ...reqData,
@@ -90,13 +193,13 @@ export const WebhookCallBack = catchAsync(async (req, res) => {
       JSON.stringify(req.body, null, 2)
     );
 
-    if (Array.isArray(req.body)) {
-      req.body.forEach((notification) => {
-        console.log(
-          `Pba transaction notification: id=${notification.tenant_reference_id}, of_transaction_id=${notification.transaction_id}, notification_id=${notification.notification_id}`
-        );
-      });
-    }
+    const data = Array.isArray(req.body) ? req.body : [req.body];
+    data.forEach((notification) => {
+      console.log(
+        `Pba transaction notification: id=${notification?.data?.tenant_reference_id}, of_transaction_id=${notification?.data?.transaction_id}, notification_id=${notification?.data?.notification_id}`
+      );
+      addNewPbaNotification(notification);
+    });
 
     return res.status(200).send({ status: "Success" });
   } else {
@@ -106,7 +209,14 @@ export const WebhookCallBack = catchAsync(async (req, res) => {
   }
 });
 
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+export const getNotification = catchAsync(async (req, res) => {
+  const networkTxnRef = req.query.txn_lifecycle_id;
+  const notification = getPbaNotification(networkTxnRef);
+
+  if (!notification) {
+    return res.status(404).send({ status: "Failed", reason: "Notification not found" });
+  }
+
+  res.send(notification);
+});
 
