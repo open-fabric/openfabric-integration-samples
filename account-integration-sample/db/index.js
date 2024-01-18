@@ -25,8 +25,21 @@ export const addNewPbaTransactions = (transaction) => {
 }
 
 export const addNewPbaNotification = (notification) => {
-  db.push(`/pba/notifications/${notification?.data?.network_transaction_ref}`, notification);
-}
+  let key;
+  if (notification?.data?.network_transaction_ref) {
+    key = notification?.data?.network_transaction_ref;
+  } else if (notification?.data?.txn_lifecycle_id) {
+    key = notification?.data?.txn_lifecycle_id;
+  } else if (notification?.data?.eoc_file_ref) {
+    key = notification?.data?.eoc_file_ref;
+  } else if (notification?.data?.eos_file_ref) {
+    key = notification?.data?.eos_file_ref;
+  }
+
+  if (key) {
+    db.push(`/pba/notifications/${key}`, notification);
+  }
+};
 
 export const getPbaNotification = (networkTxnRef) => {
   return db.getData(`/pba/notifications/${networkTxnRef}`)
