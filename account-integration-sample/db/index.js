@@ -26,7 +26,7 @@ export const addNewPbaTransactions = (transaction) => {
 
 export const addNewPbaNotification = (notification) => {
   const key =
-    notification?.data?.network_transaction_ref || notification?.data?.eoc_file_ref || notification?.data?.eos_file_ref;
+    notification?.data?.network_transaction_ref || notification?.data?.eoc_fileref || notification?.data?.eos_fileref;
 
   if (key) {
     db.push(`/pba/notifications/${key}`, notification);
