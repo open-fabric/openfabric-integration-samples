@@ -210,7 +210,7 @@ export const WebhookCallBack = catchAsync(async (req, res) => {
 });
 
 export const getNotification = catchAsync(async (req, res) => {
-  const networkTxnRef = req.query.txn_lifecycle_id || req.query.eoc_fileref || req.query.eos_fileref;
+  const networkTxnRef = req.query.txn_lifecycle_id || req.query.network_file_id;
   const notification = getPbaNotification(networkTxnRef);
 
   if (!notification) {
