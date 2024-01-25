@@ -7,6 +7,13 @@ import { trusted_api_key } from "../../lib/variables.js";
 import { v4 as uuidv4 } from "uuid";
 
 const blackListedMerchants = ['ABC123TESTMTF01']
+
+export function randomUpperCaseAlphanumeric(length) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Uppercase letters and digits
+
+  return Array.from({ length }, () => characters[Math.floor(Math.random() * characters.length)]).join('');
+}
+
 export const provisionAccountDevice = catchAsync(async (req, res) => {
   const { access_token } = await GetAccessToken('resources/customers.create')
   // read header X-User-Id from Express request
@@ -95,11 +102,13 @@ export const approveFinalAuthTransaction = catchAsync(async (req, res) => {
     reason = 'Fail for blacklisted merchant';
   }
 
+  const authorizationCode = randomUpperCaseAlphanumeric(6)
 
   const transaction = {
     ...reqData,
     tenant_reference_id: tenantReferenceId,
     approved_amount: approveAmount,
+    authorization_code: authorizationCode,
     status: status,
     reason: reason,
   }
@@ -110,6 +119,7 @@ export const approveFinalAuthTransaction = catchAsync(async (req, res) => {
     {
       tenant_reference_id: transaction.tenant_reference_id,
       approved_amount: transaction.approved_amount,
+      authorization_code: authorizationCode,
       status: transaction.status,
       reason: transaction.reason,
     }
@@ -166,8 +176,10 @@ export const approvePreAuthTransaction = catchAsync(async (req, res) => {
     reason = 'Fail for blacklisted merchant';
   }
 
+  const authorizationCode = randomUpperCaseAlphanumeric(6)
   const transaction = {
     ...reqData,
+    authorization_code: authorizationCode,
     tenant_reference_id: tenantReferenceId,
     approved_amount: approveAmount,
     status: status,
@@ -180,6 +192,7 @@ export const approvePreAuthTransaction = catchAsync(async (req, res) => {
     {
       tenant_reference_id: transaction.tenant_reference_id,
       approved_amount: transaction.approved_amount,
+      authorization_code: authorizationCode,
       status: transaction.status,
       reason: transaction.reason,
     }
