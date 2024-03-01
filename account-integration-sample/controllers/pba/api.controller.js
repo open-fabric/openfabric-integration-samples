@@ -56,6 +56,9 @@ export const approveFinalAuthTransaction = catchAsync(async (req, res) => {
   const tenantReferenceId = uuidv4()
   const reqData = req.body;
 
+  console.log("OF final-auth approval request: ", JSON.stringify(reqData));
+  console.log(`OF final-auth approval headers, X-NFC-Gcash-Signature-Timestamp:${req.header('X-NFC-Gcash-Signature-Timestamp')}, X-NFC-Gcash-Signature:${req.header('X-NFC-Gcash-Signature')}`);
+
   let approveAmount = reqData.amount;
   let reason;
   let status = 'approved';
@@ -65,7 +68,7 @@ export const approveFinalAuthTransaction = catchAsync(async (req, res) => {
     approveAmount = 0;
     status = 'declined';
     reason = 'Fail for transaction amount over 8000';
-  } 
+  }
   else if (amount >= 7900) {
     approveAmount = 7900 / 2;
   }
@@ -92,7 +95,7 @@ export const approveFinalAuthTransaction = catchAsync(async (req, res) => {
     approveAmount = 0;
     status = 'declined';
     reason = 'Fail for transaction amount over cvm limit';
-  } 
+  }
 
   const networkMerchantId = reqData?.network_merchant_id;
 
@@ -130,6 +133,9 @@ export const approvePreAuthTransaction = catchAsync(async (req, res) => {
   const tenantReferenceId = uuidv4()
   const reqData = req.body;
 
+  console.log("OF final-auth approval request: ", JSON.stringify(reqData));
+  console.log(`OF final-auth approval headers, X-NFC-Gcash-Signature-Timestamp:${req.header('X-NFC-Gcash-Signature-Timestamp')}, X-NFC-Gcash-Signature:${req.header('X-NFC-Gcash-Signature')}`);
+
   let approveAmount = reqData.amount;
   let reason;
   let status = 'approved';
@@ -139,7 +145,7 @@ export const approvePreAuthTransaction = catchAsync(async (req, res) => {
     approveAmount = 0;
     status = 'declined';
     reason = 'Fail for transaction amount over 8000';
-  } 
+  }
   else if (amount >= 7900) {
     approveAmount = 7900 / 2;
   }
@@ -166,7 +172,7 @@ export const approvePreAuthTransaction = catchAsync(async (req, res) => {
     approveAmount = 0;
     status = 'declined';
     reason = 'Fail for transaction amount over cvm limit';
-  } 
+  }
 
   const networkMerchantId = reqData?.network_merchant_id;
 
@@ -205,6 +211,7 @@ export const WebhookCallBack = catchAsync(async (req, res) => {
       "Received OF notifications: ",
       JSON.stringify(req.body, null, 2)
     );
+    console.log(`OF final-auth approval headers, X-NFC-Gcash-Signature-Timestamp:${req.header('X-NFC-Gcash-Signature-Timestamp')}, X-NFC-Gcash-Signature:${req.header('X-NFC-Gcash-Signature')}`);
 
     const data = Array.isArray(req.body) ? req.body : [req.body];
     data.forEach((notification) => {
