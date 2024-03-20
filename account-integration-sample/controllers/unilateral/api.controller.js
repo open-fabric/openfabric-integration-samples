@@ -71,8 +71,8 @@ export const MERCHANTS = [{
       clientSecret: '15a96p3n4mjfciklpb03qhkjf3m2uvve91k39i5agjtqn4954h9v'
     },
     'https://auth.dev.openfabric.co/oauth2/token': {
-      clientId: '2sk2n0sc2u485ua06agnlgn078',
-      clientSecret: 'lc7d321tu3gus3gh161emhua9q70guie49rco076vougrnlffll'
+      clientId: '4m7l5o6huvpp8m8o4hsirsj8ga',
+      clientSecret: '1flhnb6sqff1vk7on0jqqh6hk6mjt194g2nfqm2cj6edgfo6uhvu'
     }
   }
 }]
