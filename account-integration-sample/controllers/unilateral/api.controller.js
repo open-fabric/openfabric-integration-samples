@@ -62,6 +62,19 @@ export const MERCHANTS = [{
       clientSecret: 's9f55kah44hk9jccn3060sja38p0mddpidvu7bohc9joddhsd9l'
     }
   }
+}, {
+  name: 'Bukalapak',
+  url: 'https://www.bukalapak.com',
+  credentials: {
+    'https://auth.sandbox.openfabric.co/oauth2/token': {
+      clientId: '5oncpjn0g96lir88ja2cavkpe8',
+      clientSecret: '15a96p3n4mjfciklpb03qhkjf3m2uvve91k39i5agjtqn4954h9v'
+    },
+    'https://auth.dev.openfabric.co/oauth2/token': {
+      clientId: '2sk2n0sc2u485ua06agnlgn078',
+      clientSecret: 'lc7d321tu3gus3gh161emhua9q70guie49rco076vougrnlffll'
+    }
+  }
 }]
 
 export const authorize = async ({ clientId, clientSecret }, scope) => {
