@@ -75,6 +75,19 @@ export const MERCHANTS = [{
       clientSecret: '1flhnb6sqff1vk7on0jqqh6hk6mjt194g2nfqm2cj6edgfo6uhvu'
     }
   }
+},{
+  name: 'Tokopedia',
+  url: 'https://www.tokopedia.com/',
+  credentials: {
+    'https://auth.sandbox.openfabric.co/oauth2/token': {
+      clientId: '2tukle0kn00043niu9lpdj98al',
+      clientSecret: '6m3cgf21ldob691mq6b6amsubam55osaalr5dn2kbfht78bb88v'
+    },
+    'https://auth.dev.openfabric.co/oauth2/token': {
+      clientId: '4gibrrt0vp34rc2pq9q7mpnj0d',
+      clientSecret: '12bqkn8uass653oqtgkphjrnrmobhru432u5tdv30snaqfoa2upv'
+    }
+  }
 }]
 
 export const authorize = async ({ clientId, clientSecret }, scope) => {
